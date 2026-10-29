@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>N-Pendulum Game: Chaos Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+<script type="module" src="./src/main.js" defer></script>
+</head>
+<body>
+
+<!-- Start / Title Screen -->
+<div id="titleScreen">
+  <canvas id="titleCanvas"></canvas>
+
+  <!-- Top-Left Segmented Language Switcher on Home Screen -->
+  <div class="home-lang-bar">
+    <div class="lang-switch-pill" id="homeLangSwitch">
+      <button type="button" class="lang-btn active" data-lang="en">English</button>
+      <button type="button" class="lang-btn" data-lang="ja">日本語</button>
+    </div>
+  </div>
+
+  <div class="title-content">
+    <h1 id="titleHeading">PENDULUM GAME</h1>
+    <p class="title-subtitle" id="titleSubtitle">A chaotic physics challenge! Aim your launch, dodge the hazards, and master the chaos.</p>
+    <div class="title-btn-group">
+      <button id="btnStartGame" class="btn-start-game">START GAME</button>
+      <button id="btnGoTutorial" class="btn-start-game btn-tutorial-start">TUTORIAL</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tutorial Screen -->
+<div id="tutorialScreen" class="hidden">
+  <canvas id="tutorialCanvas"></canvas>
+  <div class="tutorial-guide">
+    <div class="guide-intro" id="tutIntro">
+      <strong>How to Play: </strong> Adjust initial parameters and launch the pendulum to <strong>destroy all targets (<span style="color: var(--danger);">Red</span>) within the time limit</strong>!
+    </div>
+    <ul class="guide-list">
+      <li id="tutStep1"><strong>Aim & Launch:</strong> Adjust sliders, drag the tip bob directly, or press <strong>Spacebar</strong> to FIRE.</li>
+      <li id="tutStep2"><strong>Mid-Air PULSE:</strong> Tap the canvas or press <strong>Spacebar</strong> mid-flight to trigger an explosive shockwave and steer the tip.</li>
+      <li id="tutStep3"><strong>Target Clearance:</strong> Destroy every red target before the countdown timer reaches zero to clear the stage.</li>
+      <li id="tutStep4"><strong>Progression:</strong> Each Stage introduces new physical elements (Bombs, Rails, Black Holes, Winds). Watch for stage briefings!</li>
+    </ul>
+  </div>
+  <button id="btnTutorialDone" class="btn-start-game hidden">START GAME</button>
+</div>
+
+<!-- Main Game Header -->
+<header id="mainHeader">
+  <h1 class="game-title">Pendulum Game</h1>
+  <div class="header-actions">
+    <!-- In-Game On-the-Fly Language Switcher -->
+    <button id="btnHeaderLang" class="btn-nav btn-header-lang" title="Switch Language / 言語切替">日本語</button>
+    <button id="btnTitle" class="btn-nav">HOME</button>
+    <button id="btnSandbox" class="btn-nav">FREE PLAY</button>
+    <button id="btnReroll" class="btn-nav" style="display:none;" title="Generate new random targets">REROLL</button>
+    <button id="btnOpenMap" class="btn-nav">STAGES</button>
+    <button id="btnShare" class="btn-nav" title="Copy parameter URL">SHARE</button>
+    <div class="score-board"><span id="lblScore">SCORE:</span> <span id="totalScore">0</span></div>
+  </div>
+</header>
+
+<!-- Main Game View -->
+<main id="mainGame">
+  <div class="game-container">
+    <div class="canvas-wrapper" id="canvasWrapper">
+      <canvas id="canvas" width="800" height="600"></canvas>
+      <div class="hud-pulse" id="hudPulse">PULSES: 3</div>
+      <div class="hud-toast" id="hudToast">Parameter URL copied to clipboard!</div>
+      
+      <!-- Stage Transition Briefing Banner -->
+      <div id="stageBriefing" class="stage-briefing hidden">
+        <div class="briefing-box">
+          <div class="briefing-tag" id="briefingTag">STAGE 1-1</div>
+          <h2 class="briefing-title" id="briefingTitle">FIRST SWINGS</h2>
+          <p class="briefing-desc" id="briefingDesc">Line up your angle and let gravity swing the pendulum into every red target before time runs out!</p>
+          <div class="briefing-tip" id="briefingTip">💡 <strong>Tip:</strong> Drag the bob or adjust Initial Angle slider, then press PLAY.</div>
+          <button id="btnDismissBriefing" class="btn-start-game btn-briefing">GOT IT</button>
+        </div>
+      </div>
+
+      <!-- Overlay (Stage Clear / Fail) -->
+      <div id="overlay" class="overlay">
+        <h2 id="overlayTitle" class="text-clear">STAGE CLEAR</h2>
+        <div class="star-container" id="starContainer">
+          <div class="star">★</div><div class="star">★</div><div class="star">★</div>
+        </div>
+        <p id="overlayDesc">Score: +150</p>
+        <div class="overlay-btns">
+          <button id="overlayMapBtn" class="btn-large secondary">STAGES</button>
+          <button id="overlayBtn" class="btn-large primary">NEXT STAGE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parameter and Control Sidebar -->
+    <div class="panel">
+      <div class="stage-info">
+        <div class="stage-num" id="stageDisplay">STAGE 1-1 ▼</div>
+        <div class="timer" id="timerDisplay">10s</div>
+      </div>
+      
+      <div class="action-area">
+        <button id="btnFire" class="action btn-fire">▶ PLAY</button>
+        <button id="btnStop" class="action btn-stop" style="display:none;">⏹ STOP</button>
+        <button id="btnRetry" class="action btn-retry" style="display:none;">↺ RETRY</button>
+      </div>
+
+      <p style="font-size:0.75rem; color:var(--muted); margin:0;" id="uiPanelHint">Press Space, tap Play, or drag tip to fire.</p>
+
+      <div class="controls">
+        <div class="field" id="f-N">
+          <div class="field-header"><span id="lblN">Pendulum Links</span><span class="val" id="valN">2</span></div>
+          <input id="sliderN" type="range" min="2" max="3" value="2">
+        </div>
+        <div class="field" id="f-Count">
+          <div class="field-header"><span id="lblCount">Clones</span><span class="val" id="valCount">1</span></div>
+          <input id="sliderCount" type="range" min="1" max="3" value="1">
+        </div>
+        <div class="field" id="f-Angle">
+          <div class="field-header"><span id="lblAngle">Initial Angle</span><span class="val" id="valAngle">120°</span></div>
+          <input id="sliderAngle" type="range" min="-180" max="180" value="120">
+        </div>
+        <div class="field" id="f-Vel">
+          <div class="field-header"><span id="lblVel">Initial Angular Velocity</span><span class="val" id="valVel">0.0</span></div>
+          <input id="sliderVel" type="range" min="-15" max="15" step="0.1" value="0">
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Stage Select Modal -->
+<div id="mapModal" class="modal-overlay">
+  <div class="modal-window">
+    <div class="modal-header">
+      <h3 id="uiModalTitle">Stage Select (50 Stages × 5 Substages)</h3>
+      <button id="btnCloseMap" class="modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="stage-sections" id="stageGrid"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

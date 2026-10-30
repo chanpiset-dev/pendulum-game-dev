@@ -303,6 +303,7 @@ let briefedStages = {};
 
 let currentStageIndex = 1;
 let gameStatus = 'setup';
+let gameAnimId = null;
 let systems = [];
 let targets = [];
 let obstacles = [];
@@ -358,6 +359,7 @@ $('btnTutorialDone').addEventListener('click', () => {
 });
 
 $('btnTitle').addEventListener('click', () => {
+  stopGameLoop();
   gameStatus = 'setup';
   updateWindSpeed(0, false);
   suspendAudio();
@@ -439,6 +441,7 @@ function showStageBriefing(stageNum, subNum, displayStageNum = stageNum) {
 }
 
 function loadStage(stgIdx) {
+  stopGameLoop();
   gameStatus = 'setup';
   currentStageIndex = stgIdx;
   currentStageScore = 0;
@@ -700,6 +703,8 @@ function initVisualsOnly() {
 }
 
 function fire() {
+  if (gameStatus !== 'setup') return;
+  stopGameLoop();
   unlockAudio(); initWindAudio();
 
   const N = parseInt($('sliderN').value, 10);
@@ -744,7 +749,7 @@ function fire() {
   $('btnRetry').style.display = 'none';
   $('btnStop').textContent = I18N[currentLang].btnStop;
   document.querySelector('.panel').classList.add('simulating');
-  requestAnimationFrame(loop);
+  gameAnimId = requestAnimationFrame(loop);
 }
 
 function triggerPulse() {
@@ -1454,14 +1459,20 @@ function draw() {
   });
 }
 
+function stopGameLoop() {
+  if (gameAnimId !== null) cancelAnimationFrame(gameAnimId);
+  gameAnimId = null;
+}
+
 function loop(t) {
+  gameAnimId = null;
   if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') {
     const dt = Math.min(0.03, (t - lastTime) / 1000 || 0);
     lastTime = t;
     if (dt > 0) update(dt);
   }
   draw();
-  if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') requestAnimationFrame(loop);
+  if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') gameAnimId = requestAnimationFrame(loop);
 }
 
 function showOverlay(title, desc, btnText, isClear, stars = 0) {
@@ -1608,6 +1619,7 @@ $('overlayMapBtn').addEventListener('click', () => { $('overlay').classList.remo
 
 $('btnFire').addEventListener('click', fire);
 $('btnStop').addEventListener('click', () => {
+  stopGameLoop();
   gameStatus = 'end'; updateWindSpeed(0, false);
   $('btnStop').style.display = 'none'; $('btnRetry').style.display = 'block'; $('timerDisplay').classList.remove('urgent');
   $('btnRetry').textContent = I18N[currentLang].btnRetry;

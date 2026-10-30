@@ -1,6 +1,43 @@
 // Mouse, touch, pointer-capture, and Spacebar controls.
 export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly }) {
-  let isDragging = false;
+  let activePointerId = null;
+  let dragStageIndex = null;
+
+  function isGameScreenActive() {
+    return $('titleScreen').classList.contains('hidden') &&
+      $('tutorialScreen').classList.contains('hidden') &&
+      !$('mapModal').classList.contains('active');
+  }
+
+  function cancelDrag() {
+    const pointerId = activePointerId;
+    activePointerId = null;
+    dragStageIndex = null;
+    if (pointerId !== null && wrapper.hasPointerCapture(pointerId)) {
+      wrapper.releasePointerCapture(pointerId);
+    }
+  }
+
+  function canContinueDrag(e) {
+    return e.pointerId === activePointerId && isGameScreenActive() &&
+      $('stageBriefing').classList.contains('hidden') &&
+      getState().gameStatus === 'setup' &&
+      getState().currentStageIndex === dragStageIndex;
+  }
+
+  wrapper.addEventListener('pointercancel', e => {
+    if (e.pointerId === activePointerId) cancelDrag();
+  });
+  wrapper.addEventListener('lostpointercapture', e => {
+    if (e.pointerId === activePointerId) cancelDrag();
+  });
+  window.addEventListener('blur', cancelDrag);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelDrag();
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('button, .stage-btn')) cancelDrag();
+  }, true);
   function getCanvasPos(e) {
   const rect = canvas.getBoundingClientRect();
   const cx = e.touches ? e.touches[0].clientX : e.clientX;
@@ -9,6 +46,8 @@ export function installInputHandlers({ $, canvas, wrapper, getState, indexToStag
 }
 
 wrapper.addEventListener('pointerdown', e => {
+  if (!isGameScreenActive() || !$('stageBriefing').classList.contains('hidden') ||
+      activePointerId !== null || e.isPrimary === false || e.button !== 0) return;
   if (e.target.closest('.overlay') || e.target.closest('button') || e.target.closest('.stage-briefing')) return;
   unlockAudio();
   if (getState().gameStatus === 'playing') { triggerPulse(); return; }
@@ -24,13 +63,15 @@ wrapper.addEventListener('pointerdown', e => {
     }
     const grabR = Math.max(70, (chain.currentR || BOB_MIN_R) * 3);
     if (Math.hypot(p.x - px, p.y - py) < grabR) {
-      isDragging = true; wrapper.setPointerCapture(e.pointerId); triggerHaptic('bounce');
+      activePointerId = e.pointerId; dragStageIndex = getState().currentStageIndex;
+      wrapper.setPointerCapture(e.pointerId); triggerHaptic('bounce');
     }
   }
 });
 
 wrapper.addEventListener('pointermove', e => {
-  if (!isDragging || getState().gameStatus !== 'setup') return;
+  if (e.pointerId !== activePointerId) return;
+  if (!canContinueDrag(e)) { cancelDrag(); return; }
   const stageInfo = indexToStageSub(getState().currentStageIndex);
   if (stageInfo.stage === 7) return;
 
@@ -42,12 +83,19 @@ wrapper.addEventListener('pointermove', e => {
 });
 
 wrapper.addEventListener('pointerup', e => {
-  if (isDragging) { wrapper.releasePointerCapture(e.pointerId); isDragging = false; fire(); }
+  if (e.pointerId !== activePointerId) return;
+  const shouldFire = canContinueDrag(e);
+  cancelDrag();
+  if (shouldFire) fire();
 });
 
 window.addEventListener('keydown', e => {
   if (e.code === 'Space') {
+    if (e.defaultPrevented || !isGameScreenActive() ||
+        e.target.closest('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
     e.preventDefault();
+    if (e.repeat) return;
+    cancelDrag();
     if (!$('stageBriefing').classList.contains('hidden')) {
       $('btnDismissBriefing').click();
       return;

@@ -21,3 +21,13 @@ Because the project uses ES modules, open it through a local static HTTP server 
 ## Stage numbering
 
 Displayed stage numbers now map directly to the same numbered stage definition (1–50). Stage order is explicitly sequential. Existing stage layouts and mechanics were carried over; no new stages were added.
+
+## Hints and last-attempt replay
+
+Use **HINTS** to reopen the current stage briefing and tips for its mechanics. First-visit briefings include these tips automatically. Opening hints during an attempt pauses it; dismiss the hints, then choose **RESUME** to continue. Mechanic tips support English and Japanese.
+
+After a clear, failure, or Stop, use **REPLAY LAST ATTEMPT** in the header. The silent viewer supports play/pause, seeking, and 0.5× / 1× / 2× playback. Escape or Close returns to the game. Playback never changes scores, progress, or physics. The replay remains available across stage selection until the next launch or page refresh.
+
+Replay captures the canvas at up to 10 frames per second at 640×480. It retains at most 600 compressed frames, reducing the sampling rate for long attempts. It is a visual recording, not a full-resolution video or a saved download. Paused time is excluded.
+
+Verify with `node tests/hints-replay.cjs` (requires Playwright and Chromium).

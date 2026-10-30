@@ -6,7 +6,7 @@ export function installInputHandlers({ $, canvas, wrapper, getState, indexToStag
   function isGameScreenActive() {
     return $('titleScreen').classList.contains('hidden') &&
       $('tutorialScreen').classList.contains('hidden') &&
-      !$('mapModal').classList.contains('active');
+      !$('mapModal').classList.contains('active') && !document.querySelector('dialog[open]');
   }
 
   function cancelDrag() {

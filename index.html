@@ -61,6 +61,8 @@
     <button id="btnSandbox" class="btn-nav">FREE PLAY</button>
     <button id="btnReroll" class="btn-nav" style="display:none;" title="Generate new random targets">REROLL</button>
     <button id="btnOpenMap" class="btn-nav">STAGES</button>
+    <button id="btnHints" class="btn-nav">HINTS</button>
+    <button id="btnReplay" class="btn-nav" disabled>REPLAY LAST ATTEMPT</button>
     <button id="btnShare" class="btn-nav" title="Copy parameter URL">SHARE</button>
     <div class="score-board"><span id="lblScore">SCORE:</span> <span id="totalScore">0</span></div>
   </div>
@@ -81,6 +83,7 @@
           <div class="briefing-tag" id="briefingTag">STAGE 1-1</div>
           <h2 class="briefing-title" id="briefingTitle">FIRST SWINGS</h2>
           <p class="briefing-desc" id="briefingDesc">Line up your angle and let gravity swing the pendulum into every red target before time runs out!</p>
+          <ul id="mechanicHints" class="mechanic-hints"></ul>
           <div class="briefing-tip" id="briefingTip">💡 <strong>Tip:</strong> Drag the bob or adjust Initial Angle slider, then press PLAY.</div>
           <button id="btnDismissBriefing" class="btn-start-game btn-briefing">GOT IT</button>
         </div>
@@ -158,5 +161,19 @@
   </div>
 </div>
 
+<dialog id="replayDialog" aria-labelledby="replayTitle">
+  <h2 id="replayTitle">Last attempt</h2>
+  <p id="replayDescription"></p>
+  <canvas id="replayCanvas" width="800" height="600" aria-label="Recorded attempt playback"></canvas>
+  <label for="replaySeek">Replay position</label>
+  <input id="replaySeek" type="range" min="0" max="0" step="0.01" value="0">
+  <output id="replayTime" for="replaySeek"></output>
+  <div class="replay-actions">
+    <button id="replayPlay" class="btn-nav">PLAY</button>
+    <label>Speed <select id="replaySpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+    <button id="replayClose" class="btn-nav">CLOSE</button>
+  </div>
+  <p>Silent replay • Kept until your next attempt or page refresh.</p>
+</dialog>
 </body>
 </html>

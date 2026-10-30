@@ -1,4 +1,6 @@
 import { unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
+import { createAttemptReplay } from './replay.js';
+import { getMechanicHints } from './tutorial-hints.js';
 import { rk4 } from './physics.js';
 import { createProgressStore, limitGhosts } from './progress.js';
 import { TOTAL_STAGES, SUBSTAGES_PER_STAGE, STAGE_ORDER, STAGE_CONFIGS, indexToStageSub, stageSubToIndex, stageSubToKey } from './data/stage-configs.js';
@@ -14,6 +16,7 @@ const canvas = $('canvas'), ctx = canvas.getContext('2d');
 const titleCanvas = $('titleCanvas'), tCtx = titleCanvas.getContext('2d');
 const tutCanvas = $('tutorialCanvas'), tutCtx = tutCanvas.getContext('2d');
 const wrapper = $('canvasWrapper');
+const attemptReplay = createAttemptReplay({ canvas, $, pauseGame: () => pauseGame() });
 let W = canvas.width, H = canvas.height;
 let BASE_PIVOT = { x: W / 2, y: H / 2 };
 let PIVOT = { x: BASE_PIVOT.x, y: BASE_PIVOT.y };
@@ -367,6 +370,7 @@ $('btnTutorialDone').addEventListener('click', () => {
 });
 
 $('btnTitle').addEventListener('click', () => {
+  attemptReplay.finish();
   stopGameLoop();
   clearGameTimers();
   resetPauseControls();
@@ -444,10 +448,15 @@ function showStageBriefing(stageNum, subNum, displayStageNum = stageNum) {
   $('briefingTitle').textContent = localized.name;
   $('briefingDesc').textContent = localized.desc;
   $('briefingTip').innerHTML = localized.tip;
+  $('mechanicHints').replaceChildren(...getMechanicHints({ wind: currentWind, portals: currentPortals, lasers: currentLasers, rings: currentBoostRings, rail: currentRail, gravity: baseGravity, inversion: gravityInversionInterval, pulses: pulsesLeft }, isJa).map(text => {
+    const item = document.createElement('li'); item.textContent = text; return item;
+  }));
   $('stageBriefing').classList.remove('hidden');
 }
 
 function loadStage(stgIdx) {
+  attemptReplay.finish();
+  $('stageBriefing').classList.add('hidden');
   stopGameLoop();
   clearGameTimers();
   resetPauseControls();
@@ -716,6 +725,8 @@ function initVisualsOnly() {
 function fire() {
   if (gameStatus !== 'setup') return;
   stopGameLoop();
+  attemptReplay.begin($('stageDisplay').textContent.trim());
+  $('stageBriefing').classList.add('hidden');
   launchParameters = ['sliderN', 'sliderCount', 'sliderAngle', 'sliderVel'].map(id => $(id).value);
   unlockAudio(); initWindAudio();
 
@@ -1521,7 +1532,7 @@ function pauseGame() {
 
 function togglePause() {
   if (gameStatus !== 'paused') { pauseGame(); return; }
-  if (document.hidden || !$('titleScreen').classList.contains('hidden') ||
+  if (!$('stageBriefing').classList.contains('hidden') || document.querySelector('dialog[open]') || document.hidden || !$('titleScreen').classList.contains('hidden') ||
       !$('tutorialScreen').classList.contains('hidden') || $('mapModal').classList.contains('active')) return;
   gameStatus = pausedStatus;
   pausedStatus = null;
@@ -1557,12 +1568,16 @@ function stopGameLoop() {
 
 function loop(t) {
   gameAnimId = null;
+  let replayDelta = 0;
   if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') {
     const dt = Math.min(0.03, (t - lastTime) / 1000 || 0);
     lastTime = t;
+    replayDelta = dt;
     if (dt > 0) update(dt);
   }
   draw();
+  attemptReplay.capture(replayDelta);
+  if (gameStatus === 'end') attemptReplay.finish();
   if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') gameAnimId = requestAnimationFrame(loop);
 }
 
@@ -1725,12 +1740,25 @@ $('stageDisplay').addEventListener('click', openStageSelectModal);
 $('btnCloseMap').addEventListener('click', closeStageSelectModal);
 $('overlayMapBtn').addEventListener('click', () => { $('overlay').classList.remove('active'); openStageSelectModal(); });
 
+$('btnHints').addEventListener('click', () => {
+  pauseGame();
+  const info = indexToStageSub(currentStageIndex);
+  if (currentStageIndex === 'sandbox') {
+    $('briefingTitle').textContent = currentLang === 'ja' ? 'フリープレイ' : 'Free Play';
+    $('briefingTag').textContent = '';
+    $('briefingDesc').textContent = currentLang === 'ja' ? '角度を調整し、先端をドラッグして放すと開始します。' : 'Adjust the angle, or drag the tip and release to launch.';
+    $('briefingTip').textContent = currentLang === 'ja' ? 'プレイ中にタップするとパルスを使えます。' : 'Tap during play to use a pulse. Try different link and clone settings.';
+    $('mechanicHints').replaceChildren();
+    $('stageBriefing').classList.remove('hidden');
+  } else showStageBriefing(info.stage, info.sub, info.displayStage);
+});
 $('btnFire').addEventListener('click', fire);
 $('btnPause').addEventListener('click', togglePause);
 $('btnRestart').addEventListener('click', restartAttempt);
 window.addEventListener('blur', pauseGame);
 document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
 $('btnStop').addEventListener('click', () => {
+  attemptReplay.finish();
   stopGameLoop();
   clearGameTimers();
   resetPauseControls();

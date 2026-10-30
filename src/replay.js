@@ -44,6 +44,7 @@ export function createAttemptReplay({ canvas, $, pauseGame }) {
     stop(); position = 0;
     $('replayDescription').textContent = label;
     $('replaySeek').max = elapsed;
+    view.clearRect(0, 0, view.canvas.width, view.canvas.height);
     dialog.showModal(); render(); $('replayPlay').focus();
   });
   $('replayPlay').addEventListener('click', () => {
@@ -69,6 +70,10 @@ export function createAttemptReplay({ canvas, $, pauseGame }) {
       elapsed += delta;
       if (!force && elapsed < nextCapture) return;
       try {
+        // The live canvas is transparent. Replace the previous capture with the
+        // same opaque backdrop as the game before compositing this frame.
+        context.fillStyle = '#020503';
+        context.fillRect(0, 0, buffer.width, buffer.height);
         context.drawImage(canvas, 0, 0, buffer.width, buffer.height);
         frames.push({ time: elapsed, image: buffer.toDataURL('image/jpeg', 0.65) });
         // Bound memory while retaining the entire attempt, at lower sampling rates for long runs.

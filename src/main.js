@@ -1,3 +1,4 @@
+import { installCompactLayout } from './compact-layout.js';
 import { createAppearance } from './appearance.js';
 import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
 import { installMobileControls } from './mobile-controls.js';
@@ -57,7 +58,8 @@ const i18nController = createI18nController({
   getPulsesLeft: () => pulsesLeft,
   indexToStageSub, STAGE_CONFIGS,
   showStageBriefing, renderStageSelect,
-  saveLanguage: lang => progressStore.saveSetting('language', lang)
+  saveLanguage: lang => progressStore.saveSetting('language', lang),
+  refreshProgress: updatePersonalBest
 });
 const setLanguage = lang => i18nController.setLanguage(lang);
 const applyLanguage = () => i18nController.applyLanguage();
@@ -398,6 +400,7 @@ $('btnDismissBriefing').addEventListener('click', () => {
 function showSaveStatus({ kind, message }) {
   $('saveStatus').textContent = message;
   $('saveStatus').dataset.kind = kind;
+  $('saveStatus').hidden = !['warning', 'error'].includes(kind);
 }
 
 function saveData(stgIdx, score, ghostTrail, stars, completionTime = null) {
@@ -429,14 +432,23 @@ function saveData(stgIdx, score, ghostTrail, stars, completionTime = null) {
 
 function updatePersonalBest() {
   const summary = $('personalBest');
+  const t = I18N[currentLang];
+  summary.setAttribute('aria-label', t.personalBests);
+  summary.replaceChildren();
+  summary.classList.toggle('is-sandbox', currentStageIndex === 'sandbox');
   if (currentStageIndex === 'sandbox') {
-    summary.textContent = 'Personal bests are recorded in Stage Mode.';
+    summary.textContent = t.stageRecordsOnly;
     return;
   }
   const { stage, sub } = indexToStageSub(currentStageIndex);
   const key = stageSubToKey(stage, sub);
   const time = bestTimes[key];
-  summary.textContent = `PERSONAL BEST · Score: ${highScores[key] ?? '—'} · Time: ${time === undefined ? '—' : time.toFixed(2) + 's'} · Stars: ${stageStars[key] || 0}/3`;
+  for (const [label, value] of [[t.bestScore, highScores[key] ?? '—'], [t.bestTime, time === undefined ? '—' : time.toFixed(2) + 's'], [t.bestStars, `${stageStars[key] || 0}/3`]]) {
+    const item = document.createElement('span');
+    const name = document.createElement('small'); name.textContent = label;
+    const number = document.createElement('strong'); number.textContent = value;
+    item.append(name, number); summary.append(item);
+  }
 }
 
 function updateTotalScoreDisplay() {
@@ -1536,7 +1548,7 @@ function pauseGame() {
 
 function togglePause() {
   if (gameStatus !== 'paused') { pauseGame(); return; }
-  if (!$('stageBriefing').classList.contains('hidden') || document.querySelector('dialog[open]') || document.hidden || !$('titleScreen').classList.contains('hidden') ||
+  if ($('btnMore').getAttribute('aria-expanded') === 'true' || !$('stageBriefing').classList.contains('hidden') || document.querySelector('dialog[open]') || document.hidden || !$('titleScreen').classList.contains('hidden') ||
       !$('tutorialScreen').classList.contains('hidden') || $('mapModal').classList.contains('active')) return;
   gameStatus = pausedStatus;
   pausedStatus = null;
@@ -1783,6 +1795,7 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
+installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,
   savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,
   strings: () => I18N[currentLang] });

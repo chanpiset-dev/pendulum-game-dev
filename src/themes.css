@@ -394,3 +394,34 @@
 #settingsSaveStatus { flex: 1; }
 #settingsDialog { scroll-padding-bottom: 90px; }
 @media (max-width: 480px) { .settings-actions { bottom: -16px; } }
+
+/* Compact navigation and attempt controls work with every palette. */
+#btnMore { display: none; }
+.more-actions { display: contents; }
+:root[data-theme] .personal-best { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; font-size: 0.85rem; }
+.personal-best > span { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.personal-best small { font-size: 0.72rem; color: var(--muted); }
+.personal-best strong { color: var(--text); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+#saveStatus[hidden] { display: none; }
+.action-area { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+#btnFire, #btnStop, #btnRetry { grid-column: 1 / -1; }
+:root[data-theme] #btnStop { background: var(--panel); color: var(--danger); border-color: var(--line); }
+.launch-settings { border-top: 1px solid var(--line); padding-top: 8px; }
+.launch-settings > summary { cursor: pointer; padding: 10px 0; min-height: 44px; color: var(--text); font-weight: bold; }
+.launch-settings .controls { margin-top: 6px; }
+@media (max-width: 820px) {
+  :root[data-theme] #mainHeader { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; padding: 8px 10px; border-radius: 0; }
+  #mainHeader .game-title { grid-column: 1; grid-row: 1; white-space: normal; font-size: 0.75rem; }
+  #mainHeader > .score-board { grid-column: 2; grid-row: 1; width: auto; margin: 0; font-size: 0.72rem; }
+  #mainHeader .header-actions { grid-column: 1 / -1; grid-row: 2; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); position: relative; gap: 8px; width: 100%; }
+  #mainHeader .header-actions > .btn-nav { width: 100%; min-height: 44px; margin: 0; padding: 8px; }
+  #btnMore { display: block; }
+  .more-actions { display: none; }
+  :root[data-theme] .more-actions.is-open { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; position: absolute; right: 0; top: calc(100% + 8px); width: min(360px, 100%); max-height: 60dvh; overflow-y: auto; z-index: 25; padding: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--surface-shadow); }
+  #moreActions > button { min-height: 44px; white-space: normal; font-size: 0.75rem; }
+  .personal-best small { font-size: 0.7rem; }
+}
+
+:root[data-theme] #mainHeader.more-open { z-index: 80; }
+
+:root[data-theme] .personal-best.is-sandbox { display: block; }

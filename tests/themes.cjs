@@ -77,7 +77,7 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05) / (Math
     await page.evaluate(() => window.testRun('fire();stopGameLoop();draw();attemptReplay.capture(0);attemptReplay.finish()'));
     await page.click('#btnSettings');
     await page.locator('[data-theme-choice="neon-arcade"]').click(); await page.selectOption('#appearanceMode', 'dark');
-    await page.click('#settingsClose'); await page.click('#btnReplay');
+    await page.click('#settingsClose'); await page.click('#btnMore'); await page.click('#btnReplay');
     await page.waitForFunction(() => document.getElementById('replayCanvas').getContext('2d').getImageData(5, 2, 1, 1).data[0] > 200, null, { polling: 50 });
     assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'dark');
     await page.click('#replayClose');

@@ -58,3 +58,13 @@ Theme and mode are saved alongside volume and mute without replacing sound prefe
 Shared palette tokens live in `src/themes.css`; `src/themes.js` describes the catalog and exposes cached canvas colors. `src/appearance.js` applies the selection and system changes. The small `src/appearance-boot.js` restores appearance before the first CSS paint. Theme differences include typography, corners, borders, shadows, grids, and restrained decorative textures. Stage geometry, physics and scoring stay the same. Replay records retain the palette used during the attempt even after the interface theme changes.
 
 Run `node tests/themes.cjs` for all 18 variants, text contrast, canvas backgrounds, system changes, persistence, mobile layout, Japanese labels and replay color retention.
+
+## Compact navigation and controls
+
+On screens up to 820px wide, the header keeps **STAGES**, **SETTINGS**, and **MORE** visible. More contains Home, Free Play, Hints, Replay, Share, language switching, and Reroll when available. Opening More pauses an active attempt; dismiss it with Escape, an outside action, or by choosing an item, then use Resume to continue. Desktop navigation remains directly accessible.
+
+Pause/Resume and Restart share a row; Stop is a secondary full-width action. **Launch settings** contains the existing angle, velocity, link, and clone controls. It starts collapsed on mobile and expanded on desktop, and can be toggled with touch or keyboard.
+
+Personal-best score, time, and stars appear in a compact three-column row. Routine save confirmations are hidden in the gameplay panel; storage warnings and failures remain visible. Explicit Settings changes still show their save confirmation inside Settings.
+
+Run `node tests/compact-layout.cjs` for mobile header sizing in every theme/mode, disclosure focus and dismissal, input isolation, control grouping, records and save messages.

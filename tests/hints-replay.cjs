@@ -76,6 +76,7 @@ const { chromium } = require('playwright');
     await page.waitForFunction(() => window.testRun('gameStatus') === 'end');
     assert.equal(await page.locator('#btnReplay').isEnabled(), true);
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('#btnMore').click();
     await page.locator('#btnReplay').click();
     const bounds = await page.locator('#replayDialog').boundingBox();
     assert.ok(bounds.x >= 0 && bounds.x + bounds.width <= 390);

@@ -1,5 +1,6 @@
 export const I18N = {
   en: {
+    more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
     appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
     groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
     settings: 'SETTINGS', settingsTitle: 'Settings', volume: 'Sound volume', mute: 'Mute sound',
@@ -69,6 +70,7 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
     appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
     groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
     settings: '設定', settingsTitle: '設定', volume: '音量', mute: '消音',
@@ -141,7 +143,7 @@ export const I18N = {
 
 export function createI18nController({
   $, getCurrentLang, setCurrentLang, getCurrentStageIndex, getPulsesLeft,
-  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage
+  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage, refreshProgress
 }) {
   function setLanguage(lang) {
   setCurrentLang(lang === 'ja' ? 'ja' : 'en');
@@ -201,6 +203,9 @@ export function createI18nController({
   $('btnDismissBriefing').textContent = t.briefingGotIt;
   $('uiModalTitle').textContent = t.modalTitle;
   $('btnSettings').textContent = t.settings;
+  $('btnMore').textContent = t.more;
+  $('launchSettingsLabel').textContent = t.launchSettings;
+  refreshProgress?.();
   $('settingsTitle').textContent = t.settingsTitle;
   for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle']) $(id).textContent = t[id];
   for (const [value, key] of [['system', 'modeSystem'], ['dark', 'modeDark'], ['light', 'modeLight']]) $('appearanceMode').querySelector(`option[value="${value}"]`).textContent = t[key];

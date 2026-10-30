@@ -1,0 +1,96 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', args: ['--no-sandbox'] });
+  try {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.addInitScript(() => { window.requestAnimationFrame = () => 1; window.cancelAnimationFrame = () => {}; });
+    await page.route('**/*', route => {
+      const url = new URL(route.request().url());
+      if (url.hostname !== 'game.test') return route.abort();
+      const file = path.join(__dirname, '..', url.pathname === '/' ? 'index.html' : url.pathname);
+      let body = fs.readFileSync(file, 'utf8');
+      if (url.pathname === '/src/main.js') body += '\nwindow.testRun = code => eval(code);';
+      return route.fulfill({ body, contentType: file.endsWith('.js') ? 'text/javascript' : file.endsWith('.css') ? 'text/css' : 'text/html' });
+    });
+    await page.goto('http://game.test');
+    await page.waitForFunction(() => window.testRun);
+    await page.click('#btnStartGame');
+    await page.evaluate(() => document.getElementById('stageBriefing').classList.add('hidden'));
+    assert.equal(await page.locator('#saveStatus').isVisible(), false);
+    assert.equal(await page.locator('#btnTitle').isVisible(), false);
+    assert.equal(await page.locator('#btnHints').isVisible(), false);
+    assert.equal(await page.locator('#btnOpenMap').isVisible(), true);
+    assert.equal(await page.locator('#btnSettings').isVisible(), true);
+    assert.equal(await page.locator('#launchSettings').getAttribute('open'), null);
+    await page.click('#launchSettingsLabel');
+    assert.equal(await page.locator('#sliderAngle').isVisible(), true);
+    await page.locator('#launchSettingsLabel').focus();
+    await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(() => window.testRun('gameStatus')), 'setup', 'Space toggles disclosure, never fires');
+    await page.evaluate(() => window.testRun('saveData(1,1234,[],2,3.5)'));
+    assert.match(await page.locator('#personalBest').innerText(), /Best score\s*1234\s*Best time\s*3.50s\s*Stars\s*2\/3/);
+    assert.equal(await page.locator('#personalBest > span').count(), 3);
+    assert.equal(await page.locator('#saveStatus').isVisible(), false);
+    await page.click('#btnFire');
+    const pause = await page.locator('#btnPause').boundingBox();
+    const restart = await page.locator('#btnRestart').boundingBox();
+    assert.ok(Math.abs(pause.y - restart.y) < 2, 'Pause and Restart share a row');
+    await page.click('#btnMore');
+    assert.equal(await page.evaluate(() => window.testRun('gameStatus')), 'paused');
+    assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'true');
+    await page.locator('#btnMore').focus(); await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(() => window.testRun('gameStatus')), 'paused', 'More never pulses or resumes gameplay');
+    // Space closed the native button's disclosure; reopen to exercise Escape.
+    if (await page.locator('#btnMore').getAttribute('aria-expanded') !== 'true') await page.click('#btnMore');
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'false');
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'btnMore');
+    await page.click('#btnMore');
+    await page.click('#btnHints');
+    assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'false');
+    await page.locator('#stageBriefing').waitFor({ state: 'visible' });
+    await page.click('#btnDismissBriefing');
+    await page.click('#btnMore');
+    await page.locator('#btnSettings').focus();
+    assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'false', 'Tabbing outside closes disclosure');
+    await page.click('#btnMore');
+    await page.click('#btnOpenMap');
+    assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'false', 'Outside actions close disclosure');
+    await page.click('#btnCloseMap');
+    await page.click('#btnSettings');
+    for (const theme of await page.locator('[data-theme-choice]').evaluateAll(nodes => nodes.map(node => node.dataset.themeChoice))) {
+      await page.locator(`[data-theme-choice="${theme}"]`).click();
+      for (const mode of ['dark', 'light']) {
+        await page.selectOption('#appearanceMode', mode);
+        await page.click('#settingsClose');
+        const header = await page.locator('#mainHeader').boundingBox();
+        assert.ok(header.height <= 120, `${theme}/${mode}: mobile header stays compact`);
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+        await page.click('#btnMore');
+        const menu = await page.locator('#moreActions').boundingBox();
+        assert.ok(menu.x >= 0 && menu.x + menu.width <= 390, 'More menu fits viewport');
+        await page.keyboard.press('Escape');
+        await page.click('#btnSettings');
+      }
+    }
+    await page.click('#settingsClose');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    assert.equal(await page.locator('#btnMore').isVisible(), false);
+    assert.equal(await page.locator('#btnHints').isVisible(), true);
+    assert.equal(await page.locator('#launchSettings').getAttribute('open'), '');
+    await page.evaluate(() => window.testRun("setLanguage('ja')"));
+    assert.equal(await page.locator('#launchSettingsLabel').innerText(), '発射設定');
+    assert.match(await page.locator('#personalBest').innerText(), /最高スコア/);
+    await page.evaluate(() => window.testRun("showSaveStatus({kind:'error',message:'Progress could not be saved.'})"));
+    assert.equal(await page.locator('#saveStatus').isVisible(), true);
+    await page.evaluate(() => window.testRun("showSaveStatus({kind:'ok',message:'Progress saved.'})"));
+    assert.equal(await page.locator('#saveStatus').isVisible(), false);
+    assert.deepEqual(errors, []);
+    console.log('Compact layout passed: header/menu sizing in 18 themes, menu focus/Escape/outside dismissal, input isolation, grouped controls, launch disclosure, compact records, localization and actionable-only save messages.');
+  } finally { await browser.close(); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

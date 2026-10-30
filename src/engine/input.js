@@ -18,7 +18,7 @@ export function installInputHandlers({ $, canvas, wrapper, getState, indexToStag
   function isGameScreenActive() {
     return $('titleScreen').classList.contains('hidden') &&
       $('tutorialScreen').classList.contains('hidden') &&
-      !$('mapModal').classList.contains('active') && !document.querySelector('dialog[open]');
+      !$('mapModal').classList.contains('active') && $('btnMore').getAttribute('aria-expanded') !== 'true' && !document.querySelector('dialog[open]');
   }
 
   function cancelDrag() {
@@ -101,7 +101,7 @@ window.addEventListener('keydown', e => {
   if (e.code === 'KeyP') {
     if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || !isGameScreenActive() ||
         !$('stageBriefing').classList.contains('hidden') || $('overlay').classList.contains('active') ||
-        e.target.closest('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
+        e.target.closest('button, summary, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
     if (!['playing', 'paused', 'clearing', 'blackhole_death'].includes(getState().gameStatus)) return;
     e.preventDefault();
     if (e.repeat) return;
@@ -111,7 +111,7 @@ window.addEventListener('keydown', e => {
   }
   if (e.code === 'Space') {
     if (e.defaultPrevented || !isGameScreenActive() ||
-        e.target.closest('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
+        e.target.closest('button, summary, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
     e.preventDefault();
     if (e.repeat) return;
     cancelDrag();

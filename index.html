@@ -58,18 +58,20 @@
 <header id="mainHeader">
   <h1 class="game-title">Pendulum Game</h1>
   <div class="header-actions">
-    <!-- In-Game On-the-Fly Language Switcher -->
-    <button id="btnHeaderLang" class="btn-nav btn-header-lang" title="Switch Language / 言語切替">日本語</button>
-    <button id="btnTitle" class="btn-nav">HOME</button>
-    <button id="btnSandbox" class="btn-nav">FREE PLAY</button>
-    <button id="btnReroll" class="btn-nav" style="display:none;" title="Generate new random targets">REROLL</button>
     <button id="btnOpenMap" class="btn-nav">STAGES</button>
-    <button id="btnHints" class="btn-nav">HINTS</button>
-    <button id="btnReplay" class="btn-nav" disabled>REPLAY LAST ATTEMPT</button>
     <button id="btnSettings" class="btn-nav">SETTINGS</button>
-    <button id="btnShare" class="btn-nav" title="Copy parameter URL">SHARE</button>
-    <div class="score-board"><span id="lblScore">SCORE:</span> <span id="totalScore">0</span></div>
+    <button id="btnMore" class="btn-nav" aria-expanded="false" aria-controls="moreActions">MORE ▾</button>
+    <div id="moreActions" class="more-actions" role="group" aria-labelledby="btnMore">
+      <button id="btnTitle" class="btn-nav">HOME</button>
+      <button id="btnSandbox" class="btn-nav">FREE PLAY</button>
+      <button id="btnReroll" class="btn-nav" style="display:none;" title="Generate new random targets">REROLL</button>
+      <button id="btnHints" class="btn-nav">HINTS</button>
+      <button id="btnReplay" class="btn-nav" disabled>REPLAY LAST ATTEMPT</button>
+      <button id="btnShare" class="btn-nav" title="Copy parameter URL">SHARE</button>
+      <button id="btnHeaderLang" class="btn-nav btn-header-lang" title="Switch Language / 言語切替">日本語</button>
+    </div>
   </div>
+  <div class="score-board"><span id="lblScore">SCORE:</span> <span id="totalScore">0</span></div>
 </header>
 
 <!-- Main Game View -->
@@ -115,37 +117,40 @@
         <div class="stage-num" id="stageDisplay">STAGE 1-1 ▼</div>
         <div class="timer" id="timerDisplay">10s</div>
       </div>
-      <p id="personalBest" class="personal-best"></p>
-      <p id="saveStatus" class="save-status" role="status" aria-live="polite"></p>
+      <div id="personalBest" class="personal-best" aria-label="Personal bests"></div>
+      <p id="saveStatus" class="save-status" role="status" aria-live="polite" hidden></p>
       
       <div class="action-area">
         <button id="btnFire" class="action btn-fire">▶ PLAY</button>
-        <button id="btnStop" class="action btn-stop" style="display:none;">⏹ STOP</button>
         <button id="btnPause" class="action btn-retry" style="display:none;" aria-pressed="false" aria-keyshortcuts="P">⏸ PAUSE</button>
         <button id="btnRestart" class="action btn-retry" style="display:none;">↻ RESTART</button>
+        <button id="btnStop" class="action btn-stop" style="display:none;">⏹ STOP</button>
         <button id="btnRetry" class="action btn-retry" style="display:none;">↺ RETRY</button>
       </div>
 
       <p style="font-size:0.75rem; color:var(--muted); margin:0;" id="uiPanelHint">Press Space, tap Play, or drag tip to fire.</p>
 
-      <div class="controls">
-        <div class="field" id="f-N">
-          <div class="field-header"><span id="lblN">Pendulum Links</span><span class="val" id="valN">2</span></div>
-          <input id="sliderN" type="range" min="2" max="3" value="2">
+      <details id="launchSettings" class="launch-settings" open>
+        <summary id="launchSettingsLabel">Launch settings</summary>
+        <div class="controls">
+          <div class="field" id="f-N">
+            <div class="field-header"><span id="lblN">Pendulum Links</span><span class="val" id="valN">2</span></div>
+            <input id="sliderN" type="range" min="2" max="3" value="2">
+          </div>
+          <div class="field" id="f-Count">
+            <div class="field-header"><span id="lblCount">Clones</span><span class="val" id="valCount">1</span></div>
+            <input id="sliderCount" type="range" min="1" max="3" value="1">
+          </div>
+          <div class="field" id="f-Angle">
+            <div class="field-header"><span id="lblAngle">Initial Angle</span><span class="val" id="valAngle">120°</span></div>
+            <input id="sliderAngle" type="range" min="-180" max="180" value="120">
+          </div>
+          <div class="field" id="f-Vel">
+            <div class="field-header"><span id="lblVel">Initial Angular Velocity</span><span class="val" id="valVel">0.0</span></div>
+            <input id="sliderVel" type="range" min="-15" max="15" step="0.1" value="0">
+          </div>
         </div>
-        <div class="field" id="f-Count">
-          <div class="field-header"><span id="lblCount">Clones</span><span class="val" id="valCount">1</span></div>
-          <input id="sliderCount" type="range" min="1" max="3" value="1">
-        </div>
-        <div class="field" id="f-Angle">
-          <div class="field-header"><span id="lblAngle">Initial Angle</span><span class="val" id="valAngle">120°</span></div>
-          <input id="sliderAngle" type="range" min="-180" max="180" value="120">
-        </div>
-        <div class="field" id="f-Vel">
-          <div class="field-header"><span id="lblVel">Initial Angular Velocity</span><span class="val" id="valVel">0.0</span></div>
-          <input id="sliderVel" type="range" min="-15" max="15" step="0.1" value="0">
-        </div>
-      </div>
+      </details>
     </div>
   </div>
 </main>

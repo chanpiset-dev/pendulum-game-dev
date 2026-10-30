@@ -1,3 +1,4 @@
+import { installArtworkPreview } from './artwork-preview.js';
 import { installCompactLayout } from './compact-layout.js';
 import { createAppearance } from './appearance.js';
 import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
@@ -1795,6 +1796,7 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
+installArtworkPreview({ $, language: () => currentLang });
 installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,
   savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,

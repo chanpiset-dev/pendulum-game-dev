@@ -195,6 +195,7 @@
     <label for="appearanceMode" id="modeLabel">Mode</label>
     <select id="appearanceMode"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
     <fieldset class="theme-picker"><legend id="themeLabel">Theme</legend><div id="themeChoices"></div></fieldset>
+    <button id="btnArtworkPreview" class="btn-nav">PREVIEW ARTWORK</button>
   </section>
   <h3 id="soundTitle">Sound</h3>
   <label for="soundVolume" id="volumeLabel">Sound volume</label>
@@ -205,6 +206,16 @@
     <p id="settingsSaveStatus" role="status"></p>
     <button id="settingsClose" class="btn-nav">CLOSE</button>
   </div>
+</dialog>
+<dialog id="artworkDialog" aria-labelledby="artworkTitle">
+  <h2 id="artworkTitle">Artwork preview</h2>
+  <p id="artworkDescription">Compare new artwork before applying it to gameplay. No scores or progress are recorded here.</p>
+  <label for="artworkStyle" id="artworkStyleLabel">Style</label>
+  <select id="artworkStyle"><option value="auto">Match theme</option><option value="pixel">Pixel Arcade</option><option value="vector">Clean Vector</option></select>
+  <strong id="artworkStyleName"></strong>
+  <canvas id="artworkStage" width="800" height="420" role="img" aria-label="Demonstration scene with pendulum, targets, bombs and mechanics"></canvas>
+  <div id="artworkGallery"></div>
+  <div class="artwork-actions"><button id="artworkClose" class="btn-nav">BACK TO SETTINGS</button></div>
 </dialog>
 </body>
 </html>

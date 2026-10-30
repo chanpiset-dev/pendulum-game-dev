@@ -1,5 +1,6 @@
 export const I18N = {
   en: {
+    artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Compare new artwork before applying it to gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
     more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
     appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
     groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
@@ -70,6 +71,7 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームに適用する前に新しい見た目を比較できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
     more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
     appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
     groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
@@ -207,6 +209,9 @@ export function createI18nController({
   $('launchSettingsLabel').textContent = t.launchSettings;
   refreshProgress?.();
   $('settingsTitle').textContent = t.settingsTitle;
+  $('btnArtworkPreview').textContent = t.artworkButton;
+  for (const id of ['artworkTitle', 'artworkDescription', 'artworkStyleLabel', 'artworkClose']) $(id).textContent = t[id];
+  $('artworkStyle').querySelector('option[value=auto]').textContent = t.artworkAuto;
   for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle']) $(id).textContent = t[id];
   for (const [value, key] of [['system', 'modeSystem'], ['dark', 'modeDark'], ['light', 'modeLight']]) $('appearanceMode').querySelector(`option[value="${value}"]`).textContent = t[key];
   document.querySelectorAll('[data-theme-group]').forEach(heading => {

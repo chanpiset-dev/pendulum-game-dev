@@ -425,3 +425,17 @@
 :root[data-theme] #mainHeader.more-open { z-index: 80; }
 
 :root[data-theme] .personal-best.is-sandbox { display: block; }
+
+#btnArtworkPreview { display: block; width: 100%; min-height: 44px; margin-top: 16px; }
+#artworkDialog { width: min(1000px, 94vw); max-height: 92dvh; padding: 18px; overflow: auto; background: var(--panel); color: var(--text); border: 2px solid var(--line); border-radius: var(--radius); }
+#artworkDialog h2 { font: 600 1.2rem var(--heading-font); line-height: 1.6; }
+#artworkDialog p { color: var(--muted); line-height: 1.5; }
+#artworkStyle { min-height: 44px; margin: 8px 12px; padding: 8px; background: var(--canvas); color: var(--text); border: 1px solid var(--line); }
+#artworkStage { width: 100%; height: auto; display: block; border: 1px solid var(--line); margin: 12px 0; }
+#artworkGallery { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.artwork-card { min-width: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--canvas); overflow: hidden; text-align: center; }
+.artwork-card canvas { display: block; width: 100%; height: auto; }
+.artwork-card > span { display: block; padding: 8px 4px; font: 0.8rem var(--ui-font); color: var(--text); }
+.artwork-actions { position: sticky; bottom: -18px; padding: 12px 0; margin-top: 12px; background: var(--panel); border-top: 1px solid var(--line); }
+#artworkClose { min-height: 44px; }
+@media (max-width: 600px) { #artworkGallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } #artworkStyleName { display: block; } }

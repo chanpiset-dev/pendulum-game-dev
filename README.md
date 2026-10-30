@@ -68,3 +68,11 @@ Pause/Resume and Restart share a row; Stop is a secondary full-width action. **L
 Personal-best score, time, and stars appear in a compact three-column row. Routine save confirmations are hidden in the gameplay panel; storage warnings and failures remain visible. Explicit Settings changes still show their save confirmation inside Settings.
 
 Run `node tests/compact-layout.cjs` for mobile header sizing in every theme/mode, disclosure focus and dismissal, input isolation, control grouping, records and save messages.
+
+## Artwork preview
+
+Use **SETTINGS → PREVIEW ARTWORK** to review the next visual direction before changing live-stage artwork. The separate demonstration scene and 25 specimen cards cover the pendulum, multi-link chains, clones, targets, bombs and stage mechanics. Retro themes automatically use **Pixel Arcade**; the other six themes use **Clean Vector**. The preview style selector allows a direct comparison without saving an override.
+
+This first preview does not replace artwork in playable stages. It never runs gameplay physics or records progress. Opening Settings pauses the attempt; Back to Settings returns there, and normal Resume continues the attempt. Reduced-motion preferences disable the demonstration animation. Pixel artwork is drawn at low resolution and scaled with smoothing disabled; vector artwork uses procedural Canvas 2D paths. The same drawing functions can be applied to gameplay after visual review.
+
+Verify with `node tests/artwork-preview.cjs` for style mapping and specimen rendering across all 18 theme/mode combinations, mobile sizing, localization and save isolation.

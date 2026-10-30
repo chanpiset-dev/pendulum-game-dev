@@ -1,8 +1,10 @@
+import { windFlowOffset } from './wind-flow.js';
 import { getCanvasPalette, drawThemeBackdrop } from '../themes.js';
 import { artworkStyleForTheme, drawArtwork, drawLivePendulum } from './artwork.js';
 import { I18N } from '../i18n.js';
 
 let pixelLayer;
+let windMotionPreference;
 // Render the new artwork at the real simulation coordinates. Never change state.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
   const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0 } = renderOptions;
@@ -187,13 +189,18 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
 
   const t = I18N[currentLang];
 
-  if (currentWind && Math.abs(currentWind.currentFx || currentWind.fx) > 0.05) {
-    const wFx = currentWind.currentFx || currentWind.fx;
+  const wFx = currentWind ? (currentWind.currentFx ?? currentWind.fx ?? 0) : 0;
+  if (currentWind && Math.abs(wFx) > 0.05) {
+    windMotionPreference ||= matchMedia('(prefers-reduced-motion: reduce)');
+    const spacing = 240;
+    const travel = windMotionPreference.matches ? 0 : windFlowOffset(currentWind, timeElapsed);
     ctx.save();
     ctx.globalAlpha = 0.45;
-    for (let row = 110; row < H; row += 150) {
-      for (let column = 80; column < W; column += 240) {
-        ctx.save(); ctx.translate(column, row); if (wFx < 0) ctx.scale(-1, 1);
+    let rowIndex = 0;
+    for (let row = 110; row < H; row += 150, rowIndex++) {
+      const shift = ((travel + rowIndex * 60) % spacing + spacing) % spacing;
+      for (let column = -160; column < W + spacing; column += spacing) {
+        ctx.save(); ctx.translate(column + shift, row); if (wFx < 0) ctx.scale(-1, 1);
         drawArtwork(ctx, 'wind', 0, 0, 30 + Math.min(10, Math.abs(wFx) * 2), { style: artworkStyleForTheme(palette.theme), palette }); ctx.restore();
       }
     }

@@ -89,15 +89,18 @@ function resizeFullScreenCanvas() {
   titleCanvas.height = window.innerHeight;
   tutCanvas.width = window.innerWidth;
   tutCanvas.height = window.innerHeight;
+  titleChain.trail = [];
 }
 window.addEventListener('resize', resizeFullScreenCanvas);
 resizeFullScreenCanvas();
 
 function loopTitle() {
+  titleAnimId = null;
+  if ($('titleScreen').classList.contains('hidden')) return;
   rk4(titleChain, 0.02, 0, 0, 0, 9.8, 0.04);
   const tw = titleCanvas.width, th = titleCanvas.height;
-  const tpivot = { x: tw / 2, y: th * 0.45 };
-  const scale = Math.min(tw, th) * 0.28;
+  const tpivot = { x: tw / 2, y: th * 0.48 };
+  const scale = Math.min(tw, th) * 0.18;
 
   let px = tpivot.x, py = tpivot.y;
   for (let i = 0; i < titleChain.N; i++) {
@@ -126,6 +129,7 @@ function loopTitle() {
   }
 
   drawLivePendulum(tCtx, titleChain, tpivot, scale, 10, { style: artworkStyleForTheme(getCanvasPalette().theme), palette: getCanvasPalette() });
+  titleAnimId = requestAnimationFrame(loopTitle);
 }
 titleAnimId = requestAnimationFrame(loopTitle);
 

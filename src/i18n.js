@@ -121,11 +121,11 @@ export const I18N = {
 
 export function createI18nController({
   $, getCurrentLang, setCurrentLang, getCurrentStageIndex, getPulsesLeft,
-  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect
+  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage
 }) {
   function setLanguage(lang) {
-  setCurrentLang(lang);
-  localStorage.setItem('pendulum_lang', getCurrentLang());
+  setCurrentLang(lang === 'ja' ? 'ja' : 'en');
+  saveLanguage(getCurrentLang());
 
   // Synchronize Home Screen Top-Left Segmented Buttons
   const pillBtns = document.querySelectorAll('#homeLangSwitch .lang-btn');

@@ -1,5 +1,6 @@
 import { unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
 import { rk4 } from './physics.js';
+import { createProgressStore, limitGhosts } from './progress.js';
 import { TOTAL_STAGES, SUBSTAGES_PER_STAGE, STAGE_ORDER, STAGE_CONFIGS, indexToStageSub, stageSubToIndex, stageSubToKey } from './data/stage-configs.js';
 import { generateStageData } from './data/stage-index.js';
 import { I18N, createI18nController } from './i18n.js';
@@ -28,7 +29,9 @@ const BOB_POP_FACTOR = 1.30;       // Pop scale multiplier on target hit
 const BOB_PULSE_DECAY = 4.0;       // Speed of easing back to neutral scale
 
 // --- i18n Localization Dictionary (Default: English) ---
-let currentLang = localStorage.getItem('pendulum_lang') || 'en';
+const progressStore = createProgressStore({ onStatus: showSaveStatus });
+const savedProgress = progressStore.load();
+let currentLang = savedProgress.language;
 
 
 
@@ -39,7 +42,8 @@ const i18nController = createI18nController({
   getCurrentStageIndex: () => currentStageIndex,
   getPulsesLeft: () => pulsesLeft,
   indexToStageSub, STAGE_CONFIGS,
-  showStageBriefing, renderStageSelect
+  showStageBriefing, renderStageSelect,
+  saveLanguage: lang => progressStore.saveSetting('language', lang)
 });
 const setLanguage = lang => i18nController.setLanguage(lang);
 const applyLanguage = () => i18nController.applyLanguage();
@@ -295,11 +299,12 @@ function loopTutorial(t) {
 
 // --- Generalized Drawing Function ---
 // --- Main Game Setup & Globals ---
-let unlockedStageIndex = 1;
-let highScores = {};
-let stageGhosts = {};
-let stageStars = {};
-let briefedStages = {};
+let unlockedStageIndex = savedProgress.unlocked;
+let highScores = savedProgress.scores;
+let stageGhosts = savedProgress.ghosts;
+let stageStars = savedProgress.stars;
+let bestTimes = savedProgress.times;
+let briefedStages = savedProgress.briefed;
 
 let currentStageIndex = 1;
 let gameStatus = 'setup';
@@ -378,51 +383,48 @@ $('btnDismissBriefing').addEventListener('click', () => {
   $('stageBriefing').classList.add('hidden');
 });
 
-function loadSavedData() {
-  try {
-    const sUnlocked = localStorage.getItem('pendulum_sub_unlocked_v6');
-    if (sUnlocked) unlockedStageIndex = Math.max(1, Math.min(TOTAL_STAGES * SUBSTAGES_PER_STAGE, parseInt(sUnlocked, 10)));
-    
-    const sScores = localStorage.getItem('pendulum_stage_scores_v6');
-    if (sScores) highScores = JSON.parse(sScores);
-    
-    const sGhosts = localStorage.getItem('pendulum_stage_ghosts_v6');
-    if (sGhosts) stageGhosts = JSON.parse(sGhosts);
-    
-    const sStars = localStorage.getItem('pendulum_stage_stars_v6');
-    if (sStars) stageStars = JSON.parse(sStars);
-    
-    const sBriefed = localStorage.getItem('pendulum_briefed_stages_v6');
-    if (sBriefed) briefedStages = JSON.parse(sBriefed);
-  } catch(e){}
-  updateTotalScoreDisplay();
+function showSaveStatus({ kind, message }) {
+  $('saveStatus').textContent = message;
+  $('saveStatus').dataset.kind = kind;
 }
 
-function saveData(stgIdx, score, ghostTrail, stars) {
-  try {
-    if (stgIdx !== 'sandbox') {
-      const { stage, sub } = indexToStageSub(stgIdx);
-      const stageKey = stageSubToKey(stage, sub);
-
-      if (!highScores[stageKey] || score > highScores[stageKey]) {
-        highScores[stageKey] = score;
-        if (ghostTrail && ghostTrail.length > 0) {
-          stageGhosts[stageKey] = ghostTrail.filter((_, idx) => idx % 2 === 0);
-          localStorage.setItem('pendulum_stage_ghosts_v6', JSON.stringify(stageGhosts));
-        }
-        localStorage.setItem('pendulum_stage_scores_v6', JSON.stringify(highScores));
-      }
-      
-      stageStars[stageKey] = Math.max(stageStars[stageKey] || 0, stars);
-      localStorage.setItem('pendulum_stage_stars_v6', JSON.stringify(stageStars));
-
-      if (stgIdx >= unlockedStageIndex && unlockedStageIndex < TOTAL_STAGES * SUBSTAGES_PER_STAGE) {
-        unlockedStageIndex = stgIdx + 1;
-        localStorage.setItem('pendulum_sub_unlocked_v6', String(unlockedStageIndex));
-      }
+function saveData(stgIdx, score, ghostTrail, stars, completionTime = null) {
+  if (stgIdx === 'sandbox') return;
+  const { stage, sub } = indexToStageSub(stgIdx);
+  const stageKey = stageSubToKey(stage, sub);
+  let ghostChanged = false;
+  if (!highScores[stageKey] || score > highScores[stageKey]) {
+    highScores[stageKey] = score;
+    if (ghostTrail && ghostTrail.length > 0) {
+      delete stageGhosts[stageKey];
+      stageGhosts[stageKey] = ghostTrail.filter((_, index) => index % 2 === 0);
+      stageGhosts = limitGhosts(stageGhosts);
+      ghostChanged = true;
     }
-  } catch(e){}
+  }
+  stageStars[stageKey] = Math.max(stageStars[stageKey] || 0, stars);
+  if (Number.isFinite(completionTime) && completionTime >= 0) {
+    bestTimes[stageKey] = Math.min(bestTimes[stageKey] ?? Infinity, completionTime);
+  }
+  if (stgIdx >= unlockedStageIndex && unlockedStageIndex < TOTAL_STAGES * SUBSTAGES_PER_STAGE) {
+    unlockedStageIndex = stgIdx + 1;
+  }
+  progressStore.saveProgress({ unlocked: unlockedStageIndex, scores: highScores,
+    stars: stageStars, times: bestTimes, ghosts: ghostChanged ? stageGhosts : null });
   updateTotalScoreDisplay();
+  updatePersonalBest();
+}
+
+function updatePersonalBest() {
+  const summary = $('personalBest');
+  if (currentStageIndex === 'sandbox') {
+    summary.textContent = 'Personal bests are recorded in Stage Mode.';
+    return;
+  }
+  const { stage, sub } = indexToStageSub(currentStageIndex);
+  const key = stageSubToKey(stage, sub);
+  const time = bestTimes[key];
+  summary.textContent = `PERSONAL BEST · Score: ${highScores[key] ?? '—'} · Time: ${time === undefined ? '—' : time.toFixed(2) + 's'} · Stars: ${stageStars[key] || 0}/3`;
 }
 
 function updateTotalScoreDisplay() {
@@ -518,7 +520,7 @@ function loadStage(stgIdx) {
     const briefingKey = `stage_${stage}`;
     if (sub === 1 && !briefedStages[briefingKey]) {
       briefedStages[briefingKey] = true;
-      try { localStorage.setItem('pendulum_briefed_stages_v6', JSON.stringify(briefedStages)); } catch(e){}
+      progressStore.saveSetting('briefed', briefedStages);
       showStageBriefing(stage, sub, stageInfo.displayStage);
     }
   }
@@ -611,6 +613,7 @@ function loadStage(stgIdx) {
   document.querySelector('.panel').classList.remove('simulating');
 
   initVisualsOnly();
+  updatePersonalBest();
 }
 
 function computePredictionTrail() {
@@ -1450,7 +1453,7 @@ function update(rawDt) {
       if (pulsesLeft > 0 || pulsesLeft === Infinity) stars++;
       if (remainExact >= timeLimit * 0.35) stars++;
 
-      saveData(currentStageIndex, finalScore, currentRunHistory, stars);
+      saveData(currentStageIndex, finalScore, currentRunHistory, stars, timeElapsed);
       const { stage, sub, displayStage } = indexToStageSub(currentStageIndex);
       const isNextNewStage = (sub === SUBSTAGES_PER_STAGE);
       const nextBtnText = isNextNewStage 
@@ -1677,15 +1680,22 @@ function renderStageSelect() {
 
       const stageKey = stageSubToKey(actualStage, sub);
 
-      const btn = document.createElement('div');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.disabled = isLocked;
+      btn.id = `stageButton_${stgIdx}`;
+      if (isCurrent) btn.setAttribute('aria-current', 'step');
       btn.className = `stage-btn ${isLocked ? 'locked' : ''} ${isCurrent ? 'current' : ''}`;
       const best = highScores[stageKey] ? `${highScores[stageKey]}pts` : (isLocked ? '' : I18N[currentLang].clearBest);
       let starsHtml = '';
       if (!isLocked) {
         const st = stageStars[stageKey] || 0;
-        if (st > 0) starsHtml = `<div class="mini-stars">${'★'.repeat(st)}${'☆'.repeat(3 - st)}</div>`;
+        if (st > 0) starsHtml = `<span class="mini-stars">${'★'.repeat(st)}${'☆'.repeat(3 - st)}</span>`;
       }
-      btn.innerHTML = `<div class="num">${isLocked ? '🔒' : `${displayStage}-${sub}`}</div><div class="best-score">${best}</div>${starsHtml}`;
+      const bestTime = bestTimes[stageKey];
+      const timeText = bestTime === undefined ? 'Time: —' : `Best: ${bestTime.toFixed(2)}s`;
+      btn.innerHTML = `<span class="num">${isLocked ? '🔒 ' : ''}${displayStage}-${sub}</span><span class="best-score">${best}</span>${isLocked ? '' : `<span class="best-time">${timeText}</span>`}${starsHtml}${isCurrent ? '<span class="current-label">CURRENT</span>' : ''}`;
+      btn.setAttribute('aria-label', `${displayStage}-${sub}${isCurrent ? ', current' : ''}${isLocked ? ', locked' : `, best score ${highScores[stageKey] ?? 'none'}, ${timeText}, ${stageStars[stageKey] || 0} stars`}`);
       if (!isLocked) {
         btn.addEventListener('click', () => { 
           closeStageSelectModal(); 
@@ -1700,6 +1710,14 @@ function renderStageSelect() {
 }
 
 function openStageSelectModal() { renderStageSelect(); $('mapModal').classList.add('active'); }
+$('btnJumpCurrent').addEventListener('click', () => {
+  const idx = currentStageIndex === 'sandbox' ? unlockedStageIndex : currentStageIndex;
+  const button = $(`stageButton_${idx}`);
+  if (button) {
+    button.scrollIntoView({ block: 'center', behavior: 'instant' });
+    if (!button.disabled) button.focus({ preventScroll: true });
+  }
+});
 function closeStageSelectModal() { $('mapModal').classList.remove('active'); }
 
 $('btnOpenMap').addEventListener('click', openStageSelectModal);
@@ -1730,7 +1748,7 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
-loadSavedData();
+updateTotalScoreDisplay();
 setLanguage(currentLang);
 loadStage(unlockedStageIndex);
 restoreFromUrl();

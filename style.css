@@ -905,6 +905,17 @@ button.action:active { transform: scale(0.96); }
 .stage-btn:active:not(.locked) { transform: scale(0.94); }
 .stage-btn.locked { opacity: 0.4; cursor: not-allowed; }
 .stage-btn.current { border-color: var(--yellow); }
+.stage-btn.current { box-shadow: 0 0 0 1px var(--yellow); }
+.stage-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.stage-btn { font: inherit; min-width: 0; }
+.best-time, .current-label { font-size: 0.65rem; }
+.current-label { color: var(--yellow); font-weight: bold; }
+.personal-best, .save-status { font-size: 0.75rem; line-height: 1.5; margin: 0 0 8px; }
+.personal-best { color: var(--muted); }
+.save-status { color: #7ee787; }
+.save-status[data-kind="warning"], .save-status[data-kind="error"] { color: #fbbf24; }
+.stage-navigation { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: 0.75rem; color: var(--muted); }
+.stage-navigation { position: sticky; top: -14px; z-index: 1; background: #040a06; padding: 8px 0; }
 .stage-btn .num { font-size: 0.9rem; font-weight: 800; }
 .stage-btn .best-score { font-size: 0.65rem; color: var(--yellow); font-weight: bold; }
 .stage-btn .mini-stars { font-size: 0.68rem; color: var(--yellow); line-height: 1; margin-top: 1px; letter-spacing: 1px; }

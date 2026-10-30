@@ -106,6 +106,8 @@
         <div class="stage-num" id="stageDisplay">STAGE 1-1 ▼</div>
         <div class="timer" id="timerDisplay">10s</div>
       </div>
+      <p id="personalBest" class="personal-best"></p>
+      <p id="saveStatus" class="save-status" role="status" aria-live="polite"></p>
       
       <div class="action-area">
         <button id="btnFire" class="action btn-fire">▶ PLAY</button>
@@ -147,6 +149,10 @@
       <button id="btnCloseMap" class="modal-close">&times;</button>
     </div>
     <div class="modal-body">
+      <div class="stage-navigation">
+        <button id="btnJumpCurrent" class="btn-nav">JUMP TO CURRENT</button>
+        <span>Best times are recorded for new clears.</span>
+      </div>
       <div class="stage-sections" id="stageGrid"></div>
     </div>
   </div>

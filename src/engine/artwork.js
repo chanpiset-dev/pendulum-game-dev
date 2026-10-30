@@ -1,3 +1,4 @@
+import { OBJECT_SCALE, JOINT_RADIUS, ROD_WIDTH } from '../game-sizes.js';
 // Reusable Canvas 2D concept artwork. These functions never read or mutate physics.
 export const ARTWORK_ITEMS = [
   ['pendulum', 'Pendulum', '振り子'], ['multi', 'Multi-link', '多関節'], ['clones', 'Twin clones', 'クローン'],
@@ -114,12 +115,12 @@ export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette
 export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, palette, color = '#23c878' }) {
   ctx.save(); ctx.lineCap = style === 'pixel' ? 'square' : 'round';
   let x = pivot.x, y = pivot.y;
-  ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fillStyle = palette.rod; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(x, y, 7 * OBJECT_SCALE, 0, Math.PI * 2); ctx.fillStyle = palette.rod; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
   for (let i = 0; i < chain.N; i++) {
     const nx = x + scale * chain.L[i] * Math.sin(chain.state[i]), ny = y + scale * chain.L[i] * Math.cos(chain.state[i]);
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = 8; ctx.stroke();
-    ctx.strokeStyle = palette.rod; ctx.lineWidth = 4; ctx.stroke();
-    const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : 5;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = ROD_WIDTH * 2; ctx.stroke();
+    ctx.strokeStyle = palette.rod; ctx.lineWidth = ROD_WIDTH; ctx.stroke();
+    const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : JOINT_RADIUS;
     let fill = tip ? color : palette.rod;
     if (tip && style !== 'pixel') {
       fill = ctx.createRadialGradient(nx - radius / 3, ny - radius / 3, 1, nx, ny, radius);

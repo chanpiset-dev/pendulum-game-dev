@@ -79,8 +79,16 @@ Verify with `node tests/artwork-preview.cjs` for style mapping and specimen rend
 
 ## Live artwork and gimmick guide
 
-The old object renderer has been replaced. Targets have red/white bullseyes, armored targets show shield segments and remaining hits, bombs show a fuse and warning symbol, and pendulums draw the actual articulated positions with smaller joints and a distinct tip. Rails, portals, boosts, lasers, switches, gates, bumpers, force fields, wind and viscous zones use the new art. Retro object layers render at half resolution and scale without smoothing; other themes use smooth vectors. Existing simulation coordinates, collision radii, target health, forces, timers, scoring and saves are unchanged.
+The old object renderer has been replaced. Targets have red/white bullseyes, armored targets show shield segments and remaining hits, bombs show a fuse and warning symbol, and pendulums draw the actual articulated positions with smaller joints and a distinct tip. Rails, portals, boosts, lasers, switches, gates, bumpers, force fields, wind and viscous zones use the new art. Retro object layers render at half resolution and scale without smoothing; other themes use smooth vectors. Simulation coordinates, target health, forces, timers, scoring and saves are preserved. Circle and contact dimensions now use the larger shared sizes described below.
 
 On the Home screen choose **TUTORIAL → GIMMICK GUIDE** for 25 illustrated objects with their actual functions. Both images and text follow the current theme/language. The guide stops the background tutorial simulation while open; **BACK TO HOW TO PLAY** resumes it. Bomb fuses and bumper springs are decorative, and round contact surfaces remain the hit areas. Reflector illustrations show angled arrangements of circular bumpers to match the stage geometry.
 
 Verify with `node tests/live-artwork.cjs`: both styles render all 250 substages without mutating physics or saved progress, and the illustrated mobile guide supports English/Japanese and safe tutorial transitions.
+
+## Larger gameplay objects
+
+Gameplay circles now use **1.5×** their authored radius: targets, bombs, bumpers, portals, boost rings, switches and force-field cores. The starting bob radius is **21** (previously 14), with growth/shrink steps and the maximum radius scaled consistently. Rods and joints are thicker, and rail/beam visuals and contact widths share the same dimensions. The enlargement applies consistently on phones and computers.
+
+Stage coordinates, pendulum lengths, timers, wind strength, force-field influence ranges, scoring rules and saved records stay intact. Larger contact areas intentionally change difficulty. All 250 authored layouts are checked for clipped target/bumper circles and targets completely hidden inside bumpers; this does not establish that every stage has the same difficulty or solution as before.
+
+The centralized dimensions are in `src/game-sizes.js`. Stage builders remain authored at their original dimensions; the generator applies enlargement exactly once. Verify with `node --test tests/object-sizes.test.mjs` and `node tests/larger-objects.cjs`.

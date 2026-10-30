@@ -36,7 +36,7 @@ const { chromium } = require('playwright');
     await page.evaluate(() => { document.getElementById('btnTitle').click(); document.getElementById('btnTitle').click(); });
     assert.equal(await count(), 1, 'Repeated Home navigation does not duplicate loops');
     await page.setViewportSize({ width: 390, height: 844 });
-    assert.equal(await page.evaluate(() => window.testRun('(()=>{const scale=Math.min(titleCanvas.width,titleCanvas.height)*0.18;const pivot={x:titleCanvas.width/2,y:titleCanvas.height*0.48};const reach=titleChain.L.reduce((a,b)=>a+b,0)*scale+10;return pivot.x-reach>=0&&pivot.x+reach<=titleCanvas.width&&pivot.y-reach>=0&&pivot.y+reach<=titleCanvas.height;})()')), true, 'Pendulum fits portrait viewport');
+    assert.equal(await page.evaluate(() => window.testRun('(()=>{const scale=Math.min(titleCanvas.width,titleCanvas.height)*0.18;const pivot={x:titleCanvas.width/2,y:titleCanvas.height*0.48};const reach=titleChain.L.reduce((a,b)=>a+b,0)*scale+10*OBJECT_SCALE;return pivot.x-reach>=0&&pivot.x+reach<=titleCanvas.width&&pivot.y-reach>=0&&pivot.y+reach<=titleCanvas.height;})()')), true, 'Pendulum fits portrait viewport');
     await page.click('#btnGoTutorial'); const tutorialState = await state();
     await page.waitForTimeout(150); assert.equal(await state(), tutorialState); assert.equal(await count(), 0);
     assert.deepEqual(errors, []);

@@ -1,3 +1,4 @@
+import { enlargeStageObjects } from '../game-sizes.js';
 // Aggregates stage builders and keeps the public generateStageData API stable.
 import { indexToStageSub } from './stage-configs.js';
 import { buildWorld as buildWorld1 } from './stage-builders/world1-basics.js';
@@ -5,7 +6,7 @@ import { buildWorld as buildWorld2 } from './stage-builders/world2-force.js';
 import { buildWorld as buildWorld3 } from './stage-builders/world3-gadgets.js';
 import { buildWorld as buildWorld4 } from './stage-builders/world4-apex.js';
 
-export function generateStageData(stgIdx, BASE_PIVOT) {
+export function buildAuthoredStageData(stgIdx, BASE_PIVOT) {
   if (stgIdx === 'sandbox') {
     const hasRail = Math.random() < 0.5;
     const rail = hasRail ? { amp: 55 + Math.random() * 30, speed: 1.2 + Math.random() * 0.8, phase: 0, pulse: 0 } : null;
@@ -48,4 +49,8 @@ export function generateStageData(stgIdx, BASE_PIVOT) {
 
   if (result) return result;
   return { maxN: 2, maxClone: 1, timeLimit: 14, targets: [], obstacles: [], blackhole: null, rail: null };
+}
+
+export function generateStageData(stgIdx, BASE_PIVOT) {
+  return enlargeStageObjects(buildAuthoredStageData(stgIdx, BASE_PIVOT));
 }

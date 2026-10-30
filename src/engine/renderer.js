@@ -1,3 +1,4 @@
+import { OBJECT_SCALE, RAIL_HIT_RADIUS, SEGMENT_HIT_RADIUS } from '../game-sizes.js';
 import { windFlowOffset } from './wind-flow.js';
 import { getCanvasPalette, drawThemeBackdrop } from '../themes.js';
 import { artworkStyleForTheme, drawArtwork, drawLivePendulum } from './artwork.js';
@@ -26,13 +27,13 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     if (open) { ctx.setLineDash([5, 6]); line(beam.x1, beam.y1, beam.x2, beam.y2, palette.muted, 2); }
     else {
       line(beam.x1, beam.y1, beam.x2, beam.y2, '#102238', laser ? 7 : 8);
-      line(beam.x1, beam.y1, beam.x2, beam.y2, color, laser ? 4 : 5);
-      if (laser) line(beam.x1, beam.y1, beam.x2, beam.y2, '#fff5f5', 1.2);
+      line(beam.x1, beam.y1, beam.x2, beam.y2, color, SEGMENT_HIT_RADIUS * 2);
+      if (laser) line(beam.x1, beam.y1, beam.x2, beam.y2, '#fff5f5', 2);
     }
     ctx.setLineDash([]);
     for (const [x, y] of [[beam.x1, beam.y1], [beam.x2, beam.y2]]) {
       ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(beam.y2 - beam.y1, beam.x2 - beam.x1));
-      ctx.fillStyle = palette.platform; ctx.fillRect(-4, -9, 8, 18); ctx.strokeStyle = palette.rod; ctx.lineWidth = 1; ctx.strokeRect(-4, -9, 8, 18); ctx.restore();
+      ctx.fillStyle = palette.platform; ctx.fillRect(-4 * OBJECT_SCALE, -9 * OBJECT_SCALE, 8 * OBJECT_SCALE, 18 * OBJECT_SCALE); ctx.strokeStyle = palette.rod; ctx.lineWidth = 1; ctx.strokeRect(-4 * OBJECT_SCALE, -9 * OBJECT_SCALE, 8 * OBJECT_SCALE, 18 * OBJECT_SCALE); ctx.restore();
     }
     ctx.restore();
   };
@@ -44,11 +45,11 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
   }
   if (rail) {
     const rx = rail.ampX || rail.amp || 0, ry = rail.ampY || 0;
-    ctx.strokeStyle = palette.rod; ctx.lineWidth = 7;
+    ctx.strokeStyle = palette.rod; ctx.lineWidth = RAIL_HIT_RADIUS * 2;
     if (rx > 0 && ry > 0) { ctx.beginPath(); ctx.ellipse(BASE_PIVOT.x, BASE_PIVOT.y, rx, ry, 0, 0, Math.PI * 2); ctx.stroke(); }
-    else if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, 8);
-    else if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, 8);
-    ctx.fillStyle = palette.platform; ctx.fillRect(pivot.x - 15, pivot.y - 12, 30, 24); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 15, pivot.y - 12, 30, 24);
+    else if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, RAIL_HIT_RADIUS * 2);
+    else if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, RAIL_HIT_RADIUS * 2);
+    ctx.fillStyle = palette.platform; ctx.fillRect(pivot.x - 22.5, pivot.y - 18, 45, 36); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 22.5, pivot.y - 18, 45, 36);
   }
   for (const port of portals) {
     sprite('portal', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34);
@@ -201,7 +202,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
       const shift = ((travel + rowIndex * 60) % spacing + spacing) % spacing;
       for (let column = -160; column < W + spacing; column += spacing) {
         ctx.save(); ctx.translate(column + shift, row); if (wFx < 0) ctx.scale(-1, 1);
-        drawArtwork(ctx, 'wind', 0, 0, 30 + Math.min(10, Math.abs(wFx) * 2), { style: artworkStyleForTheme(palette.theme), palette }); ctx.restore();
+        drawArtwork(ctx, 'wind', 0, 0, (30 + Math.min(10, Math.abs(wFx) * 2)) * OBJECT_SCALE, { style: artworkStyleForTheme(palette.theme), palette }); ctx.restore();
       }
     }
     ctx.globalAlpha = 1;

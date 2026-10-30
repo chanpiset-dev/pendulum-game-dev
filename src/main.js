@@ -1,3 +1,4 @@
+import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, BOB_GROWTH, BOB_SHRINK, JOINT_RADIUS, SEGMENT_HIT_RADIUS, RAIL_HIT_RADIUS } from './game-sizes.js';
 import { drawLivePendulum, artworkStyleForTheme } from './engine/artwork.js';
 import { installGimmickGuide } from './gimmick-guide.js';
 import { installArtworkPreview } from './artwork-preview.js';
@@ -32,10 +33,10 @@ let PIVOT = { x: BASE_PIVOT.x, y: BASE_PIVOT.y };
 const PENDULUM_SCALE = 120;
 
 // --- Dynamic End-Point Bob Size & Visual Settings ---
-const BOB_MIN_R = 14;              // Base starting radius
-const BOB_MAX_R = 36;              // Max bounded radius
-const BOB_GROWTH_PER_HIT = 3.0;   // Noticeable growth per target smashed
-const BOB_SHRINK_ON_HAZARD = 3.0;  // Noticeable radius lost when hitting obstacles/bumpers
+const BOB_MIN_R = BOB_MIN_RADIUS;              // Base starting radius
+const BOB_MAX_R = BOB_MAX_RADIUS;              // Max bounded radius
+const BOB_GROWTH_PER_HIT = BOB_GROWTH;   // Noticeable growth per target smashed
+const BOB_SHRINK_ON_HAZARD = BOB_SHRINK;  // Noticeable radius lost when hitting obstacles/bumpers
 const BOB_POP_FACTOR = 1.30;       // Pop scale multiplier on target hit
 const BOB_PULSE_DECAY = 4.0;       // Speed of easing back to neutral scale
 
@@ -128,7 +129,7 @@ function loopTitle() {
     }
   }
 
-  drawLivePendulum(tCtx, titleChain, tpivot, scale, 10, { style: artworkStyleForTheme(getCanvasPalette().theme), palette: getCanvasPalette() });
+  drawLivePendulum(tCtx, titleChain, tpivot, scale, 10 * OBJECT_SCALE, { style: artworkStyleForTheme(getCanvasPalette().theme), palette: getCanvasPalette() });
   titleAnimId = requestAnimationFrame(loopTitle);
 }
 titleAnimId = requestAnimationFrame(loopTitle);
@@ -158,8 +159,8 @@ function initTutState() {
       popScale: 1.0
     },
     targets: [
-      { x: tpivot.x - 70, y: tpivot.y + 220, r: 24, alive: true, isBomb: false, hp: 1, maxHp: 1 },
-      { x: tpivot.x + 80, y: tpivot.y + 190, r: 24, alive: true, isBomb: false, hp: 1, maxHp: 1 }
+      { x: tpivot.x - 70, y: tpivot.y + 220, r: 24 * OBJECT_SCALE, alive: true, isBomb: false, hp: 1, maxHp: 1 },
+      { x: tpivot.x + 80, y: tpivot.y + 190, r: 24 * OBJECT_SCALE, alive: true, isBomb: false, hp: 1, maxHp: 1 }
     ],
     obstacles: [],
     particles: [],
@@ -1136,7 +1137,7 @@ function update(rawDt) {
             const tProj = Math.max(0, Math.min(1, ((px - lz.x1) * ldx + (py - lz.y1) * ldy) / (lLen2 || 1)));
             const closestX = lz.x1 + tProj * ldx;
             const closestY = lz.y1 + tProj * ldy;
-            if (Math.hypot(px - closestX, py - closestY) < (effectiveTipR + 2)) {
+            if (Math.hypot(px - closestX, py - closestY) < (effectiveTipR + SEGMENT_HIT_RADIUS)) {
               laserCooldown = 0.55;
               currentLives--;
 
@@ -1184,7 +1185,7 @@ function update(rawDt) {
             const tProj = Math.max(0, Math.min(1, ((px - g.x1) * gdx + (py - g.y1) * gdy) / (gLen2 || 1)));
             const cx = g.x1 + tProj * gdx;
             const cy = g.y1 + tProj * gdy;
-            if (Math.hypot(px - cx, py - cy) < (effectiveTipR + 2)) {
+            if (Math.hypot(px - cx, py - cy) < (effectiveTipR + SEGMENT_HIT_RADIUS)) {
               chain.state[chain.N + chain.N - 1] *= -0.8;
               triggerShrink(chain, cx, cy);
               playSnd('brake');
@@ -1209,7 +1210,7 @@ function update(rawDt) {
               const jx = prevJointX + PENDULUM_SCALE * chain.L[k] * Math.sin(chain.state[k]);
               const jy = prevJointY + PENDULUM_SCALE * chain.L[k] * Math.cos(chain.state[k]);
               const cjx = Math.max(railMinX, Math.min(railMaxX, jx));
-              const hitThreshold = k === chain.N - 1 ? (effectiveTipR + 12) : 20;
+              const hitThreshold = k === chain.N - 1 ? (effectiveTipR + RAIL_HIT_RADIUS) : RAIL_HIT_RADIUS + JOINT_RADIUS;
               if (Math.hypot(jx - cjx, jy - railY) < hitThreshold) {
                 hitRail = true; hitX = cjx; hitY = railY; break;
               }
@@ -1227,7 +1228,7 @@ function update(rawDt) {
               const jx = prevJointX + PENDULUM_SCALE * chain.L[k] * Math.sin(chain.state[k]);
               const jy = prevJointY + PENDULUM_SCALE * chain.L[k] * Math.cos(chain.state[k]);
               const cjy = Math.max(railMinY, Math.min(railMaxY, jy));
-              const hitThreshold = k === chain.N - 1 ? (effectiveTipR + 12) : 20;
+              const hitThreshold = k === chain.N - 1 ? (effectiveTipR + RAIL_HIT_RADIUS) : RAIL_HIT_RADIUS + JOINT_RADIUS;
               if (Math.hypot(jx - railX, jy - cjy) < hitThreshold && Math.hypot(jx - PIVOT.x, jy - PIVOT.y) > 28) {
                 hitRail = true; hitX = railX; hitY = cjy; break;
               }

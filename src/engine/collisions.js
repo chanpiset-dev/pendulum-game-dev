@@ -1,5 +1,5 @@
 // Inter-pendulum tip collision resolution.
-export function resolveInterBobCollisions(sdt, { systems, PIVOT, PENDULUM_SCALE, BOB_MIN_R, playSnd, triggerHaptic, shockwaves, particles, screenShake: initialScreenShake }) {
+export function resolveInterBobCollisions(sdt, { systems, PIVOT, PENDULUM_SCALE, BOB_MIN_R, playSnd, shockwaves, particles, screenShake: initialScreenShake }) {
   let screenShake = initialScreenShake;
   if (systems.length < 2) return screenShake;
 
@@ -79,7 +79,6 @@ export function resolveInterBobCollisions(sdt, { systems, PIVOT, PENDULUM_SCALE,
         const midY = (ay + by) / 2;
 
         playSnd('clink');
-        triggerHaptic('bounce');
         screenShake = Math.max(screenShake, 5.0);
 
         shockwaves.push({

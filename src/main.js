@@ -1,5 +1,5 @@
 import { installMobileControls } from './mobile-controls.js';
-import { setAudioPreferences, unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
+import { setAudioPreferences, unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd } from './audio.js';
 import { createAttemptReplay } from './replay.js';
 import { getMechanicHints } from './tutorial-hints.js';
 import { calculateStageStars } from './scoring.js';
@@ -236,7 +236,6 @@ function loopTutorial(t) {
           tutState.chain.currentR = Math.min(BOB_MAX_R, (tutState.chain.currentR || BOB_MIN_R) + BOB_GROWTH_PER_HIT);
           tutState.chain.popScale = BOB_POP_FACTOR;
           playSnd('hit');
-          triggerHaptic('hit');
           tutState.shockwaves.push({ x: tgt.x, y: tgt.y, r: 16, maxR: 110, life: 1, color: '#f87171' });
           for (let p = 0; p < 16; p++) {
             const pa = Math.random() * Math.PI * 2, ps = Math.random() * 160 + 50;
@@ -805,7 +804,7 @@ function triggerPulse() {
 }
 
 function explodeBomb(bx, by) {
-  playSnd('bomb'); screenShake = 14; hitStopTimer = 0.08; triggerHaptic('bomb');
+  playSnd('bomb'); screenShake = 14; hitStopTimer = 0.08;
   shockwaves.push({ x: bx, y: by, r: 14, maxR: 145, life: 1, color: '#fb923c' });
   for (let p = 0; p < 36; p++) {
     const pa = Math.random() * Math.PI * 2, ps = Math.random() * 260 + 90;
@@ -882,7 +881,7 @@ function launchFirework() {
 
 
 function resolveInterBobCollisions(sdt) {
-  screenShake = resolveInterBobCollisionsEngine(sdt, { systems, PIVOT, PENDULUM_SCALE, BOB_MIN_R, playSnd, triggerHaptic, shockwaves, particles, screenShake });
+  screenShake = resolveInterBobCollisionsEngine(sdt, { systems, PIVOT, PENDULUM_SCALE, BOB_MIN_R, playSnd, shockwaves, particles, screenShake });
 }
 
 function update(rawDt) {
@@ -1033,7 +1032,6 @@ function update(rawDt) {
 
               playSnd('portal');
               screenShake = 11;
-              triggerHaptic('portal');
 
               shockwaves.push({ x: port.x, y: port.y, r: 20, maxR: 135, life: 1.3, color: port.color || '#38bdf8' });
               shockwaves.push({ x: dest.x, y: dest.y, r: 20, maxR: 150, life: 1.3, color: dest.color || '#c084fc' });
@@ -1141,7 +1139,6 @@ function update(rawDt) {
 
               playSnd('laser');
               screenShake = 13;
-              triggerHaptic('laser');
 
               shockwaves.push({ x: closestX, y: closestY, r: 12, maxR: 115, life: 1, color: '#f43f5e' });
               for (let p = 0; p < 18; p++) {
@@ -1240,7 +1237,6 @@ function update(rawDt) {
             triggerShrink(chain, hitX, hitY);
             playSnd('brake');
             screenShake = 6.0;
-            triggerHaptic('bounce');
 
             for (let p = 0; p < 14; p++) {
               const pa = Math.random() * Math.PI * 2, ps = Math.random() * 95 + 35;
@@ -1279,7 +1275,7 @@ function update(rawDt) {
 
                   if (bDist < (b.coreRadius + effectiveTipR)) {
                     chain.state[chain.N + k] *= -0.85;
-                    screenShake = 6.0; playSnd('brake'); triggerHaptic('bounce');
+                    screenShake = 6.0; playSnd('brake');
                     shockwaves.push({ x: b.x, y: b.y, r: b.coreRadius, maxR: b.pullRadius * 0.9, life: 0.8, color: '#38bdf8' });
                   }
                 } else {
@@ -1290,7 +1286,7 @@ function update(rawDt) {
 
                   const stageWon = (gameStatus === 'clearing') || targets.every(t => !t.alive);
                   if (!stageWon && k === chain.N - 1 && bDist < (b.coreRadius + effectiveTipR)) {
-                    chain.alive = false; playSnd('bomb'); screenShake = 18; triggerHaptic('bomb');
+                    chain.alive = false; playSnd('bomb'); screenShake = 18;
                     shockwaves.push({ x: b.x, y: b.y, r: 12, maxR: 170, life: 1, color: '#a855f7' });
                     if (systems.every(ch => !ch.alive) && gameStatus !== 'blackhole_death') {
                       gameStatus = 'blackhole_death'; clearingTimer = 0; updateWindSpeed(0, false);
@@ -1330,7 +1326,6 @@ function update(rawDt) {
                   playSnd('hit', comboCount);
                   screenShake = 6 + Math.min(8, comboCount * 1.5);
                   hitStopTimer = 0.04;
-                  triggerHaptic('hit');
         
                   if (comboCount > 1) {
                     floaters.push({ 
@@ -1388,7 +1383,6 @@ function update(rawDt) {
             if (rest < -1.0) playSnd('spring');
             else playSnd('brake');
             screenShake = Math.abs(rest) > 1.0 ? 8.0 : 4.5;
-            triggerHaptic('bounce');
           }
         }
       }
@@ -1631,7 +1625,7 @@ installInputHandlers({
   $, canvas, wrapper,
   getState: () => ({ gameStatus, systems, PIVOT, currentStageIndex }),
   togglePause,
-  indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly
+  indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, fire, initVisualsOnly
 });
 
 function copyShareUrl() {

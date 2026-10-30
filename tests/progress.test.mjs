@@ -105,10 +105,10 @@ test('Successful retry clears a genuine save failure', () => {
   assert.equal(f.statuses.at(-1).kind, 'ok');
 });
 
-test('Sound and haptic preferences persist and malformed values recover independently', () => {
+test('Sound preferences persist and legacy vibration values do not affect recovery', () => {
   const f = fixture({ [keys.preferences]: '{"volume":2,"muted":true,"haptics":"bad"}' });
-  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, haptics: true });
-  assert.equal(f.store.saveSetting('preferences', { volume: 0.35, muted: false, haptics: false }), true);
-  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, haptics: false });
+  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true });
+  assert.equal(f.store.saveSetting('preferences', { volume: 0.35, muted: false }), true);
+  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false });
   assert.equal(f.statuses.at(-1).kind, 'ok');
 });

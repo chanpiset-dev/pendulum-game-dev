@@ -1090,8 +1090,6 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
 .setting-toggle { display: flex; align-items: center; gap: 12px; min-height: 48px; cursor: pointer; }
 .setting-toggle input { width: 24px; height: 24px; accent-color: var(--accent); }
 #settingsDialog p { font-size: 0.85rem; line-height: 1.5; }
-#fullscreenStatus:empty { display: none; }
-#fullscreenStatus { position: fixed; bottom: 12px; left: 5%; width: 90%; padding: 12px; z-index: 110; background: var(--panel); color: var(--yellow); }
 @media (pointer: coarse), (max-width: 750px) {
   .btn-nav, .btn-large, button.action, .modal-close, .lang-btn { min-height: 44px; min-width: 44px; }
   button.action { min-height: 52px; }

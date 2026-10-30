@@ -11,7 +11,7 @@ export function pointerToCanvas(canvas, event) {
 }
 
 // Mouse, touch, pointer-capture, and Spacebar controls.
-export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly, togglePause }) {
+export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, fire, initVisualsOnly, togglePause }) {
   let activePointerId = null;
   let dragStageIndex = null;
 
@@ -71,7 +71,7 @@ wrapper.addEventListener('pointerdown', e => {
     const grabR = Math.max(70, (chain.currentR || BOB_MIN_R) * 3);
     if (Math.hypot(p.x - px, p.y - py) < grabR) {
       activePointerId = e.pointerId; dragStageIndex = getState().currentStageIndex;
-      wrapper.setPointerCapture(e.pointerId); triggerHaptic('bounce');
+      wrapper.setPointerCapture(e.pointerId);
     }
   }
 });

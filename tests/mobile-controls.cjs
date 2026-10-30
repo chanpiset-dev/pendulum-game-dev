@@ -15,7 +15,6 @@ const { chromium } = require('playwright');
         window.vibrations = [];
         Object.defineProperty(navigator, 'vibrate', { value: unsupported ? undefined : value => { window.vibrations.push(value); return true; } });
         if (unsupported) {
-          Object.defineProperty(document, 'fullscreenEnabled', { value: false });
           Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Denied', 'SecurityError'); } });
         }
         const createGain = AudioContext.prototype.createGain;
@@ -44,7 +43,7 @@ const { chromium } = require('playwright');
       return page;
     }
     const page = await newPage();
-    for (const selector of ['#btnFire', '#btnSettings', '#btnFullscreen']) {
+    for (const selector of ['#btnFire', '#btnSettings']) {
       const bounds = await page.locator(selector).boundingBox();
       assert.ok(bounds.height >= 44 && bounds.width >= 44, selector + ' has a touch-sized target');
     }
@@ -78,10 +77,8 @@ const { chromium } = require('playwright');
     await page.locator('#soundVolume').fill('35');
     await page.locator('#soundMuted').check();
     assert.equal(await page.evaluate(() => gainNodes[0].gain.value), 0, 'Master mute reaches the audio output');
-    await page.locator('#hapticsEnabled').uncheck();
-    const count = await page.evaluate(() => vibrations.length);
-    await page.evaluate(() => window.testRun("triggerHaptic('hit')"));
-    assert.equal(await page.evaluate(() => vibrations.length), count, 'Disabled haptics do not vibrate');
+    assert.equal(await page.locator('#hapticsEnabled').count(), 0);
+    assert.equal(await page.evaluate(() => vibrations.length), 0, 'Gameplay never requests vibration');
     assert.match(await page.locator('#settingsSaveStatus').innerText(), /saved/);
     await page.locator('#settingsDialog').focus(); await page.keyboard.press('Space');
     assert.equal(await page.evaluate(() => window.testRun('gameStatus')), 'paused');
@@ -92,37 +89,20 @@ const { chromium } = require('playwright');
     await page.click('#btnSettings');
     assert.equal(await page.locator('#soundVolume').inputValue(), '35');
     assert.equal(await page.locator('#soundMuted').isChecked(), true);
-    assert.equal(await page.locator('#hapticsEnabled').isChecked(), false);
     await page.locator('#soundMuted').uncheck(); await page.click('#settingsClose');
     await page.click('#btnFire');
     assert.ok(Math.abs(await page.evaluate(() => gainNodes[0].gain.value) - 0.35) < 0.001);
     assert.equal(await page.evaluate(() => gainNodes.slice(1).every(gain => gain.destinations.includes(gainNodes[0]))), true, 'All sound gains feed master volume');
-    await page.click('#btnFullscreen');
-    await page.waitForFunction(() => document.fullscreenElement === document.documentElement);
-    await page.click('#btnFullscreen');
-    await page.waitForFunction(() => document.fullscreenElement === null);
-    await page.evaluate(() => {
-      Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null });
-      document.documentElement.requestFullscreen = async () => { Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: document.documentElement }); document.dispatchEvent(new Event('fullscreenchange')); };
-      document.exitFullscreen = async () => { Object.defineProperty(document, 'fullscreenElement', { configurable: true, value: null }); document.dispatchEvent(new Event('fullscreenchange')); };
-    });
-    await page.click('#btnFullscreen');
-    assert.match(await page.locator('#btnFullscreen').innerText(), /EXIT/);
-    assert.equal(await page.evaluate(() => window.testRun('gameStatus')), 'paused');
-    await page.click('#btnFullscreen');
-    assert.equal(await page.locator('#btnFullscreen').innerText(), 'FULLSCREEN');
-    await page.evaluate(() => { document.documentElement.requestFullscreen = async () => { throw new Error('Denied'); }; });
-    await page.click('#btnFullscreen');
-    assert.match(await page.locator('#fullscreenStatus').innerText(), /unavailable/);
+    assert.equal(await page.locator('#btnFullscreen').count(), 0);
     await page.evaluate(() => window.testRun("setLanguage('ja')"));
     assert.equal(await page.locator('#btnSettings').innerText(), '設定');
     const unsupported = await newPage(true);
-    assert.equal(await unsupported.locator('#btnFullscreen').isDisabled(), true);
+    assert.equal(await unsupported.locator('#btnFullscreen').count(), 0);
     await unsupported.click('#btnSettings');
-    assert.equal(await unsupported.locator('#hapticsEnabled').isDisabled(), true);
+    assert.equal(await unsupported.locator('#hapticsEnabled').count(), 0);
     await unsupported.locator('#soundVolume').fill('20');
     assert.match(await unsupported.locator('#settingsSaveStatus').innerText(), /could not be saved/);
     assert.deepEqual(errors, []);
-    console.log('Mobile checks passed: accurate visible-canvas drag, ignored margins, cancellation, touch target sizes, master volume/mute, haptic opt-out, persistence, modal input isolation, fullscreen transitions/failure and unsupported features.');
+    console.log('Mobile checks passed: accurate visible-canvas drag, ignored margins, cancellation, touch target sizes, master volume/mute, no vibration requests, persistence, modal input isolation, and unavailable storage.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

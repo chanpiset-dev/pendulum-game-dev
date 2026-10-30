@@ -64,7 +64,6 @@
     <button id="btnHints" class="btn-nav">HINTS</button>
     <button id="btnReplay" class="btn-nav" disabled>REPLAY LAST ATTEMPT</button>
     <button id="btnSettings" class="btn-nav">SETTINGS</button>
-    <button id="btnFullscreen" class="btn-nav">FULLSCREEN</button>
     <button id="btnShare" class="btn-nav" title="Copy parameter URL">SHARE</button>
     <div class="score-board"><span id="lblScore">SCORE:</span> <span id="totalScore">0</span></div>
   </div>
@@ -187,11 +186,8 @@
   <input id="soundVolume" type="range" min="0" max="100" step="1" value="100">
   <output id="volumeValue" for="soundVolume">100%</output>
   <label class="setting-toggle"><input id="soundMuted" type="checkbox"><span id="muteLabel">Mute sound</span></label>
-  <label class="setting-toggle"><input id="hapticsEnabled" aria-describedby="hapticsSupport" type="checkbox" checked><span id="hapticsLabel">Vibration</span></label>
-  <p id="hapticsSupport"></p>
   <p id="settingsSaveStatus" role="status"></p>
   <button id="settingsClose" class="btn-nav">CLOSE</button>
 </dialog>
-<p id="fullscreenStatus" role="status"></p>
 </body>
 </html>

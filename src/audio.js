@@ -1,13 +1,11 @@
 // --- Web Audio System ---
 let audioCtx = null;
 let masterGain = null;
-let preferences = { volume: 1, muted: false, haptics: true };
+let preferences = { volume: 1, muted: false };
 
 export function setAudioPreferences(next) {
-  const wasHaptic = preferences.haptics;
   preferences = { ...preferences, ...next };
   if (masterGain) masterGain.gain.value = preferences.muted ? 0 : preferences.volume;
-  if (wasHaptic && !preferences.haptics && navigator.vibrate) navigator.vibrate(0);
 }
 let noiseSource = null, noiseFilter = null, noiseGain = null;
 
@@ -201,13 +199,5 @@ export function playSnd(type, combo = 0) {
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
     o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.12);
-  }
-}
-
-export function triggerHaptic(type) {
-  if (preferences.haptics && navigator.vibrate) {
-    if (type === 'hit') navigator.vibrate(22);
-    else if (type === 'bomb') navigator.vibrate([45, 30, 65]);
-    else if (type === 'bounce') navigator.vibrate(12);
   }
 }

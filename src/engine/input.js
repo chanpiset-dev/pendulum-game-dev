@@ -1,5 +1,5 @@
 // Mouse, touch, pointer-capture, and Spacebar controls.
-export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly }) {
+export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly, togglePause }) {
   let activePointerId = null;
   let dragStageIndex = null;
 
@@ -49,6 +49,7 @@ wrapper.addEventListener('pointerdown', e => {
   if (!isGameScreenActive() || !$('stageBriefing').classList.contains('hidden') ||
       activePointerId !== null || e.isPrimary === false || e.button !== 0) return;
   if (e.target.closest('.overlay') || e.target.closest('button') || e.target.closest('.stage-briefing')) return;
+  if (getState().gameStatus === 'paused') return;
   unlockAudio();
   if (getState().gameStatus === 'playing') { triggerPulse(); return; }
   if (getState().gameStatus === 'setup' && getState().systems.length > 0) {
@@ -90,6 +91,17 @@ wrapper.addEventListener('pointerup', e => {
 });
 
 window.addEventListener('keydown', e => {
+  if (e.code === 'KeyP') {
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || !isGameScreenActive() ||
+        !$('stageBriefing').classList.contains('hidden') || $('overlay').classList.contains('active') ||
+        e.target.closest('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;
+    if (!['playing', 'paused', 'clearing', 'blackhole_death'].includes(getState().gameStatus)) return;
+    e.preventDefault();
+    if (e.repeat) return;
+    cancelDrag();
+    togglePause();
+    return;
+  }
   if (e.code === 'Space') {
     if (e.defaultPrevented || !isGameScreenActive() ||
         e.target.closest('button, input, select, textarea, a[href], [contenteditable]:not([contenteditable="false"])')) return;

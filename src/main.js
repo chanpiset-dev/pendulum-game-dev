@@ -304,6 +304,9 @@ let briefedStages = {};
 let currentStageIndex = 1;
 let gameStatus = 'setup';
 let gameAnimId = null;
+let pausedStatus = null;
+let launchParameters = null;
+const gameTimers = new Set();
 let systems = [];
 let targets = [];
 let obstacles = [];
@@ -360,6 +363,8 @@ $('btnTutorialDone').addEventListener('click', () => {
 
 $('btnTitle').addEventListener('click', () => {
   stopGameLoop();
+  clearGameTimers();
+  resetPauseControls();
   gameStatus = 'setup';
   updateWindSpeed(0, false);
   suspendAudio();
@@ -442,6 +447,9 @@ function showStageBriefing(stageNum, subNum, displayStageNum = stageNum) {
 
 function loadStage(stgIdx) {
   stopGameLoop();
+  clearGameTimers();
+  resetPauseControls();
+  launchParameters = null;
   gameStatus = 'setup';
   currentStageIndex = stgIdx;
   currentStageScore = 0;
@@ -705,6 +713,7 @@ function initVisualsOnly() {
 function fire() {
   if (gameStatus !== 'setup') return;
   stopGameLoop();
+  launchParameters = ['sliderN', 'sliderCount', 'sliderAngle', 'sliderVel'].map(id => $(id).value);
   unlockAudio(); initWindAudio();
 
   const N = parseInt($('sliderN').value, 10);
@@ -746,6 +755,8 @@ function fire() {
   timeElapsed = 0; currentStageScore = 0; clearingTimer = 0; currentRunHistory = []; gameStatus = 'playing'; lastTime = performance.now();
   $('btnFire').style.display = 'none'; 
   $('btnStop').style.display = 'block'; 
+  $('btnPause').style.display = 'block';
+  $('btnRestart').style.display = 'block';
   $('btnRetry').style.display = 'none';
   $('btnStop').textContent = I18N[currentLang].btnStop;
   document.querySelector('.panel').classList.add('simulating');
@@ -855,7 +866,7 @@ function resolveInterBobCollisions(sdt) {
 }
 
 function update(rawDt) {
-  if (gameStatus === 'end') return;
+  if (gameStatus === 'end' || gameStatus === 'paused') return;
   if (hitStopTimer > 0) { hitStopTimer -= rawDt; return; }
   if (screenShake > 0) screenShake *= 0.88;
 
@@ -1391,7 +1402,7 @@ function update(rawDt) {
   if (currentStageIndex === 'sandbox') {
     if (!sandboxRespawning && targets.every(t => !t.alive)) {
       sandboxRespawning = true;
-      setTimeout(() => {
+      scheduleGameTimer(() => {
         if (currentStageIndex === 'sandbox') {
           const freshData = generateStageData('sandbox', BASE_PIVOT);
           targets = freshData.targets; obstacles = freshData.obstacles;
@@ -1415,7 +1426,7 @@ function update(rawDt) {
     const left = targets.filter(t => t.alive).length;
     if (left === 0) {
       gameStatus = 'clearing'; updateWindSpeed(0, false); playSnd('clear'); timeScale = 0.2; 
-      launchFirework(); setTimeout(launchFirework, 220); setTimeout(launchFirework, 450);
+      launchFirework(); scheduleGameTimer(launchFirework, 220); scheduleGameTimer(launchFirework, 450);
     } else if (remainExact <= 0 && timeLimit <= 90) {
       gameStatus = 'end'; updateWindSpeed(0, false); playSnd('fail');
       showOverlay(t.timeUp, t.timeUpDesc, t.btnRetry, false, 0);
@@ -1459,6 +1470,83 @@ function draw() {
   });
 }
 
+function armGameTimer(timer) {
+  timer.started = performance.now();
+  timer.id = setTimeout(() => {
+    gameTimers.delete(timer);
+    timer.callback();
+  }, timer.remaining);
+}
+
+function scheduleGameTimer(callback, delay) {
+  const timer = { callback, remaining: delay, started: 0, id: null };
+  gameTimers.add(timer);
+  armGameTimer(timer);
+}
+
+function clearGameTimers() {
+  for (const timer of gameTimers) clearTimeout(timer.id);
+  gameTimers.clear();
+}
+
+function resetPauseControls() {
+  pausedStatus = null;
+  $('pauseIndicator').classList.add('hidden');
+  document.body.classList.remove('game-paused');
+  $('btnPause').textContent = '⏸ PAUSE';
+  $('btnPause').setAttribute('aria-pressed', 'false');
+  $('btnPause').style.display = 'none';
+  $('btnRestart').style.display = 'none';
+}
+
+function pauseGame() {
+  if (!['playing', 'clearing', 'blackhole_death'].includes(gameStatus)) return;
+  pausedStatus = gameStatus;
+  gameStatus = 'paused';
+  stopGameLoop();
+  const now = performance.now();
+  for (const timer of gameTimers) {
+    clearTimeout(timer.id);
+    timer.remaining = Math.max(0, timer.remaining - (now - timer.started));
+  }
+  suspendAudio();
+  $('pauseIndicator').classList.remove('hidden');
+  document.body.classList.add('game-paused');
+  $('btnPause').textContent = '▶ RESUME';
+  $('btnPause').setAttribute('aria-pressed', 'true');
+}
+
+function togglePause() {
+  if (gameStatus !== 'paused') { pauseGame(); return; }
+  if (document.hidden || !$('titleScreen').classList.contains('hidden') ||
+      !$('tutorialScreen').classList.contains('hidden') || $('mapModal').classList.contains('active')) return;
+  gameStatus = pausedStatus;
+  pausedStatus = null;
+  $('pauseIndicator').classList.add('hidden');
+  document.body.classList.remove('game-paused');
+  $('btnPause').textContent = '⏸ PAUSE';
+  $('btnPause').setAttribute('aria-pressed', 'false');
+  unlockAudio();
+  for (const timer of gameTimers) armGameTimer(timer);
+  lastTime = performance.now();
+  gameAnimId = requestAnimationFrame(loop);
+}
+
+function restartAttempt() {
+  if (!launchParameters || !['playing', 'paused', 'clearing', 'blackhole_death'].includes(gameStatus)) return;
+  const parameters = launchParameters;
+  loadStage(currentStageIndex);
+  ['sliderN', 'sliderCount', 'sliderAngle', 'sliderVel'].forEach((id, i) => { $(id).value = parameters[i]; });
+  const lockedLabel = id => $(id).disabled ? ` ${I18N[currentLang].lockedTag}` : '';
+  $('valN').textContent = $('sliderN').value + lockedLabel('sliderN');
+  $('valCount').textContent = $('sliderCount').value + lockedLabel('sliderCount');
+  $('valAngle').textContent = $('sliderAngle').value + '°' + lockedLabel('sliderAngle');
+  $('valVel').textContent = parseFloat($('sliderVel').value).toFixed(1) + lockedLabel('sliderVel');
+  $('stageBriefing').classList.add('hidden');
+  initVisualsOnly();
+  fire();
+}
+
 function stopGameLoop() {
   if (gameAnimId !== null) cancelAnimationFrame(gameAnimId);
   gameAnimId = null;
@@ -1476,6 +1564,7 @@ function loop(t) {
 }
 
 function showOverlay(title, desc, btnText, isClear, stars = 0) {
+  resetPauseControls();
   const o = $('overlay');
   $('overlayTitle').textContent = title;
   $('overlayTitle').className = isClear ? 'text-clear' : 'text-fail';
@@ -1517,6 +1606,7 @@ function showOverlay(title, desc, btnText, isClear, stars = 0) {
 installInputHandlers({
   $, canvas, wrapper,
   getState: () => ({ gameStatus, systems, PIVOT, currentStageIndex }),
+  togglePause,
   indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly
 });
 
@@ -1618,8 +1708,14 @@ $('btnCloseMap').addEventListener('click', closeStageSelectModal);
 $('overlayMapBtn').addEventListener('click', () => { $('overlay').classList.remove('active'); openStageSelectModal(); });
 
 $('btnFire').addEventListener('click', fire);
+$('btnPause').addEventListener('click', togglePause);
+$('btnRestart').addEventListener('click', restartAttempt);
+window.addEventListener('blur', pauseGame);
+document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
 $('btnStop').addEventListener('click', () => {
   stopGameLoop();
+  clearGameTimers();
+  resetPauseControls();
   gameStatus = 'end'; updateWindSpeed(0, false);
   $('btnStop').style.display = 'none'; $('btnRetry').style.display = 'block'; $('timerDisplay').classList.remove('urgent');
   $('btnRetry').textContent = I18N[currentLang].btnRetry;

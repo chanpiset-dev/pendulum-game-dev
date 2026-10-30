@@ -71,6 +71,7 @@
   <div class="game-container">
     <div class="canvas-wrapper" id="canvasWrapper">
       <canvas id="canvas" width="800" height="600"></canvas>
+      <div id="pauseIndicator" class="pause-indicator hidden" role="status">PAUSED</div>
       <div class="hud-pulse" id="hudPulse">PULSES: 3</div>
       <div class="hud-toast" id="hudToast">Parameter URL copied to clipboard!</div>
       
@@ -109,6 +110,8 @@
       <div class="action-area">
         <button id="btnFire" class="action btn-fire">▶ PLAY</button>
         <button id="btnStop" class="action btn-stop" style="display:none;">⏹ STOP</button>
+        <button id="btnPause" class="action btn-retry" style="display:none;" aria-pressed="false" aria-keyshortcuts="P">⏸ PAUSE</button>
+        <button id="btnRestart" class="action btn-retry" style="display:none;">↻ RESTART</button>
         <button id="btnRetry" class="action btn-retry" style="display:none;">↺ RETRY</button>
       </div>
 

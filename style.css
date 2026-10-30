@@ -767,6 +767,26 @@ button.action:active { transform: scale(0.96); }
 .btn-stop { background: #8e1519; border-color: #da3633; }
 .btn-retry { background: #1f3b25; border-color: #2ea043; }
 
+.pause-indicator {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(2, 5, 3, 0.55);
+  color: #a7f3d0;
+  font: bold 24px 'Press Start 2P', monospace;
+  pointer-events: none;
+}
+
+.pause-indicator.hidden { display: none; }
+
+.game-paused .canvas-wrapper *,
+.game-paused .panel * {
+  animation-play-state: paused !important;
+}
+
 /* Stage Modal */
 .modal-overlay { 
   position: fixed; 

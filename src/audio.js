@@ -1,9 +1,23 @@
 // --- Web Audio System ---
 let audioCtx = null;
+let masterGain = null;
+let preferences = { volume: 1, muted: false, haptics: true };
+
+export function setAudioPreferences(next) {
+  const wasHaptic = preferences.haptics;
+  preferences = { ...preferences, ...next };
+  if (masterGain) masterGain.gain.value = preferences.muted ? 0 : preferences.volume;
+  if (wasHaptic && !preferences.haptics && navigator.vibrate) navigator.vibrate(0);
+}
 let noiseSource = null, noiseFilter = null, noiseGain = null;
 
 export function unlockAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = preferences.muted ? 0 : preferences.volume;
+    masterGain.connect(audioCtx.destination);
+  }
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
 
@@ -32,7 +46,7 @@ export function initWindAudio() {
 
     noiseSource.connect(noiseFilter);
     noiseFilter.connect(noiseGain);
-    noiseGain.connect(audioCtx.destination);
+    noiseGain.connect(masterGain);
     noiseSource.start();
   }
 }
@@ -61,7 +75,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.setValueAtTime(1400 * pitchFactor, now + 0.04);
     g.gain.setValueAtTime(0.35, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.21);
   } else if (type === 'brake') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -70,7 +84,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(70, now + 0.25);
     g.gain.setValueAtTime(0.4, now);
     g.gain.exponentialRampToValueAtTime(0.01, now + 0.26);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.27);
   } else if (type === 'clink') {
     // Subtle, low-pitched ceramic/metallic "clink" when chipping/shrinking
@@ -80,7 +94,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(140, now + 0.12);
     g.gain.setValueAtTime(0.28, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.14);
   } else if (type === 'bomb') {
     const bufSize = Math.floor(audioCtx.sampleRate * 0.4);
@@ -94,7 +108,7 @@ export function playSnd(type, combo = 0) {
     const g = audioCtx.createGain();
     g.gain.setValueAtTime(0.6, now);
     g.gain.exponentialRampToValueAtTime(0.01, now + 0.38);
-    src.connect(f); f.connect(g); g.connect(audioCtx.destination);
+    src.connect(f); f.connect(g); g.connect(masterGain);
     src.start(now);
   } else if (type === 'pulse') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -103,7 +117,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(800, now + 0.12);
     g.gain.setValueAtTime(0.35, now);
     g.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.16);
   } else if (type === 'clear') {
     [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
@@ -112,7 +126,7 @@ export function playSnd(type, combo = 0) {
       o.frequency.setValueAtTime(f, now + i * 0.09);
       g.gain.setValueAtTime(0.25, now + i * 0.09);
       g.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.4);
-      o.connect(g); g.connect(audioCtx.destination);
+      o.connect(g); g.connect(masterGain);
       o.start(now + i*0.09); o.stop(now + i*0.09 + 0.45);
     });
   } else if (type === 'fail') {
@@ -122,7 +136,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(45, now + 0.4);
     g.gain.setValueAtTime(0.25, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.42);
   } else if (type === 'firework') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -131,7 +145,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(80, now + 0.18);
     g.gain.setValueAtTime(0.2, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.2);
   } else if (type === 'portal') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -140,7 +154,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(150, now + 0.35);
     g.gain.setValueAtTime(0.3, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.36);
   } else if (type === 'laser') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -149,7 +163,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(120, now + 0.2);
     g.gain.setValueAtTime(0.3, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.21);
   } else if (type === 'boost') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -158,7 +172,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(920, now + 0.2);
     g.gain.setValueAtTime(0.35, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.23);
   } else if (type === 'gate') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -167,7 +181,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.setValueAtTime(660, now + 0.08);
     g.gain.setValueAtTime(0.3, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.26);
   } else if (type === 'spring') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -176,7 +190,7 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(680, now + 0.15);
     g.gain.setValueAtTime(0.4, now);
     g.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.21);
   } else if (type === 'shield_hit') {
     const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -185,13 +199,13 @@ export function playSnd(type, combo = 0) {
     o.frequency.exponentialRampToValueAtTime(320, now + 0.09);
     g.gain.setValueAtTime(0.25, now);
     g.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
-    o.connect(g); g.connect(audioCtx.destination);
+    o.connect(g); g.connect(masterGain);
     o.start(now); o.stop(now + 0.12);
   }
 }
 
 export function triggerHaptic(type) {
-  if (navigator.vibrate) {
+  if (preferences.haptics && navigator.vibrate) {
     if (type === 'hit') navigator.vibrate(22);
     else if (type === 'bomb') navigator.vibrate([45, 30, 65]);
     else if (type === 'bounce') navigator.vibrate(12);

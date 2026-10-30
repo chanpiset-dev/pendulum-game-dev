@@ -3,7 +3,7 @@ export const PROGRESS_KEYS = {
   unlocked: 'pendulum_sub_unlocked_v6', scores: 'pendulum_stage_scores_v6',
   stars: 'pendulum_stage_stars_v6', ghosts: 'pendulum_stage_ghosts_v6',
   briefed: 'pendulum_briefed_stages_v6', times: 'pendulum_stage_times_v6',
-  language: 'pendulum_lang',
+  language: 'pendulum_lang', preferences: 'pendulum_preferences_v1',
 };
 const validStageKey = key => /^stage_([1-9]|[1-4]\d|50)_sub_[1-5]$/.test(key);
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -33,7 +33,7 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
       if (!record(data)) throw new Error('Invalid record');
       const result = {};
       for (const [entry, value] of Object.entries(data)) {
-        if (validKey(entry) && validValue(value)) result[entry] = value;
+        if (validKey(entry) && validValue(value, entry)) result[entry] = value;
         else problems.set(key, 'invalid');
       }
       return result;
@@ -51,6 +51,9 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
     if (rawLanguage !== null && !['en', 'ja'].includes(rawLanguage)) problems.set(PROGRESS_KEYS.language, 'invalid');
     const data = {
       unlocked, language,
+      preferences: { volume: 1, muted: false, haptics: true, ...readRecord(PROGRESS_KEYS.preferences,
+        key => ['volume', 'muted', 'haptics'].includes(key),
+        (value, key) => key === 'volume' ? nonnegative(value) && value <= 1 : typeof value === 'boolean') },
       scores: readRecord(PROGRESS_KEYS.scores, validStageKey, value => Number.isInteger(value) && nonnegative(value)),
       stars: readRecord(PROGRESS_KEYS.stars, validStageKey, value => Number.isInteger(value) && value >= 0 && value <= 3),
       times: readRecord(PROGRESS_KEYS.times, validStageKey, nonnegative),

@@ -1,3 +1,15 @@
+// Convert pointer coordinates through the centered object-fit: contain viewport.
+export function pointerToCanvas(canvas, event) {
+  const rect = canvas.getBoundingClientRect();
+  const scale = Math.min(rect.width / canvas.width, rect.height / canvas.height);
+  if (!(scale > 0)) return null;
+  const left = rect.left + (rect.width - canvas.width * scale) / 2;
+  const top = rect.top + (rect.height - canvas.height * scale) / 2;
+  const x = (event.clientX - left) / scale;
+  const y = (event.clientY - top) / scale;
+  return x >= 0 && y >= 0 && x <= canvas.width && y <= canvas.height ? { x, y } : null;
+}
+
 // Mouse, touch, pointer-capture, and Spacebar controls.
 export function installInputHandlers({ $, canvas, wrapper, getState, indexToStageSub, PENDULUM_SCALE, BOB_MIN_R, unlockAudio, triggerPulse, triggerHaptic, fire, initVisualsOnly, togglePause }) {
   let activePointerId = null;
@@ -38,25 +50,19 @@ export function installInputHandlers({ $, canvas, wrapper, getState, indexToStag
   document.addEventListener('click', e => {
     if (e.target.closest('button, .stage-btn')) cancelDrag();
   }, true);
-  function getCanvasPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const cx = e.touches ? e.touches[0].clientX : e.clientX;
-  const cy = e.touches ? e.touches[0].clientY : e.clientY;
-  return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
-}
-
 wrapper.addEventListener('pointerdown', e => {
   if (!isGameScreenActive() || !$('stageBriefing').classList.contains('hidden') ||
       activePointerId !== null || e.isPrimary === false || e.button !== 0) return;
   if (e.target.closest('.overlay') || e.target.closest('button') || e.target.closest('.stage-briefing')) return;
   if (getState().gameStatus === 'paused') return;
+  const p = pointerToCanvas(canvas, e);
+  if (!p) return;
   unlockAudio();
   if (getState().gameStatus === 'playing') { triggerPulse(); return; }
   if (getState().gameStatus === 'setup' && getState().systems.length > 0) {
     const stageInfo = indexToStageSub(getState().currentStageIndex);
     if (stageInfo.stage === 7) return;
 
-    const p = getCanvasPos(e);
     const chain = getState().systems[0]; let px = getState().PIVOT.x, py = getState().PIVOT.y;
     for (let i = 0; i < chain.N; i++) {
       px += PENDULUM_SCALE * chain.L[i] * Math.sin(chain.state[i]);
@@ -76,7 +82,8 @@ wrapper.addEventListener('pointermove', e => {
   const stageInfo = indexToStageSub(getState().currentStageIndex);
   if (stageInfo.stage === 7) return;
 
-  const p = getCanvasPos(e);
+  const p = pointerToCanvas(canvas, e);
+  if (!p) { cancelDrag(); return; }
   const dx = p.x - getState().PIVOT.x, dy = p.y - getState().PIVOT.y;
   let deg = Math.atan2(dx, dy) * 180 / Math.PI;
   const clamped = Math.max(-180, Math.min(180, Math.round(deg)));
@@ -85,7 +92,7 @@ wrapper.addEventListener('pointermove', e => {
 
 wrapper.addEventListener('pointerup', e => {
   if (e.pointerId !== activePointerId) return;
-  const shouldFire = canContinueDrag(e);
+  const shouldFire = canContinueDrag(e) && pointerToCanvas(canvas, e) !== null;
   cancelDrag();
   if (shouldFire) fire();
 });

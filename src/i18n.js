@@ -1,5 +1,10 @@
 export const I18N = {
   en: {
+    settings: 'SETTINGS', settingsTitle: 'Settings', volume: 'Sound volume', mute: 'Mute sound', haptics: 'Vibration',
+    close: 'CLOSE', hapticsUnsupported: 'Vibration is not supported by this browser.',
+    settingsSaved: 'Settings saved.', settingsUnsaved: 'Settings apply now but could not be saved for next time.',
+    fullscreen: 'FULLSCREEN', exitFullscreen: 'EXIT FULLSCREEN', fullscreenFailed: 'Fullscreen is unavailable. You can keep playing here.',
+    fullscreenUnsupported: 'Fullscreen is not supported by this browser',
     jumpCurrent: 'JUMP TO CURRENT',
     jumpFurthest: 'JUMP TO FURTHEST UNLOCKED',
     starRulesTitle: 'How stars work',
@@ -64,6 +69,11 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    settings: '設定', settingsTitle: '設定', volume: '音量', mute: '消音', haptics: 'バイブレーション',
+    close: '閉じる', hapticsUnsupported: 'このブラウザーは振動に対応していません。',
+    settingsSaved: '設定を保存しました。', settingsUnsaved: '設定を適用しましたが、次回のために保存できませんでした。',
+    fullscreen: '全画面', exitFullscreen: '全画面を終了', fullscreenFailed: '全画面を利用できません。このままプレイできます。',
+    fullscreenUnsupported: 'このブラウザーは全画面に対応していません',
     jumpCurrent: '現在のステージへ',
     jumpFurthest: '解放済みの最終ステージへ',
     starRulesTitle: '星の獲得条件',
@@ -190,6 +200,15 @@ export function createI18nController({
 
   $('btnDismissBriefing').textContent = t.briefingGotIt;
   $('uiModalTitle').textContent = t.modalTitle;
+  $('btnSettings').textContent = t.settings;
+  $('settingsTitle').textContent = t.settingsTitle;
+  $('volumeLabel').textContent = t.volume;
+  $('muteLabel').textContent = t.mute;
+  $('hapticsLabel').textContent = t.haptics;
+  $('settingsClose').textContent = t.close;
+  $('hapticsSupport').textContent = navigator.vibrate ? '' : t.hapticsUnsupported;
+  $('btnFullscreen').textContent = document.fullscreenElement ? t.exitFullscreen : t.fullscreen;
+  if ($('btnFullscreen').disabled) $('btnFullscreen').title = t.fullscreenUnsupported;
   $('btnJumpCurrent').textContent = t.jumpCurrent;
   $('btnJumpFurthest').textContent = t.jumpFurthest;
   $('starRulesTitle').textContent = t.starRulesTitle;

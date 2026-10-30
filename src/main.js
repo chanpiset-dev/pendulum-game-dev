@@ -1,4 +1,5 @@
-import { unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
+import { installMobileControls } from './mobile-controls.js';
+import { setAudioPreferences, unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
 import { createAttemptReplay } from './replay.js';
 import { getMechanicHints } from './tutorial-hints.js';
 import { calculateStageStars } from './scoring.js';
@@ -36,6 +37,7 @@ const BOB_PULSE_DECAY = 4.0;       // Speed of easing back to neutral scale
 const progressStore = createProgressStore({ onStatus: showSaveStatus });
 const savedProgress = progressStore.load();
 let currentLang = savedProgress.language;
+setAudioPreferences(savedProgress.preferences);
 
 
 
@@ -1782,6 +1784,9 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
+installMobileControls({ $, preferences: savedProgress.preferences, setAudioPreferences,
+  savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,
+  strings: () => I18N[currentLang] });
 updateTotalScoreDisplay();
 setLanguage(currentLang);
 loadStage(unlockedStageIndex);

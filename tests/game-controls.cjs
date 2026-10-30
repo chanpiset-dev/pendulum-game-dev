@@ -112,7 +112,9 @@ const { chromium } = require('playwright');
       const point = () => {
         const tip = run(`(()=>{const c=systems[0];let x=PIVOT.x,y=PIVOT.y;for(let i=0;i<c.N;i++){x+=PENDULUM_SCALE*c.L[i]*Math.sin(c.state[i]);y+=PENDULUM_SCALE*c.L[i]*Math.cos(c.state[i]);}return {x,y}})()`);
         const rect = el('canvas').getBoundingClientRect();
-        return { clientX: rect.left + tip.x * rect.width / 800, clientY: rect.top + tip.y * rect.height / 600 };
+        const scale = Math.min(rect.width / 800, rect.height / 600);
+        return { clientX: rect.left + (rect.width - 800 * scale) / 2 + tip.x * scale,
+          clientY: rect.top + (rect.height - 600 * scale) / 2 + tip.y * scale };
       };
       const pointer = (type, id, primary = true) => wrapper.dispatchEvent(new PointerEvent(type, { pointerId: id, pointerType: 'touch', isPrimary: primary, button: 0, bubbles: true, ...point() }));
       setup();
@@ -268,11 +270,12 @@ const { chromium } = require('playwright');
     await live.waitForTimeout(200);
     await live.click('#btnStop');
     await live.click('#btnRetry');
-    // Default Stage 1 tip at 120 degrees, using the existing input conversion.
+    // Default Stage 1 tip at 120 degrees, mapped through the visible canvas.
     const tip = await live.locator('#canvas').evaluate(canvas => {
       const rect = canvas.getBoundingClientRect();
-      return { x: rect.left + (400 + 300 * Math.sin(2 * Math.PI / 3)) * rect.width / 800,
-        y: rect.top + 150 * rect.height / 600 };
+      const scale = Math.min(rect.width / 800, rect.height / 600);
+      return { x: rect.left + (rect.width - 800 * scale) / 2 + (400 + 300 * Math.sin(2 * Math.PI / 3)) * scale,
+        y: rect.top + (rect.height - 600 * scale) / 2 + 150 * scale };
     });
     await live.mouse.move(tip.x, tip.y);
     await live.mouse.down();

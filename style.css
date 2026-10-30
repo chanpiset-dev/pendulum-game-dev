@@ -1083,3 +1083,20 @@ details.star-rules { margin-bottom: 12px; }
 details.star-rules summary { cursor: pointer; color: var(--yellow); }
 
 .briefing-box { max-height: 100%; overflow-y: auto; box-sizing: border-box; }
+
+#settingsDialog { width: min(420px, 92vw); max-height: 90dvh; overflow: auto; padding: 20px; background: var(--panel); color: var(--text); border: 2px solid var(--accent); border-radius: 8px; }
+#settingsDialog::backdrop { background: rgb(0 0 0 / 80%); }
+#settingsDialog h2 { font-size: 1.2rem; }
+.setting-toggle { display: flex; align-items: center; gap: 12px; min-height: 48px; cursor: pointer; }
+.setting-toggle input { width: 24px; height: 24px; accent-color: var(--accent); }
+#settingsDialog p { font-size: 0.85rem; line-height: 1.5; }
+#fullscreenStatus:empty { display: none; }
+#fullscreenStatus { position: fixed; bottom: 12px; left: 5%; width: 90%; padding: 12px; z-index: 110; background: var(--panel); color: var(--yellow); }
+@media (pointer: coarse), (max-width: 750px) {
+  .btn-nav, .btn-large, button.action, .modal-close, .lang-btn { min-height: 44px; min-width: 44px; }
+  button.action { min-height: 52px; }
+  .stage-grid { grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); gap: 8px; }
+  .stage-btn { min-height: 80px; padding: 8px; }
+  input[type=range] { min-height: 44px; touch-action: pan-y; }
+  .header-actions { gap: 8px; }
+}

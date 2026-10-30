@@ -39,3 +39,13 @@ In **STAGES**, **JUMP TO CURRENT** scrolls to the selected stage, while **JUMP T
 Star rules are available in briefings and under **How stars work** in stage selection. A clear earns one star, keeping at least one pulse earns another (automatically awarded when pulses are locked), and finishing with at least 35% time remaining earns the third. The clear screen shows which bonuses were earned. Existing best star records are preserved; replay a stage to improve them.
 
 Saved-data recovery and optional replay-storage failures are handled quietly. Actual storage-access failures still show a warning so players know their latest progress may not persist.
+
+## Mobile controls and sound settings
+
+Drag the visible tip to aim and release to launch. Touches in canvas letterbox margins are ignored; moving a drag outside the visible game cancels it. On mobile or touch devices, action controls have larger targets and stage cards wrap to fit the available width.
+
+Use **SETTINGS** to adjust sound volume, mute all game audio, or turn vibration off. Preferences are validated and remembered in this browser. If storage is unavailable, changes still apply for the session and Settings explains that they could not be saved. Unsupported vibration controls are disabled. Opening Settings pauses an active attempt; close it and choose **RESUME** to continue.
+
+Use **FULLSCREEN** to enter or leave fullscreen on supported browsers, or use the browser's exit gesture. Fullscreen transitions pause gameplay. Browsers without the Fullscreen API show a disabled control; a rejected request leaves the game usable.
+
+Mobile verification: `node --test tests/input-coordinates.test.mjs` and `node tests/mobile-controls.cjs` (the browser test requires Playwright and Chromium).

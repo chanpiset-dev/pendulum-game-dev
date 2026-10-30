@@ -1,8 +1,10 @@
+import { getCanvasPalette, drawThemeBackdrop } from '../themes.js';
 import { I18N } from '../i18n.js';
 
 // Canvas scene renderer. Visual drawing logic is preserved from the original game.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
   const { currentLang = 'en', BASE_PIVOT = { x: 0, y: 0 }, PIVOT = pivot, timeElapsed = 0, laserCooldown = 0, PENDULUM_SCALE = 120, BOB_MIN_R = 14, BOB_MAX_R = 36 } = renderOptions;
+  const palette = getCanvasPalette();
   // 1. Viscous Zones
   zones.forEach(z => {
     ctx.save();
@@ -160,7 +162,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     ctx.ellipse(0, 0, ring.r, ring.r * 0.55, 0, 0, Math.PI * 2);
     ctx.strokeStyle = '#34d399';
     ctx.lineWidth = 3.5;
-    ctx.shadowColor = '#34d399';
+    ctx.shadowColor = palette.accent;
     ctx.shadowBlur = 14;
     ctx.stroke();
 
@@ -235,7 +237,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     const isAbsorber = ob.restitution && Math.abs(ob.restitution) < 0.2;
 
     ctx.beginPath(); ctx.arc(ob.x, ob.y, ob.r, 0, Math.PI * 2);
-    ctx.fillStyle = ob.pulse > 0 ? (isSpring ? '#fbbf24' : '#38bdf8') : (isAbsorber ? '#334155' : '#0f172a');
+    ctx.fillStyle = ob.pulse > 0 ? (isSpring ? '#fbbf24' : '#38bdf8') : (isAbsorber ? palette.line : palette.platform);
     ctx.shadowColor = isSpring ? '#fbbf24' : (isAbsorber ? '#475569' : '#38bdf8');
     ctx.shadowBlur = ob.pulse > 0 ? 24 : 8; ctx.fill();
     ctx.strokeStyle = ob.pulse > 0 ? '#fff' : (isSpring ? '#f59e0b' : (isAbsorber ? '#64748b' : '#38bdf8'));
@@ -310,11 +312,11 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
       ctx.shadowColor = '#fb923c'; ctx.shadowBlur = 18; ctx.stroke();
       ctx.beginPath(); ctx.arc(t.x, t.y, t.r * 0.45, 0, Math.PI * 2); ctx.fillStyle = '#fbbf24'; ctx.fill();
     } else {
-      ctx.fillStyle = '#1f2937'; ctx.fill();
-      ctx.strokeStyle = (t.hp && t.hp > 1) ? '#38bdf8' : '#f87171'; ctx.lineWidth = 2.5;
-      ctx.shadowColor = (t.hp && t.hp > 1) ? '#38bdf8' : '#f87171'; ctx.shadowBlur = 15; ctx.stroke();
+      ctx.fillStyle = palette.panel; ctx.fill();
+      ctx.strokeStyle = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.lineWidth = 2.5;
+      ctx.shadowColor = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.shadowBlur = 15; ctx.stroke();
       ctx.beginPath(); ctx.arc(t.x, t.y, t.r * 0.42, 0, Math.PI * 2);
-      ctx.fillStyle = (t.hp && t.hp > 1) ? '#0284c7' : '#f87171'; ctx.fill();
+      ctx.fillStyle = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.fill();
 
       if (t.hp && t.hp > 1) {
         ctx.beginPath();
@@ -329,12 +331,12 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 
   // 10. Pivot
   ctx.beginPath(); ctx.arc(pivot.x, pivot.y, 11, 0, Math.PI * 2);
-  ctx.fillStyle = '#111827'; ctx.fill();
-  ctx.strokeStyle = '#4b5563'; ctx.lineWidth = 4; ctx.stroke();
+  ctx.fillStyle = palette.panel; ctx.fill();
+  ctx.strokeStyle = palette.line; ctx.lineWidth = 4; ctx.stroke();
 
   // 11. Pendulum Arms & Bobs
   let arr = Array.isArray(chainOrSystems) ? chainOrSystems : [chainOrSystems];
-  arr.forEach(ch => {
+  arr.forEach((ch, chainIndex) => {
     if (ch.alive === false) return;
     if (ch.trail.length > 1) {
       for (let i = 1; i < ch.trail.length; i++) {
@@ -355,18 +357,18 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
       const nx = px + PENDULUM_SCALE * ch.L[i] * Math.sin(ch.state[i]);
       const ny = py + PENDULUM_SCALE * ch.L[i] * Math.cos(ch.state[i]);
       ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny);
-      ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 9; ctx.stroke();
+      ctx.strokeStyle = palette.platform; ctx.lineWidth = 9; ctx.stroke();
       ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny);
-      ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 4.5; ctx.stroke();
+      ctx.strokeStyle = palette.rod; ctx.lineWidth = 4.5; ctx.stroke();
 
       const isTip = (i === ch.N - 1);
       const baseR = isTip ? (ch.currentR || BOB_MIN_R) : 12;
       const r = isTip ? baseR * (ch.popScale || 1.0) : baseR;
 
       const radGrad = ctx.createRadialGradient(nx - r * 0.3, ny - r * 0.3, r * 0.1, nx, ny, r * 1.2);
-      radGrad.addColorStop(0, ch.color.outer);
-      radGrad.addColorStop(0.6, ch.color.inner);
-      radGrad.addColorStop(1, '#000000');
+      radGrad.addColorStop(0, chainIndex === 0 ? palette.bob : ch.color.outer);
+      radGrad.addColorStop(0.6, chainIndex === 0 ? palette.accent : ch.color.inner);
+      radGrad.addColorStop(1, palette.platform);
 
       ctx.beginPath();
       ctx.arc(nx, ny, r, 0, Math.PI * 2);
@@ -374,7 +376,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 
       if (isTip) {
         const growthRatio = Math.max(0, Math.min(1, ((ch.currentR || BOB_MIN_R) - BOB_MIN_R) / (BOB_MAX_R - BOB_MIN_R)));
-        ctx.shadowColor = ch.color.outer;
+        ctx.shadowColor = chainIndex === 0 ? palette.bob : ch.color.outer;
         ctx.shadowBlur = 14 + growthRatio * 16 + ((ch.popScale || 1.0) - 1.0) * 22;
       }
       ctx.fill();
@@ -382,14 +384,14 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 
       ctx.beginPath();
       ctx.arc(nx, ny, r * 0.3, 0, Math.PI * 2);
-      ctx.fillStyle = '#0f172a';
+      ctx.fillStyle = palette.platform;
       ctx.fill();
 
       px = nx; py = ny;
     }
   });
 
-  ctx.beginPath(); ctx.arc(pivot.x, pivot.y, 4.5, 0, Math.PI * 2); ctx.fillStyle = '#f8fafc'; ctx.fill();
+  ctx.beginPath(); ctx.arc(pivot.x, pivot.y, 4.5, 0, Math.PI * 2); ctx.fillStyle = palette.text; ctx.fill();
 
   // FX Layers
   shockwaves.forEach(sw => {
@@ -429,7 +431,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     ctx.restore();
   });
   floaters.forEach(f => {
-    ctx.save(); ctx.globalAlpha = Math.max(0, f.life); ctx.fillStyle = '#fbbf24';
+    ctx.save(); ctx.globalAlpha = Math.max(0, f.life); ctx.fillStyle = palette.yellow;
     ctx.font = 'bold 20px system-ui, sans-serif'; ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 5;
     ctx.fillText(f.text, f.x - 20, f.y - 15); ctx.restore();
   });
@@ -439,12 +441,11 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 // Main game frame: trails, HUD, overlays, and the full scene.
 export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearFlashTimer }) {
   const { W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R } = getState();
+  const palette = getCanvasPalette();
+  ctx.clearRect(0, 0, W, H);
+  drawThemeBackdrop(ctx, W, H);
   ctx.save();
   if (screenShake > 0.4) { ctx.translate((Math.random() - 0.5) * screenShake * 1.5, (Math.random() - 0.5) * screenShake * 1.5); }
-  ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(255,255,255,0.025)'; ctx.lineWidth = 1;
-  for (let x = 20; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-  for (let y = 20; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
   if (clearFlashTimer > 0) {
     ctx.save();
@@ -457,7 +458,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
   if (activeGhost && activeGhost.length > 1) {
     ctx.save(); ctx.beginPath(); ctx.moveTo(activeGhost[0].x, activeGhost[0].y);
     for (let i = 1; i < activeGhost.length; i++) ctx.lineTo(activeGhost[i].x, activeGhost[i].y);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)'; ctx.lineWidth = 1.5; ctx.setLineDash([3, 5]); ctx.stroke(); ctx.restore();
+    ctx.strokeStyle = palette.muted + '60'; ctx.lineWidth = 1.5; ctx.setLineDash([3, 5]); ctx.stroke(); ctx.restore();
   }
 
   if (gameStatus === 'setup') {
@@ -469,17 +470,17 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
       for (let i = 1; i < predPts.length; i++) {
         ctx.lineTo(predPts[i].x, predPts[i].y);
       }
-      ctx.strokeStyle = 'rgba(52, 211, 153, 0.45)';
+      ctx.strokeStyle = palette.accent + '99';
       ctx.lineWidth = 2.0;
       ctx.setLineDash([4, 6]);
-      ctx.shadowColor = '#34d399';
+      ctx.shadowColor = palette.accent;
       ctx.shadowBlur = 8;
       ctx.stroke();
 
       const lastPt = predPts[predPts.length - 1];
       ctx.beginPath();
       ctx.arc(lastPt.x, lastPt.y, 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = '#6ee7b7';
+      ctx.fillStyle = palette.accent;
       ctx.fill();
       ctx.restore();
     }
@@ -502,7 +503,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
       ctx.stroke();
     }
     ctx.font = 'bold 12px system-ui, sans-serif';
-    ctx.fillStyle = wFx > 0 ? 'rgba(56, 189, 248, 0.7)' : 'rgba(244, 63, 94, 0.7)';
+    ctx.fillStyle = wFx > 0 ? palette.blue : palette.danger;
     const dirSym = wFx > 0 ? '→' : '←';
     const spdVal = (Math.abs(wFx) * 3).toFixed(1);
     ctx.fillText(t.wind(dirSym, spdVal), W / 2, 30);
@@ -513,7 +514,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
     ctx.save();
     ctx.font = 'bold 13px system-ui, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillStyle = currentLives > 1 ? '#38bdf8' : '#f43f5e';
+    ctx.fillStyle = currentLives > 1 ? palette.blue : palette.danger;
     ctx.shadowColor = 'rgba(0,0,0,0.85)';
     ctx.shadowBlur = 6;
     const hudY = currentWind ? (Math.abs(currentGravity - 9.8) > 0.5 ? 64 : 48) : 48;
@@ -528,7 +529,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
     let gLabel = t.tagLowG;
     if (currentGravity < 0) gLabel = t.tagInvG;
     else if (currentGravity > 12) gLabel = t.tagHighG;
-    ctx.fillStyle = currentGravity < 0 ? '#f43f5e' : (currentGravity < 9.8 ? '#a7f3d0' : '#fca5a5');
+    ctx.fillStyle = currentGravity < 0 ? palette.danger : palette.text;
     ctx.fillText(t.gravHud(currentGravity.toFixed(1), gLabel), W / 2, currentWind ? 48 : 30);
     ctx.restore();
   }

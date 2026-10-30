@@ -7,7 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#07120a">
+<script src="./src/appearance-boot.js"></script>
 <link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./src/themes.css">
 <script type="module" src="./src/main.js" defer></script>
 </head>
 <body>
@@ -182,12 +185,21 @@
 </dialog>
 <dialog id="settingsDialog" aria-labelledby="settingsTitle">
   <h2 id="settingsTitle">Settings</h2>
+  <section aria-labelledby="appearanceTitle">
+    <h3 id="appearanceTitle">Appearance</h3>
+    <label for="appearanceMode" id="modeLabel">Mode</label>
+    <select id="appearanceMode"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
+    <fieldset class="theme-picker"><legend id="themeLabel">Theme</legend><div id="themeChoices"></div></fieldset>
+  </section>
+  <h3 id="soundTitle">Sound</h3>
   <label for="soundVolume" id="volumeLabel">Sound volume</label>
   <input id="soundVolume" type="range" min="0" max="100" step="1" value="100">
   <output id="volumeValue" for="soundVolume">100%</output>
   <label class="setting-toggle"><input id="soundMuted" type="checkbox"><span id="muteLabel">Mute sound</span></label>
-  <p id="settingsSaveStatus" role="status"></p>
-  <button id="settingsClose" class="btn-nav">CLOSE</button>
+  <div class="settings-actions">
+    <p id="settingsSaveStatus" role="status"></p>
+    <button id="settingsClose" class="btn-nav">CLOSE</button>
+  </div>
 </dialog>
 </body>
 </html>

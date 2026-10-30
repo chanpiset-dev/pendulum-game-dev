@@ -107,8 +107,15 @@ test('Successful retry clears a genuine save failure', () => {
 
 test('Sound preferences persist and legacy vibration values do not affect recovery', () => {
   const f = fixture({ [keys.preferences]: '{"volume":2,"muted":true,"haptics":"bad"}' });
-  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true });
+  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, theme: 'neon-arcade', mode: 'dark' });
   assert.equal(f.store.saveSetting('preferences', { volume: 0.35, muted: false }), true);
-  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false });
+  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, theme: 'neon-arcade', mode: 'dark' });
   assert.equal(f.statuses.at(-1).kind, 'ok');
+});
+
+test('Appearance preferences recover independently and preserve sound settings', () => {
+  const f = fixture({ [keys.preferences]: '{"theme":"unknown","mode":"broken","volume":0.25,"muted":true}' });
+  assert.deepEqual(f.store.load().preferences, { theme: 'neon-arcade', mode: 'dark', volume: 0.25, muted: true });
+  f.store.saveSetting('preferences', { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true });
+  assert.deepEqual(f.store.load().preferences, { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true });
 });

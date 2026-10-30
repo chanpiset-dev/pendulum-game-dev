@@ -1,3 +1,5 @@
+import { createAppearance } from './appearance.js';
+import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
 import { installMobileControls } from './mobile-controls.js';
 import { setAudioPreferences, unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd } from './audio.js';
 import { createAttemptReplay } from './replay.js';
@@ -18,7 +20,7 @@ const canvas = $('canvas'), ctx = canvas.getContext('2d');
 const titleCanvas = $('titleCanvas'), tCtx = titleCanvas.getContext('2d');
 const tutCanvas = $('tutorialCanvas'), tutCtx = tutCanvas.getContext('2d');
 const wrapper = $('canvasWrapper');
-const attemptReplay = createAttemptReplay({ canvas, $, pauseGame: () => pauseGame() });
+const attemptReplay = createAttemptReplay({ canvas, $, pauseGame: () => pauseGame(), getBackground: () => getCanvasPalette().canvas });
 let W = canvas.width, H = canvas.height;
 let BASE_PIVOT = { x: W / 2, y: H / 2 };
 let PIVOT = { x: BASE_PIVOT.x, y: BASE_PIVOT.y };
@@ -38,6 +40,12 @@ const progressStore = createProgressStore({ onStatus: showSaveStatus });
 const savedProgress = progressStore.load();
 let currentLang = savedProgress.language;
 setAudioPreferences(savedProgress.preferences);
+let visualsReady = false;
+const appearance = createAppearance(savedProgress.preferences, () => {
+  if (!visualsReady) return;
+  drawThemeBackdrop(tCtx, titleCanvas.width, titleCanvas.height);
+  if (!['playing', 'clearing', 'blackhole_death'].includes(gameStatus)) draw();
+});
 
 
 
@@ -94,7 +102,7 @@ function loopTitle() {
   titleChain.trail.push({ x: px, y: py });
   if (titleChain.trail.length > 160) titleChain.trail.shift();
 
-  tCtx.fillStyle = 'rgba(5, 7, 12, 0.25)';
+  tCtx.fillStyle = getCanvasPalette().canvas + '40';
   tCtx.fillRect(0, 0, tw, th);
 
   if (titleChain.trail.length > 1) {
@@ -118,13 +126,13 @@ function loopTitle() {
     const ny = cy + scale * titleChain.L[i] * Math.cos(titleChain.state[i]);
     
     tCtx.beginPath(); tCtx.moveTo(cx, cy); tCtx.lineTo(nx, ny);
-    tCtx.strokeStyle = '#1e293b'; tCtx.lineWidth = 5; tCtx.stroke();
+    tCtx.strokeStyle = getCanvasPalette().platform; tCtx.lineWidth = 5; tCtx.stroke();
     tCtx.beginPath(); tCtx.moveTo(cx, cy); tCtx.lineTo(nx, ny);
-    tCtx.strokeStyle = '#94a3b8'; tCtx.lineWidth = 2.5; tCtx.stroke();
+    tCtx.strokeStyle = getCanvasPalette().rod; tCtx.lineWidth = 2.5; tCtx.stroke();
 
     const radGrad = tCtx.createRadialGradient(nx - 2, ny - 2, 2, nx, ny, 10);
-    radGrad.addColorStop(0, '#93c5fd');
-    radGrad.addColorStop(0.5, '#3b82f6');
+    radGrad.addColorStop(0, getCanvasPalette().text);
+    radGrad.addColorStop(0.5, getCanvasPalette().bob);
     radGrad.addColorStop(1, '#1e3a8a');
     tCtx.beginPath(); tCtx.arc(nx, ny, 10, 0, Math.PI * 2);
     tCtx.fillStyle = radGrad;
@@ -279,10 +287,7 @@ function loopTutorial(t) {
     }
   }
 
-  tutCtx.clearRect(0, 0, tutCanvas.width, tutCanvas.height);
-  tutCtx.strokeStyle = 'rgba(255,255,255,0.025)'; tutCtx.lineWidth = 1;
-  for (let x = 20; x < tutCanvas.width; x += 40) { tutCtx.beginPath(); tutCtx.moveTo(x, 0); tutCtx.lineTo(x, tutCanvas.height); tutCtx.stroke(); }
-  for (let y = 20; y < tutCanvas.height; y += 40) { tutCtx.beginPath(); tutCtx.moveTo(0, y); tutCtx.lineTo(tutCanvas.width, y); tutCtx.stroke(); }
+  drawThemeBackdrop(tutCtx, tutCanvas.width, tutCanvas.height);
 
   drawGenericScene(
     tutCtx,
@@ -1778,10 +1783,11 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
-installMobileControls({ $, preferences: savedProgress.preferences, setAudioPreferences,
+installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,
   savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,
   strings: () => I18N[currentLang] });
 updateTotalScoreDisplay();
 setLanguage(currentLang);
 loadStage(unlockedStageIndex);
 restoreFromUrl();
+visualsReady = true;

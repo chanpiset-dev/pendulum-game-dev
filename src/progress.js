@@ -1,3 +1,4 @@
+import { DEFAULT_THEME, DEFAULT_MODE, isTheme, isMode } from './themes.js';
 // Keep the existing v6 keys so previously earned progress remains compatible.
 export const PROGRESS_KEYS = {
   unlocked: 'pendulum_sub_unlocked_v6', scores: 'pendulum_stage_scores_v6',
@@ -51,9 +52,9 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
     if (rawLanguage !== null && !['en', 'ja'].includes(rawLanguage)) problems.set(PROGRESS_KEYS.language, 'invalid');
     const data = {
       unlocked, language,
-      preferences: { volume: 1, muted: false, ...readRecord(PROGRESS_KEYS.preferences,
-        key => ['volume', 'muted'].includes(key),
-        (value, key) => key === 'volume' ? nonnegative(value) && value <= 1 : typeof value === 'boolean') },
+      preferences: { volume: 1, muted: false, theme: DEFAULT_THEME, mode: DEFAULT_MODE, ...readRecord(PROGRESS_KEYS.preferences,
+        key => ['volume', 'muted', 'theme', 'mode'].includes(key),
+        (value, key) => key === 'volume' ? nonnegative(value) && value <= 1 : key === 'theme' ? isTheme(value) : key === 'mode' ? isMode(value) : typeof value === 'boolean') },
       scores: readRecord(PROGRESS_KEYS.scores, validStageKey, value => Number.isInteger(value) && nonnegative(value)),
       stars: readRecord(PROGRESS_KEYS.stars, validStageKey, value => Number.isInteger(value) && value >= 0 && value <= 3),
       times: readRecord(PROGRESS_KEYS.times, validStageKey, nonnegative),

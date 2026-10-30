@@ -1,5 +1,7 @@
 export const I18N = {
   en: {
+    appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
+    groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
     settings: 'SETTINGS', settingsTitle: 'Settings', volume: 'Sound volume', mute: 'Mute sound',
     close: 'CLOSE',
     settingsSaved: 'Settings saved.', settingsUnsaved: 'Settings apply now but could not be saved for next time.',
@@ -67,6 +69,8 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
+    groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
     settings: '設定', settingsTitle: '設定', volume: '音量', mute: '消音',
     close: '閉じる',
     settingsSaved: '設定を保存しました。', settingsUnsaved: '設定を適用しましたが、次回のために保存できませんでした。',
@@ -198,6 +202,11 @@ export function createI18nController({
   $('uiModalTitle').textContent = t.modalTitle;
   $('btnSettings').textContent = t.settings;
   $('settingsTitle').textContent = t.settingsTitle;
+  for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle']) $(id).textContent = t[id];
+  for (const [value, key] of [['system', 'modeSystem'], ['dark', 'modeDark'], ['light', 'modeLight']]) $('appearanceMode').querySelector(`option[value="${value}"]`).textContent = t[key];
+  document.querySelectorAll('[data-theme-group]').forEach(heading => {
+    heading.textContent = t['group' + heading.dataset.themeGroup[0].toUpperCase() + heading.dataset.themeGroup.slice(1)];
+  });
   $('volumeLabel').textContent = t.volume;
   $('muteLabel').textContent = t.mute;
   $('settingsClose').textContent = t.close;

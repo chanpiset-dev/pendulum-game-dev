@@ -48,3 +48,13 @@ Use **SETTINGS** to adjust sound volume or mute all game audio. Preferences are 
 
 
 Mobile verification: `node --test tests/input-coordinates.test.mjs` and `node tests/mobile-controls.cjs` (the browser test requires Playwright and Chromium).
+
+## Appearance themes
+
+Open **SETTINGS → Appearance** to choose a theme and **System**, **Dark**, or **Light** mode. The nine themes are Neon Arcade, Pocket Console, 16-Bit Adventure, Clean Precision, Glass Orbit, Soft Studio, Blueprint Lab, Cosmic Observatory, and Paper Workshop. Each has dark and light palettes. Existing players default to **Neon Arcade + Dark**.
+
+Theme and mode are saved alongside volume and mute without replacing sound preferences or game progress. System mode follows device appearance changes; explicit Dark/Light modes stay fixed. If storage is unavailable, appearance still applies for the session.
+
+Shared palette tokens live in `src/themes.css`; `src/themes.js` describes the catalog and exposes cached canvas colors. `src/appearance.js` applies the selection and system changes. The small `src/appearance-boot.js` restores appearance before the first CSS paint. Theme differences include typography, corners, borders, shadows, grids, and restrained decorative textures. Stage geometry, physics and scoring stay the same. Replay records retain the palette used during the attempt even after the interface theme changes.
+
+Run `node tests/themes.cjs` for all 18 variants, text contrast, canvas backgrounds, system changes, persistence, mobile layout, Japanese labels and replay color retention.

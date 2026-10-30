@@ -1,5 +1,5 @@
 // A visual recording, isolated from physics and progress saving. No audio or storage writes.
-export function createAttemptReplay({ canvas, $, pauseGame }) {
+export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () => '#020503' }) {
   const buffer = document.createElement('canvas');
   buffer.width = 640; buffer.height = 480;
   const context = buffer.getContext('2d');
@@ -72,7 +72,7 @@ export function createAttemptReplay({ canvas, $, pauseGame }) {
       try {
         // The live canvas is transparent. Replace the previous capture with the
         // same opaque backdrop as the game before compositing this frame.
-        context.fillStyle = '#020503';
+        context.fillStyle = getBackground();
         context.fillRect(0, 0, buffer.width, buffer.height);
         context.drawImage(canvas, 0, 0, buffer.width, buffer.height);
         frames.push({ time: elapsed, image: buffer.toDataURL('image/jpeg', 0.65) });

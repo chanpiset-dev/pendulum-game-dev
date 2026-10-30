@@ -1,398 +1,96 @@
 import { getCanvasPalette, drawThemeBackdrop } from '../themes.js';
+import { artworkStyleForTheme, drawArtwork, drawLivePendulum } from './artwork.js';
 import { I18N } from '../i18n.js';
 
-// Canvas scene renderer. Visual drawing logic is preserved from the original game.
+let pixelLayer;
+// Render the new artwork at the real simulation coordinates. Never change state.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
-  const { currentLang = 'en', BASE_PIVOT = { x: 0, y: 0 }, PIVOT = pivot, timeElapsed = 0, laserCooldown = 0, PENDULUM_SCALE = 120, BOB_MIN_R = 14, BOB_MAX_R = 36 } = renderOptions;
-  const palette = getCanvasPalette();
-  // 1. Viscous Zones
-  zones.forEach(z => {
+  const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0 } = renderOptions;
+  const palette = getCanvasPalette(), style = artworkStyleForTheme(palette.theme);
+  const output = ctx;
+  if (style === 'pixel') {
+    pixelLayer ||= document.createElement('canvas');
+    const w = Math.ceil(output.canvas.width / 2), h = Math.ceil(output.canvas.height / 2);
+    if (pixelLayer.width !== w || pixelLayer.height !== h) { pixelLayer.width = w; pixelLayer.height = h; }
+    ctx = pixelLayer.getContext('2d'); ctx.clearRect(0, 0, w, h); ctx.save(); ctx.scale(0.5, 0.5);
+  } else ctx.save();
+  const sprite = (kind, x, y, size, time = 0, hits = 4) => drawArtwork(ctx, kind, x, y, size, { style, palette, time, hits });
+  const line = (x1, y1, x2, y2, color, width = 2) => {
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.stroke();
+  };
+  const segment = (beam, open = false, laser = false) => {
+    const color = laser ? '#ed4057' : '#efb02e';
     ctx.save();
-    ctx.fillStyle = z.isResin ? 'rgba(245, 158, 11, 0.22)' : 'rgba(56, 189, 248, 0.16)';
-    ctx.strokeStyle = z.isResin ? 'rgba(245, 158, 11, 0.6)' : 'rgba(56, 189, 248, 0.45)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([6, 6]);
-    ctx.strokeRect(z.x, z.y, z.w, z.h);
-    ctx.fillRect(z.x, z.y, z.w, z.h);
-    ctx.font = 'bold 11px system-ui, sans-serif';
-    ctx.fillStyle = z.isResin ? '#fbbf24' : '#38bdf8';
-    ctx.fillText(z.isResin ? (currentLang === 'ja' ? '高粘性レジン' : 'STICKY RESIN') : (currentLang === 'ja' ? '粘性スライム' : 'VISCOUS DRAG'), z.x + 8, z.y + 16);
+    if (open) { ctx.setLineDash([5, 6]); line(beam.x1, beam.y1, beam.x2, beam.y2, palette.muted, 2); }
+    else {
+      line(beam.x1, beam.y1, beam.x2, beam.y2, '#102238', laser ? 7 : 8);
+      line(beam.x1, beam.y1, beam.x2, beam.y2, color, laser ? 4 : 5);
+      if (laser) line(beam.x1, beam.y1, beam.x2, beam.y2, '#fff5f5', 1.2);
+    }
+    ctx.setLineDash([]);
+    for (const [x, y] of [[beam.x1, beam.y1], [beam.x2, beam.y2]]) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(beam.y2 - beam.y1, beam.x2 - beam.x1));
+      ctx.fillStyle = palette.platform; ctx.fillRect(-4, -9, 8, 18); ctx.strokeStyle = palette.rod; ctx.lineWidth = 1; ctx.strokeRect(-4, -9, 8, 18); ctx.restore();
+    }
     ctx.restore();
-  });
-
-  // 2. Sliding Rail
+  };
+  for (const z of zones) {
+    ctx.save(); ctx.beginPath(); ctx.rect(z.x, z.y, z.w, z.h); ctx.clip();
+    ctx.translate(z.x + z.w / 2, z.y + z.h / 2); ctx.scale(z.w / 70, z.h / 56);
+    sprite(z.isResin ? 'resin' : 'slime', 0, 0, 48);
+    ctx.restore(); ctx.strokeStyle = z.isResin ? '#c38b16' : '#159bb6'; ctx.lineWidth = 1.5; ctx.strokeRect(z.x, z.y, z.w, z.h);
+  }
   if (rail) {
-    ctx.save();
-    const hasX = (rail.ampX || rail.amp || 0) > 0;
-    const hasY = (rail.ampY || 0) > 0;
-    const isPulsing = (rail.pulse || 0) > 0;
-
-    if (hasX) {
-      const rx = rail.ampX || rail.amp;
-      const minX = BASE_PIVOT.x - rx - 30;
-      const maxX = BASE_PIVOT.x + rx + 30;
-      const rY = PIVOT.y;
-      ctx.beginPath();
-      ctx.rect(minX, rY - 8, maxX - minX, 16);
-      ctx.fillStyle = isPulsing ? '#38bdf8' : '#0f172a';
-      ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = isPulsing ? 22 : 8;
-      ctx.fill();
-      ctx.strokeStyle = isPulsing ? '#ffffff' : '#38bdf8';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-    }
-    if (hasY) {
-      const ry = rail.ampY;
-      const minY = BASE_PIVOT.y - ry - 30;
-      const maxY = BASE_PIVOT.y + ry + 30;
-      const rX = PIVOT.x;
-      ctx.beginPath();
-      ctx.rect(rX - 8, minY, 16, maxY - minY);
-      ctx.fillStyle = isPulsing ? '#38bdf8' : '#0f172a';
-      ctx.shadowColor = '#38bdf8';
-      ctx.shadowBlur = isPulsing ? 22 : 8;
-      ctx.fill();
-      ctx.strokeStyle = isPulsing ? '#ffffff' : '#38bdf8';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-    }
-
-    ctx.fillStyle = '#1e293b';
-    ctx.strokeStyle = '#38bdf8';
-    ctx.lineWidth = 2;
-    ctx.fillRect(pivot.x - 18, pivot.y - 12, 36, 24);
-    ctx.strokeRect(pivot.x - 18, pivot.y - 12, 36, 24);
-    ctx.restore();
+    const rx = rail.ampX || rail.amp || 0, ry = rail.ampY || 0;
+    ctx.strokeStyle = palette.rod; ctx.lineWidth = 7;
+    if (rx > 0 && ry > 0) { ctx.beginPath(); ctx.ellipse(BASE_PIVOT.x, BASE_PIVOT.y, rx, ry, 0, 0, Math.PI * 2); ctx.stroke(); }
+    else if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, 8);
+    else if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, 8);
+    ctx.fillStyle = palette.platform; ctx.fillRect(pivot.x - 15, pivot.y - 12, 30, 24); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 15, pivot.y - 12, 30, 24);
   }
-
-  // 3. Portals
-  const drawnConduits = new Set();
-  portals.forEach(port => {
-    const dest = portals.find(p => p.id === port.targetId);
-    if (dest) {
-      const pairKey = `${Math.min(port.id, dest.id)}-${Math.max(port.id, dest.id)}`;
-      if (!drawnConduits.has(pairKey)) {
-        drawnConduits.add(pairKey);
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(port.x, port.y);
-        ctx.quadraticCurveTo(BASE_PIVOT.x, BASE_PIVOT.y + 60, dest.x, dest.y);
-        ctx.strokeStyle = 'rgba(168, 85, 247, 0.35)';
-        ctx.lineWidth = 3;
-        ctx.setLineDash([8, 12]);
-        ctx.lineDashOffset = -(timeElapsed * 35) % 20;
-        ctx.shadowColor = '#c084fc';
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-        ctx.restore();
-      }
-    }
-  });
-
-  portals.forEach(port => {
-    ctx.save();
-    const baseR = (port.r || 24) * 1.55;
-    const pColor = port.color || '#38bdf8';
-
-    const pulseScale = 1.0 + Math.sin(timeElapsed * 4.5 + port.id) * 0.08;
-    const effR = baseR * pulseScale;
-    const gradField = ctx.createRadialGradient(port.x, port.y, effR * 0.25, port.x, port.y, effR * 2.2);
-    gradField.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-    gradField.addColorStop(0.3, pColor);
-    gradField.addColorStop(0.65, 'rgba(168, 85, 247, 0.25)');
-    gradField.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = gradField;
-    ctx.beginPath();
-    ctx.arc(port.x, port.y, effR * 2.2, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.save();
-    ctx.translate(port.x, port.y);
-    const spinRate = (port.id % 2 === 1 ? 1 : -1) * (timeElapsed * 4.0);
-    ctx.rotate(spinRate);
-    const numArms = 5;
-    for (let arm = 0; arm < numArms; arm++) {
-      ctx.rotate((Math.PI * 2) / numArms);
-      ctx.beginPath();
-      ctx.arc(0, 0, effR * 1.15, 0, Math.PI * 0.65);
-      ctx.strokeStyle = (arm % 2 === 0) ? '#ffffff' : pColor;
-      ctx.lineWidth = 4;
-      ctx.shadowColor = pColor;
-      ctx.shadowBlur = 18;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    ctx.beginPath();
-    ctx.arc(port.x, port.y, effR * 0.85, 0, Math.PI * 2);
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 3.5;
-    ctx.shadowColor = '#ffffff';
-    ctx.shadowBlur = 14;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(port.x, port.y, effR * 0.88, 0, Math.PI * 2);
-    ctx.strokeStyle = pColor;
-    ctx.lineWidth = 2.0;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(port.x, port.y, effR * 0.52, 0, Math.PI * 2);
-    ctx.fillStyle = '#020308';
-    ctx.shadowBlur = 0;
-    ctx.fill();
-
-    ctx.font = '900 13px system-ui, sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.shadowColor = 'rgba(0,0,0,0.95)';
-    ctx.shadowBlur = 8;
-    ctx.fillText(port.label || 'WARP', port.x, port.y + effR + 18);
-    ctx.restore();
-  });
-
-  // 4. Boost Rings
-  boostRings.forEach(ring => {
-    ctx.save();
-    ctx.translate(ring.x, ring.y);
-    ctx.rotate(ring.angle || 0);
-    ctx.beginPath();
-    ctx.ellipse(0, 0, ring.r, ring.r * 0.55, 0, 0, Math.PI * 2);
-    ctx.strokeStyle = '#34d399';
-    ctx.lineWidth = 3.5;
-    ctx.shadowColor = palette.accent;
-    ctx.shadowBlur = 14;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(-10, 0); ctx.lineTo(10, 0);
-    ctx.lineTo(4, -5); ctx.moveTo(10, 0); ctx.lineTo(4, 5);
-    ctx.strokeStyle = '#6ee7b7';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.restore();
-  });
-
-  // 5. Lasers
-  lasers.forEach(lz => {
-    if (lz.disabled) return;
-    ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(lz.x1, lz.y1);
-    ctx.lineTo(lz.x2, lz.y2);
-    ctx.strokeStyle = lz.color || '#f43f5e';
-    ctx.lineWidth = 3;
-    ctx.shadowColor = lz.color || '#f43f5e';
-    ctx.shadowBlur = 18;
-    ctx.stroke();
-    ctx.restore();
-  });
-
-  // 6. Switches & Gates
-  switches.forEach(sw => {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
-    ctx.fillStyle = sw.active ? '#10b981' : '#1e293b';
-    ctx.shadowColor = sw.active ? '#34d399' : '#64748b';
-    ctx.shadowBlur = sw.active ? 20 : 6;
-    ctx.fill();
-    ctx.strokeStyle = sw.active ? '#6ee7b7' : '#94a3b8';
-    ctx.lineWidth = 2.5;
-    ctx.stroke();
-
-    if (sw.gate) {
-      if (!sw.active) {
-        ctx.beginPath();
-        ctx.moveTo(sw.gate.x1, sw.gate.y1);
-        ctx.lineTo(sw.gate.x2, sw.gate.y2);
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 4;
-        ctx.shadowColor = '#f59e0b';
-        ctx.shadowBlur = 10;
-        ctx.stroke();
-      } else {
-        ctx.beginPath();
-        ctx.moveTo(sw.gate.x1, sw.gate.y1);
-        ctx.lineTo(sw.gate.x2, sw.gate.y2);
-        ctx.strokeStyle = 'rgba(245, 158, 11, 0.2)';
-        ctx.setLineDash([4, 6]);
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-    }
-    ctx.restore();
-  });
-
-  // 7. Hazard Obstacles
-  obstacles.forEach(ob => {
-    ctx.save();
-    if (ob.ampX > 0) {
-      ctx.beginPath(); ctx.moveTo(ob.baseX - ob.ampX, ob.baseY); ctx.lineTo(ob.baseX + ob.ampX, ob.baseY);
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)'; ctx.lineWidth = 2.5; ctx.setLineDash([4, 4]); ctx.stroke();
-    }
-    const isSpring = ob.restitution && ob.restitution < -1.0;
-    const isAbsorber = ob.restitution && Math.abs(ob.restitution) < 0.2;
-
-    ctx.beginPath(); ctx.arc(ob.x, ob.y, ob.r, 0, Math.PI * 2);
-    ctx.fillStyle = ob.pulse > 0 ? (isSpring ? '#fbbf24' : '#38bdf8') : (isAbsorber ? palette.line : palette.platform);
-    ctx.shadowColor = isSpring ? '#fbbf24' : (isAbsorber ? '#475569' : '#38bdf8');
-    ctx.shadowBlur = ob.pulse > 0 ? 24 : 8; ctx.fill();
-    ctx.strokeStyle = ob.pulse > 0 ? '#fff' : (isSpring ? '#f59e0b' : (isAbsorber ? '#64748b' : '#38bdf8'));
-    ctx.lineWidth = 3 + ob.pulse * 3; ctx.stroke();
-
-    if (isSpring) {
-      ctx.font = 'bold 9px system-ui, sans-serif';
-      ctx.fillStyle = '#fbbf24'; ctx.textAlign = 'center';
-      ctx.fillText(currentLang === 'ja' ? '跳弾' : 'BOUNCE', ob.x, ob.y + 3);
-    }
-    ctx.restore();
-  });
-
-  // 8. Singularities & Repulsors
-  if (blackhole) {
-    const bhList = Array.isArray(blackhole) ? blackhole : [blackhole];
-    bhList.forEach(b => {
-      ctx.save();
-      const bx = b.x, by = b.y;
-      const gradAura = ctx.createRadialGradient(bx, by, b.coreRadius * 0.7, bx, by, b.pullRadius);
-      if (b.isRepulsor) {
-        gradAura.addColorStop(0, 'rgba(56, 189, 248, 0.4)');
-        gradAura.addColorStop(0.4, 'rgba(14, 165, 233, 0.15)');
-        gradAura.addColorStop(1, 'rgba(56, 189, 248, 0)');
-      } else {
-        gradAura.addColorStop(0, 'rgba(168, 85, 247, 0.35)');
-        gradAura.addColorStop(0.4, 'rgba(126, 34, 206, 0.15)');
-        gradAura.addColorStop(1, 'rgba(147, 51, 234, 0)');
-      }
-      ctx.fillStyle = gradAura;
-      ctx.beginPath();
-      ctx.arc(bx, by, b.pullRadius, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.save();
-      ctx.translate(bx, by);
-      ctx.rotate(b.angle || 0);
-      for (let arm = 0; arm < 3; arm++) {
-        ctx.rotate((Math.PI * 2) / 3);
-        ctx.beginPath();
-        ctx.arc(0, 0, b.coreRadius + 14, 0, Math.PI * 0.75);
-        ctx.strokeStyle = b.isRepulsor ? '#38bdf8' : (arm === 0 ? '#f43f5e' : (arm === 1 ? '#a855f7' : '#38bdf8'));
-        ctx.lineWidth = 3.5;
-        ctx.shadowColor = b.isRepulsor ? '#38bdf8' : '#c084fc';
-        ctx.shadowBlur = 12;
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      ctx.beginPath();
-      ctx.arc(bx, by, b.coreRadius + 3, 0, Math.PI * 2);
-      ctx.strokeStyle = b.isRepulsor ? '#38bdf8' : '#c084fc';
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(bx, by, b.coreRadius, 0, Math.PI * 2);
-      ctx.fillStyle = b.isRepulsor ? '#082f49' : '#000000';
-      ctx.fill();
-      ctx.restore();
-    });
+  for (const port of portals) {
+    sprite('portal', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34);
+    ctx.fillStyle = palette.text; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(port.label || (port.targetId ? 'IN' : 'OUT'), port.x, port.y + (port.r || 24) * 1.7 + 14);
   }
-
-  // 9. Targets
-  targets.forEach(t => {
-    if (!t.alive) return;
-    ctx.save();
-    ctx.beginPath(); ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-    if (t.isBomb) {
-      ctx.fillStyle = '#451a03'; ctx.fill();
-      ctx.strokeStyle = '#fb923c'; ctx.lineWidth = 3.5;
-      ctx.shadowColor = '#fb923c'; ctx.shadowBlur = 18; ctx.stroke();
-      ctx.beginPath(); ctx.arc(t.x, t.y, t.r * 0.45, 0, Math.PI * 2); ctx.fillStyle = '#fbbf24'; ctx.fill();
-    } else {
-      ctx.fillStyle = palette.panel; ctx.fill();
-      ctx.strokeStyle = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.lineWidth = 2.5;
-      ctx.shadowColor = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.shadowBlur = 15; ctx.stroke();
-      ctx.beginPath(); ctx.arc(t.x, t.y, t.r * 0.42, 0, Math.PI * 2);
-      ctx.fillStyle = (t.hp && t.hp > 1) ? palette.blue : palette.danger; ctx.fill();
-
-      if (t.hp && t.hp > 1) {
-        ctx.beginPath();
-        ctx.arc(t.x, t.y, t.r + 5, 0, Math.PI * (2 * (t.hp / t.maxHp)));
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-      }
+  for (const ring of boostRings) { ctx.save(); ctx.translate(ring.x, ring.y); ctx.rotate(ring.angle || 0); sprite('boost', 0, 0, ring.r * 48 / 34); ctx.restore(); }
+  for (const laser of lasers) if (!laser.disabled) segment(laser, false, true);
+  for (const sw of switches) {
+    ctx.beginPath(); ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2); ctx.strokeStyle = palette.line; ctx.lineWidth = 1; ctx.stroke();
+    sprite('switch', sw.x, sw.y, sw.r * 1.12);
+    ctx.beginPath(); ctx.arc(sw.x + sw.r * 0.65, sw.y + sw.r * 0.4, 3, 0, Math.PI * 2); ctx.fillStyle = sw.active ? '#23c878' : '#6b7280'; ctx.fill();
+    if (sw.gate) segment(sw.gate, sw.active);
+  }
+  for (const ob of obstacles) {
+    if (ob.ampX > 0) { ctx.save(); ctx.setLineDash([4, 5]); line(ob.baseX - ob.ampX, ob.baseY, ob.baseX + ob.ampX, ob.baseY, palette.muted); ctx.restore(); }
+    const spring = ob.restitution < -1, kind = spring ? 'spring' : Math.abs(ob.restitution) < 0.2 ? 'absorber' : ob.ampX > 0 ? 'moving' : 'bumper';
+    // Decorative spring sits behind the circular pad; pad remains at its hit center.
+    const size = ob.r * 48 / 27; sprite(kind, ob.x, ob.y + (spring ? 8 * size / 48 : 0), size);
+    if (ob.pulse > 0) { ctx.beginPath(); ctx.arc(ob.x, ob.y, ob.r, 0, Math.PI * 2); ctx.strokeStyle = palette.text; ctx.lineWidth = 2; ctx.stroke(); }
+  }
+  for (const b of (blackhole ? Array.isArray(blackhole) ? blackhole : [blackhole] : [])) {
+    const color = b.isRepulsor ? '#27cceb' : '#ab64ee';
+    const aura = ctx.createRadialGradient(b.x, b.y, b.coreRadius, b.x, b.y, Math.max(b.coreRadius + 1, b.pullRadius));
+    aura.addColorStop(0, color + '40'); aura.addColorStop(1, color + '00');
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.pullRadius, 0, Math.PI * 2); ctx.fillStyle = aura; ctx.fill();
+    sprite(b.isRepulsor ? 'repulsor' : 'blackhole', b.x, b.y, b.coreRadius * 48 / 25.5, timeElapsed);
+  }
+  for (const target of targets) {
+    if (!target.alive) continue;
+    const kind = target.isBomb ? 'bomb' : target.hp > 1 ? 'armored' : 'target';
+    const size = target.r * (kind === 'armored' ? 48 / 36 : kind === 'bomb' ? 48 / 27.5 : 48 / 31);
+    sprite(kind, target.x, target.y - (kind === 'bomb' ? 7 * size / 48 : 0), size, 0, target.hp);
+    if (kind === 'armored') { ctx.fillStyle = palette.text; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(String(target.hp), target.x, target.y - target.r - 5); }
+  }
+  const systems = Array.isArray(chainOrSystems) ? chainOrSystems : [chainOrSystems];
+  systems.forEach((chain, index) => {
+    if (chain.alive === false) return;
+    if (chain.trail?.length > 1) {
+      ctx.save(); ctx.globalAlpha = 0.25; ctx.strokeStyle = index ? chain.color.outer : palette.bob; ctx.lineWidth = 2;
+      ctx.beginPath(); chain.trail.forEach((point, i) => i ? ctx.lineTo(point.x, point.y) : ctx.moveTo(point.x, point.y)); ctx.stroke(); ctx.restore();
     }
-    ctx.restore();
+    ctx.save(); if (laserCooldown > 0 && Math.floor(timeElapsed * 16) % 2 === 0) ctx.globalAlpha = 0.35;
+    drawLivePendulum(ctx, chain, pivot, PENDULUM_SCALE, BOB_MIN_R, { style, palette, color: index ? chain.color.outer : '#23c878' }); ctx.restore();
   });
-
-  // 10. Pivot
-  ctx.beginPath(); ctx.arc(pivot.x, pivot.y, 11, 0, Math.PI * 2);
-  ctx.fillStyle = palette.panel; ctx.fill();
-  ctx.strokeStyle = palette.line; ctx.lineWidth = 4; ctx.stroke();
-
-  // 11. Pendulum Arms & Bobs
-  let arr = Array.isArray(chainOrSystems) ? chainOrSystems : [chainOrSystems];
-  arr.forEach((ch, chainIndex) => {
-    if (ch.alive === false) return;
-    if (ch.trail.length > 1) {
-      for (let i = 1; i < ch.trail.length; i++) {
-        ctx.beginPath(); ctx.moveTo(ch.trail[i-1].x, ch.trail[i-1].y); ctx.lineTo(ch.trail[i].x, ch.trail[i].y);
-        const spd = ch.trail[i].speed || 0;
-        const hue = Math.max(0, 200 - spd * 11);
-        const lum = Math.min(85, 45 + spd * 2.2);
-        ctx.strokeStyle = `hsl(${hue}, 100%, ${lum}%)`;
-        ctx.globalAlpha = (i / ch.trail.length) * 0.7; ctx.lineWidth = 4; ctx.stroke();
-      }
-    }
-
-    const isInvulnerable = (laserCooldown > 0 && Math.floor(Date.now() / 60) % 2 === 0);
-    ctx.globalAlpha = isInvulnerable ? 0.35 : 1.0;
-    
-    let px = pivot.x, py = pivot.y;
-    for (let i = 0; i < ch.N; i++) {
-      const nx = px + PENDULUM_SCALE * ch.L[i] * Math.sin(ch.state[i]);
-      const ny = py + PENDULUM_SCALE * ch.L[i] * Math.cos(ch.state[i]);
-      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny);
-      ctx.strokeStyle = palette.platform; ctx.lineWidth = 9; ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(nx, ny);
-      ctx.strokeStyle = palette.rod; ctx.lineWidth = 4.5; ctx.stroke();
-
-      const isTip = (i === ch.N - 1);
-      const baseR = isTip ? (ch.currentR || BOB_MIN_R) : 12;
-      const r = isTip ? baseR * (ch.popScale || 1.0) : baseR;
-
-      const radGrad = ctx.createRadialGradient(nx - r * 0.3, ny - r * 0.3, r * 0.1, nx, ny, r * 1.2);
-      radGrad.addColorStop(0, chainIndex === 0 ? palette.bob : ch.color.outer);
-      radGrad.addColorStop(0.6, chainIndex === 0 ? palette.accent : ch.color.inner);
-      radGrad.addColorStop(1, palette.platform);
-
-      ctx.beginPath();
-      ctx.arc(nx, ny, r, 0, Math.PI * 2);
-      ctx.fillStyle = radGrad;
-
-      if (isTip) {
-        const growthRatio = Math.max(0, Math.min(1, ((ch.currentR || BOB_MIN_R) - BOB_MIN_R) / (BOB_MAX_R - BOB_MIN_R)));
-        ctx.shadowColor = chainIndex === 0 ? palette.bob : ch.color.outer;
-        ctx.shadowBlur = 14 + growthRatio * 16 + ((ch.popScale || 1.0) - 1.0) * 22;
-      }
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      ctx.beginPath();
-      ctx.arc(nx, ny, r * 0.3, 0, Math.PI * 2);
-      ctx.fillStyle = palette.platform;
-      ctx.fill();
-
-      px = nx; py = ny;
-    }
-  });
-
-  ctx.beginPath(); ctx.arc(pivot.x, pivot.y, 4.5, 0, Math.PI * 2); ctx.fillStyle = palette.text; ctx.fill();
-
   // FX Layers
   shockwaves.forEach(sw => {
     ctx.save(); ctx.beginPath(); ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
@@ -435,8 +133,9 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     ctx.font = 'bold 20px system-ui, sans-serif'; ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 5;
     ctx.fillText(f.text, f.x - 20, f.y - 15); ctx.restore();
   });
+  ctx.restore();
+  if (style === 'pixel') { output.save(); output.imageSmoothingEnabled = false; output.drawImage(pixelLayer, 0, 0, pixelLayer.width * 2, pixelLayer.height * 2); output.restore(); }
 }
-
 
 // Main game frame: trails, HUD, overlays, and the full scene.
 export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearFlashTimer }) {
@@ -491,17 +190,14 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
   if (currentWind && Math.abs(currentWind.currentFx || currentWind.fx) > 0.05) {
     const wFx = currentWind.currentFx || currentWind.fx;
     ctx.save();
-    ctx.strokeStyle = wFx > 0 ? 'rgba(56, 189, 248, 0.22)' : 'rgba(244, 63, 94, 0.22)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([14, 22]);
-    const flowShift = (timeElapsed * wFx * 40) % 36;
-    for (let row = 60; row < H; row += 85) {
-      ctx.beginPath();
-      ctx.moveTo(0, row);
-      ctx.lineTo(W, row);
-      ctx.lineDashOffset = -flowShift;
-      ctx.stroke();
+    ctx.globalAlpha = 0.45;
+    for (let row = 110; row < H; row += 150) {
+      for (let column = 80; column < W; column += 240) {
+        ctx.save(); ctx.translate(column, row); if (wFx < 0) ctx.scale(-1, 1);
+        drawArtwork(ctx, 'wind', 0, 0, 30 + Math.min(10, Math.abs(wFx) * 2), { style: artworkStyleForTheme(palette.theme), palette }); ctx.restore();
+      }
     }
+    ctx.globalAlpha = 1;
     ctx.font = 'bold 12px system-ui, sans-serif';
     ctx.fillStyle = wFx > 0 ? palette.blue : palette.danger;
     const dirSym = wFx > 0 ? '→' : '←';

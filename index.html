@@ -39,6 +39,16 @@
 
 <!-- Tutorial Screen -->
 <div id="tutorialScreen" class="hidden">
+  <nav class="tutorial-nav" aria-label="Tutorial sections">
+    <button id="tutorialBasics" class="btn-nav" aria-pressed="true">HOW TO PLAY</button>
+    <button id="tutorialGimmicks" class="btn-nav" aria-pressed="false">GIMMICK GUIDE</button>
+  </nav>
+  <section id="gimmickGuide" hidden aria-labelledby="gimmickGuideTitle">
+    <h2 id="gimmickGuideTitle">Gimmick guide</h2>
+    <p id="gimmickGuideIntro">Learn each object by its image and function.</p>
+    <div id="gimmickCards"></div>
+    <button id="gimmickBack" class="btn-nav">BACK TO HOW TO PLAY</button>
+  </section>
   <canvas id="tutorialCanvas"></canvas>
   <div class="tutorial-guide">
     <div class="guide-intro" id="tutIntro">
@@ -209,7 +219,7 @@
 </dialog>
 <dialog id="artworkDialog" aria-labelledby="artworkTitle">
   <h2 id="artworkTitle">Artwork preview</h2>
-  <p id="artworkDescription">Compare new artwork before applying it to gameplay. No scores or progress are recorded here.</p>
+  <p id="artworkDescription">Explore the artwork used in gameplay. No scores or progress are recorded here.</p>
   <label for="artworkStyle" id="artworkStyleLabel">Style</label>
   <select id="artworkStyle"><option value="auto">Match theme</option><option value="pixel">Pixel Arcade</option><option value="vector">Clean Vector</option></select>
   <strong id="artworkStyleName"></strong>

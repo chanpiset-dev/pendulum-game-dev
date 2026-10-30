@@ -439,3 +439,22 @@
 .artwork-actions { position: sticky; bottom: -18px; padding: 12px 0; margin-top: 12px; background: var(--panel); border-top: 1px solid var(--line); }
 #artworkClose { min-height: 44px; }
 @media (max-width: 600px) { #artworkGallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } #artworkStyleName { display: block; } }
+
+.tutorial-nav { position: absolute; top: 10px; left: 4%; right: 4%; display: flex; gap: 8px; justify-content: center; z-index: 5; }
+.tutorial-nav button { min-height: 44px; }
+.tutorial-nav [aria-pressed=true] { border-color: var(--accent); }
+#tutorialScreen .tutorial-guide { top: 70px; max-height: 40vh; overflow: auto; }
+#tutorialScreen [hidden] { display: none; }
+#gimmickGuide { position: absolute; top: 70px; bottom: 16px; left: 4%; right: 4%; z-index: 4; overflow: auto; padding: 16px; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); }
+#gimmickGuide h2 { font: 600 1.2rem var(--heading-font); line-height: 1.6; }
+#gimmickGuideIntro { color: var(--muted); }
+#gimmickCards { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; }
+.gimmick-card { min-width: 0; background: var(--canvas); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.gimmick-card canvas { display: block; width: 160px; max-width: 100%; height: auto; margin: auto; }
+.gimmick-card h3 { margin: 8px 12px; font-size: 0.95rem; }
+.gimmick-card p { margin: 8px 12px 14px; font: 0.85rem/1.5 var(--ui-font); color: var(--muted); }
+#gimmickBack { position: sticky; bottom: 0; min-height: 44px; margin-top: 16px; }
+@media(max-width:800px) { #gimmickCards { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:420px) { #gimmickCards { grid-template-columns: 1fr; } }
+
+:root:is([data-theme='neon-arcade'],[data-theme='pocket-console'],[data-theme='16bit-adventure']) :is(#canvas,#titleCanvas,#tutorialCanvas) { image-rendering: pixelated; }

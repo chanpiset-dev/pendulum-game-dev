@@ -1,6 +1,7 @@
 export const I18N = {
   en: {
-    artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Compare new artwork before applying it to gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
+    tutorialBasics: 'HOW TO PLAY', tutorialGimmicks: 'GIMMICK GUIDE', gimmickGuideTitle: 'Gimmick guide', gimmickGuideIntro: 'Learn each object by its image and function. Artwork follows your selected theme.', gimmickBack: 'BACK TO HOW TO PLAY',
+    artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Explore the artwork used in gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
     more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
     appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
     groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
@@ -71,7 +72,8 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
-    artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームに適用する前に新しい見た目を比較できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
+    tutorialBasics: '遊び方', tutorialGimmicks: '仕掛けガイド', gimmickGuideTitle: '仕掛けガイド', gimmickGuideIntro: '画像と機能で仕掛けを確認しましょう。見た目は選択中のテーマに合わせます。', gimmickBack: '遊び方に戻る',
+    artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームで使われるアートワークを確認できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
     more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
     appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
     groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
@@ -209,6 +211,7 @@ export function createI18nController({
   $('launchSettingsLabel').textContent = t.launchSettings;
   refreshProgress?.();
   $('settingsTitle').textContent = t.settingsTitle;
+  for (const id of ['tutorialBasics', 'tutorialGimmicks', 'gimmickGuideTitle', 'gimmickGuideIntro', 'gimmickBack']) $(id).textContent = t[id];
   $('btnArtworkPreview').textContent = t.artworkButton;
   for (const id of ['artworkTitle', 'artworkDescription', 'artworkStyleLabel', 'artworkClose']) $(id).textContent = t[id];
   $('artworkStyle').querySelector('option[value=auto]').textContent = t.artworkAuto;

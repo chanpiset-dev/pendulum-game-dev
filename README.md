@@ -71,8 +71,16 @@ Run `node tests/compact-layout.cjs` for mobile header sizing in every theme/mode
 
 ## Artwork preview
 
-Use **SETTINGS → PREVIEW ARTWORK** to review the next visual direction before changing live-stage artwork. The separate demonstration scene and 25 specimen cards cover the pendulum, multi-link chains, clones, targets, bombs and stage mechanics. Retro themes automatically use **Pixel Arcade**; the other six themes use **Clean Vector**. The preview style selector allows a direct comparison without saving an override.
+Use **SETTINGS → PREVIEW ARTWORK** to inspect and compare the artwork used in live stages. The separate demonstration scene and 25 specimen cards cover the pendulum, multi-link chains, clones, targets, bombs and stage mechanics. Retro themes automatically use **Pixel Arcade**; the other six themes use **Clean Vector**. The preview style selector allows a direct comparison without saving an override.
 
-This first preview does not replace artwork in playable stages. It never runs gameplay physics or records progress. Opening Settings pauses the attempt; Back to Settings returns there, and normal Resume continues the attempt. Reduced-motion preferences disable the demonstration animation. Pixel artwork is drawn at low resolution and scaled with smoothing disabled; vector artwork uses procedural Canvas 2D paths. The same drawing functions can be applied to gameplay after visual review.
+Playable stages now use this artwork automatically: Pixel Arcade for the three retro themes and Clean Vector for the other six. The separate preview never runs gameplay physics or records progress. Opening Settings pauses the attempt; Back to Settings returns there, and normal Resume continues the attempt. Reduced-motion preferences disable the demonstration animation. Pixel artwork is drawn at low resolution and scaled with smoothing disabled; vector artwork uses procedural Canvas 2D paths. The shared procedural drawing functions are used by gameplay, tutorial illustrations and the preview.
 
 Verify with `node tests/artwork-preview.cjs` for style mapping and specimen rendering across all 18 theme/mode combinations, mobile sizing, localization and save isolation.
+
+## Live artwork and gimmick guide
+
+The old object renderer has been replaced. Targets have red/white bullseyes, armored targets show shield segments and remaining hits, bombs show a fuse and warning symbol, and pendulums draw the actual articulated positions with smaller joints and a distinct tip. Rails, portals, boosts, lasers, switches, gates, bumpers, force fields, wind and viscous zones use the new art. Retro object layers render at half resolution and scale without smoothing; other themes use smooth vectors. Existing simulation coordinates, collision radii, target health, forces, timers, scoring and saves are unchanged.
+
+On the Home screen choose **TUTORIAL → GIMMICK GUIDE** for 25 illustrated objects with their actual functions. Both images and text follow the current theme/language. The guide stops the background tutorial simulation while open; **BACK TO HOW TO PLAY** resumes it. Bomb fuses and bumper springs are decorative, and round contact surfaces remain the hit areas. Reflector illustrations show angled arrangements of circular bumpers to match the stage geometry.
+
+Verify with `node tests/live-artwork.cjs`: both styles render all 250 substages without mutating physics or saved progress, and the illustrated mobile guide supports English/Japanese and safe tutorial transitions.

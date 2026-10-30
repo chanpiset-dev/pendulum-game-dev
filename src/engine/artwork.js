@@ -11,7 +11,7 @@ export const ARTWORK_ITEMS = [
 ];
 export const artworkStyleForTheme = theme => ['neon-arcade', 'pocket-console', '16bit-adventure'].includes(theme) ? 'pixel' : 'vector';
 let pixelCanvas;
-function paint(ctx, kind, p, time, pixel) {
+function paint(ctx, kind, p, time, pixel, hits = 4) {
   const ink = '#102238', white = '#f3fbff', red = '#ed4057', blue = '#159fe3', cyan = '#27cceb', green = '#23c878', amber = '#efb02e', purple = '#ab64ee';
   ctx.lineCap = pixel ? 'square' : 'round'; ctx.lineJoin = pixel ? 'miter' : 'round';
   const path = (points, color, width = 3, close = false, fill) => {
@@ -49,7 +49,7 @@ function paint(ctx, kind, p, time, pixel) {
   if (kind === 'multi') { chain([[-28, -34], [-28, -12], [-10, 0], [10, 8], [28, 28]]); return; }
   if (kind === 'clones') { chain([[0, -32], [-18, -4], [-29, 26]], green); chain([[0, -32], [19, -2], [29, 27]], purple); return; }
   if (kind === 'target' || kind === 'armored') {
-    if (kind === 'armored') for (let i = 0; i < 4; i++) ring(31, blue, i * Math.PI / 2 + 0.1, (i + 1) * Math.PI / 2 - 0.1);
+    if (kind === 'armored') { const count = Math.min(8, Math.max(2, hits)); for (let i = 0; i < count; i++) ring(31, blue, i * Math.PI * 2 / count + 0.1, (i + 1) * Math.PI * 2 / count - 0.1); }
     disk(0, 0, kind === 'armored' ? 23 : 30, red); disk(0, 0, 20, white, white, 1); disk(0, 0, 13, red, red, 1); disk(0, 0, 5, white, white, 1); return;
   }
   if (kind === 'bomb') {
@@ -72,7 +72,7 @@ function paint(ctx, kind, p, time, pixel) {
   }
   if (kind === 'switch' || kind === 'gate') {
     if (kind === 'gate') { panel(12, -32, 15, 62, p.platform); for (let y = -25; y < 25; y += 14) path([[14, y + 8], [24, y]], amber, 5); panel(-32, 13, 25, 13, p.platform); panel(-29, 8, 19, 9, amber); path([[-6, 18], [6, 18]], amber, 2); disk(20, -38, 4, green); }
-    else { panel(-30, 10, 60, 18, p.platform); panel(-23, -1, 42, 16, amber); panel(-8, -23, 16, 28, amber); disk(20, 19, 4, green); }
+    else { panel(-30, 10, 60, 18, p.platform); panel(-23, -1, 42, 16, amber); panel(-8, -23, 16, 28, amber); disk(20, 19, 4, '#64748b'); }
     return;
   }
   if (['rail', 'lift', 'orbit'].includes(kind)) {
@@ -98,14 +98,36 @@ function paint(ctx, kind, p, time, pixel) {
     for (let i = 0; i < 4; i++) { const x = -25 + i * 17, y = Math.sin(i * 4) * 16; if (kind === 'resin') path([[x, -27], [x, y]], color, 2); disk(x, y, 3 + i % 2, color, color, 1); }
     return;
   }
-  if (kind === 'reflector') { path([[-30, 24], [22, -20], [29, -12], [-23, 32]], p.rod, 3, true, p.platform); arrow(-30, -25, 23, 24, cyan); arrow(-3, -4, 25, -26, amber); }
+  if (kind === 'reflector') { for (const [x,y] of [[-24,22],[-4,2],[16,-18]]) disk(x,y,10,blue); arrow(-32,-25,21,23,cyan); arrow(-7,-5,30,-2,amber); }
 }
-export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette, time = 0 }) {
+export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette, time = 0, hits = 4 }) {
   ctx.save();
   if (style === 'pixel') {
     pixelCanvas ||= document.createElement('canvas'); pixelCanvas.width = 64; pixelCanvas.height = 64;
-    const small = pixelCanvas.getContext('2d'); small.save(); small.translate(32, 32); small.scale(0.65, 0.65); paint(small, kind, palette, time, true); small.restore();
+    const small = pixelCanvas.getContext('2d'); small.save(); small.translate(32, 32); small.scale(0.65, 0.65); paint(small, kind, palette, time, true, hits); small.restore();
     ctx.imageSmoothingEnabled = false; ctx.drawImage(pixelCanvas, x - radius, y - radius, radius * 2, radius * 2);
-  } else { ctx.translate(x, y); ctx.scale(radius / 48, radius / 48); paint(ctx, kind, palette, time, false); }
+  } else { ctx.translate(x, y); ctx.scale(radius / 48, radius / 48); paint(ctx, kind, palette, time, false, hits); }
+  ctx.restore();
+}
+
+// Draw real articulated geometry; lengths, angles and hit radii are supplied by physics.
+export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, palette, color = '#23c878' }) {
+  ctx.save(); ctx.lineCap = style === 'pixel' ? 'square' : 'round';
+  let x = pivot.x, y = pivot.y;
+  ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fillStyle = palette.rod; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
+  for (let i = 0; i < chain.N; i++) {
+    const nx = x + scale * chain.L[i] * Math.sin(chain.state[i]), ny = y + scale * chain.L[i] * Math.cos(chain.state[i]);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = 8; ctx.stroke();
+    ctx.strokeStyle = palette.rod; ctx.lineWidth = 4; ctx.stroke();
+    const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : 5;
+    let fill = tip ? color : palette.rod;
+    if (tip && style !== 'pixel') {
+      fill = ctx.createRadialGradient(nx - radius / 3, ny - radius / 3, 1, nx, ny, radius);
+      fill.addColorStop(0, '#f3fbff'); fill.addColorStop(0.35, color); fill.addColorStop(1, '#102238');
+    }
+    ctx.beginPath(); ctx.arc(nx, ny, Math.max(1, radius - 1), 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
+    if (tip && style === 'pixel') { ctx.fillStyle = '#f3fbff'; ctx.fillRect(nx - radius / 2, ny - radius / 2, Math.max(2, radius / 3), Math.max(2, radius / 3)); }
+    x = nx; y = ny;
+  }
   ctx.restore();
 }

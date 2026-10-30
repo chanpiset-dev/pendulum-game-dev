@@ -1,3 +1,5 @@
+import { drawLivePendulum, artworkStyleForTheme } from './engine/artwork.js';
+import { installGimmickGuide } from './gimmick-guide.js';
 import { installArtworkPreview } from './artwork-preview.js';
 import { installCompactLayout } from './compact-layout.js';
 import { createAppearance } from './appearance.js';
@@ -123,27 +125,7 @@ function loopTitle() {
     }
   }
 
-  let cx = tpivot.x, cy = tpivot.y;
-  for (let i = 0; i < titleChain.N; i++) {
-    const nx = cx + scale * titleChain.L[i] * Math.sin(titleChain.state[i]);
-    const ny = cy + scale * titleChain.L[i] * Math.cos(titleChain.state[i]);
-    
-    tCtx.beginPath(); tCtx.moveTo(cx, cy); tCtx.lineTo(nx, ny);
-    tCtx.strokeStyle = getCanvasPalette().platform; tCtx.lineWidth = 5; tCtx.stroke();
-    tCtx.beginPath(); tCtx.moveTo(cx, cy); tCtx.lineTo(nx, ny);
-    tCtx.strokeStyle = getCanvasPalette().rod; tCtx.lineWidth = 2.5; tCtx.stroke();
-
-    const radGrad = tCtx.createRadialGradient(nx - 2, ny - 2, 2, nx, ny, 10);
-    radGrad.addColorStop(0, getCanvasPalette().text);
-    radGrad.addColorStop(0.5, getCanvasPalette().bob);
-    radGrad.addColorStop(1, '#1e3a8a');
-    tCtx.beginPath(); tCtx.arc(nx, ny, 10, 0, Math.PI * 2);
-    tCtx.fillStyle = radGrad;
-    tCtx.shadowBlur = 10; tCtx.shadowColor = '#60a5fa';
-    tCtx.fill(); tCtx.shadowBlur = 0;
-    cx = nx; cy = ny;
-  }
-  titleAnimId = requestAnimationFrame(loopTitle);
+  drawLivePendulum(tCtx, titleChain, tpivot, scale, 10, { style: artworkStyleForTheme(getCanvasPalette().theme), palette: getCanvasPalette() });
 }
 titleAnimId = requestAnimationFrame(loopTitle);
 
@@ -186,6 +168,7 @@ function initTutState() {
 }
 
 function startTutorial() {
+  document.getElementById('tutorialBasics').click();
   unlockAudio();
   initWindAudio();
   $('titleScreen').classList.add('hidden');
@@ -1796,6 +1779,14 @@ const bindS = (id, vId, sfx='') => {
 };
 bindS('sliderN', 'valN'); bindS('sliderCount', 'valCount'); bindS('sliderAngle', 'valAngle', '°'); bindS('sliderVel', 'valVel');
 
+installGimmickGuide({ $, language: () => currentLang,
+  pauseDemo: () => { if (tutAnimId) cancelAnimationFrame(tutAnimId); tutAnimId = null; suspendAudio(); },
+  resumeDemo: () => {
+    if ($('tutorialScreen').classList.contains('hidden')) return;
+    if (tutAnimId) cancelAnimationFrame(tutAnimId);
+    unlockAudio(); tutLastTime = performance.now(); tutAnimId = requestAnimationFrame(loopTutorial);
+  }
+});
 installArtworkPreview({ $, language: () => currentLang });
 installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,

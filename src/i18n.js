@@ -1,5 +1,10 @@
 export const I18N = {
   en: {
+    jumpCurrent: 'JUMP TO CURRENT',
+    jumpFurthest: 'JUMP TO FURTHEST UNLOCKED',
+    starRulesTitle: 'How stars work',
+    starRules: '★ Clear the stage. +★ Finish with at least one pulse left (automatic when pulses are locked). +★ Finish with at least 35% of the time remaining.',
+    starClear: 'Clear', starPulse: 'Pulse bonus', starSpeed: 'Speed bonus',
     titleSubtitle: "Pure chaos ahead! Aim, launch, and boost mid-flight!",
     startBtn: "START GAME",
     tutorialBtn: "TUTORIAL",
@@ -59,6 +64,11 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    jumpCurrent: '現在のステージへ',
+    jumpFurthest: '解放済みの最終ステージへ',
+    starRulesTitle: '星の獲得条件',
+    starRules: '★ ステージをクリア。＋★ パルスを1回以上残す（パルス使用不可のステージでは自動獲得）。＋★ 制限時間を35%以上残してクリア。',
+    starClear: 'クリア', starPulse: 'パルスボーナス', starSpeed: 'タイムボーナス',
     titleSubtitle: "放てばカオス！ 狙いを定めて、空中でブースト！",
     startBtn: "START GAME",
     tutorialBtn: "TUTORIAL",
@@ -180,6 +190,11 @@ export function createI18nController({
 
   $('btnDismissBriefing').textContent = t.briefingGotIt;
   $('uiModalTitle').textContent = t.modalTitle;
+  $('btnJumpCurrent').textContent = t.jumpCurrent;
+  $('btnJumpFurthest').textContent = t.jumpFurthest;
+  $('starRulesTitle').textContent = t.starRulesTitle;
+  $('starRulesBriefing').textContent = t.starRules;
+  $('starRulesMap').textContent = t.starRules;
 
   const el = $('hudPulse');
   if (el) {

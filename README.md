@@ -31,3 +31,11 @@ After a clear, failure, or Stop, use **REPLAY LAST ATTEMPT** in the header. The 
 Replay captures the canvas at up to 10 frames per second at 640×480. It retains at most 600 compressed frames, reducing the sampling rate for long attempts. It is a visual recording, not a full-resolution video or a saved download. Paused time is excluded.
 
 Verify with `node tests/hints-replay.cjs` (requires Playwright and Chromium).
+
+## Progress navigation and stars
+
+In **STAGES**, **JUMP TO CURRENT** scrolls to the selected stage, while **JUMP TO FURTHEST UNLOCKED** scrolls to your furthest available stage without changing your selection.
+
+Star rules are available in briefings and under **How stars work** in stage selection. A clear earns one star, keeping at least one pulse earns another (automatically awarded when pulses are locked), and finishing with at least 35% time remaining earns the third. The clear screen shows which bonuses were earned. Existing best star records are preserved; replay a stage to improve them.
+
+Saved-data recovery and optional replay-storage failures are handled quietly. Actual storage-access failures still show a warning so players know their latest progress may not persist.

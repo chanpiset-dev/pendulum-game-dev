@@ -32,7 +32,7 @@ test('Corrupt records recover independently and retain valid entries', () => {
   assert.equal(loaded.language, 'en');
   assert.equal(loaded.unlocked, 2, 'Earned clears recover the damaged unlock counter');
   assert.deepEqual(loaded.times, {});
-  assert.equal(f.statuses.at(-1).kind, 'warning');
+  assert.equal(f.statuses.at(-1).kind, 'ok');
 });
 
 test('Unavailable storage yields playable defaults and a visible error status', () => {
@@ -52,7 +52,8 @@ test('Optional ghost-write failure does not block any essential progress', () =>
   assert.deepEqual(JSON.parse(f.data.get(keys.scores)), progress().scores);
   assert.deepEqual(JSON.parse(f.data.get(keys.stars)), progress().stars);
   assert.deepEqual(JSON.parse(f.data.get(keys.times)), progress().times);
-  assert.match(f.statuses.at(-1).message, /optional replay/);
+  assert.equal(f.statuses.at(-1).kind, 'ok');
+  assert.equal(f.statuses.at(-1).message, 'Progress saved.');
 });
 
 test('A failing score write does not stop unlock, star or time writes', () => {
@@ -75,7 +76,7 @@ test('Quota recovery frees optional ghosts before retrying essential progress', 
   f.store.saveProgress({ ...progress(), ghosts: null });
   assert.equal(f.data.get(keys.unlocked), '2');
   assert.equal(f.data.has(keys.ghosts), false);
-  assert.equal(f.statuses.at(-1).kind, 'warning');
+  assert.equal(f.statuses.at(-1).kind, 'ok');
 });
 
 test('Saving and reloading retains new best-time records', () => {
@@ -91,4 +92,15 @@ test('Replay storage has bounded points and prefers recently updated stages', ()
   assert.ok(Object.values(bounded).flat().length <= 20000);
   assert.ok(Object.values(bounded).every(points => points.length <= 900));
   assert.ok(bounded.stage_50_sub_1);
+});
+
+test('Successful retry clears a genuine save failure', () => {
+  const f = fixture();
+  const write = f.storage.setItem;
+  f.storage.setItem = () => { throw new Error('Denied'); };
+  f.store.saveProgress(progress());
+  assert.equal(f.statuses.at(-1).kind, 'error');
+  f.storage.setItem = write;
+  f.store.saveProgress(progress());
+  assert.equal(f.statuses.at(-1).kind, 'ok');
 });

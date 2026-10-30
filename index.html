@@ -85,6 +85,7 @@
           <p class="briefing-desc" id="briefingDesc">Line up your angle and let gravity swing the pendulum into every red target before time runs out!</p>
           <ul id="mechanicHints" class="mechanic-hints"></ul>
           <div class="briefing-tip" id="briefingTip">💡 <strong>Tip:</strong> Drag the bob or adjust Initial Angle slider, then press PLAY.</div>
+          <p id="starRulesBriefing" class="star-rules"></p>
           <button id="btnDismissBriefing" class="btn-start-game btn-briefing">GOT IT</button>
         </div>
       </div>
@@ -95,6 +96,7 @@
         <div class="star-container" id="starContainer">
           <div class="star">★</div><div class="star">★</div><div class="star">★</div>
         </div>
+        <p id="starResult" class="star-rules" role="status"></p>
         <p id="overlayDesc">Score: +150</p>
         <div class="overlay-btns">
           <button id="overlayMapBtn" class="btn-large secondary">STAGES</button>
@@ -154,8 +156,10 @@
     <div class="modal-body">
       <div class="stage-navigation">
         <button id="btnJumpCurrent" class="btn-nav">JUMP TO CURRENT</button>
+        <button id="btnJumpFurthest" class="btn-nav">JUMP TO FURTHEST UNLOCKED</button>
         <span>Best times are recorded for new clears.</span>
       </div>
+      <details class="star-rules"><summary id="starRulesTitle">How stars work</summary><p id="starRulesMap"></p></details>
       <div class="stage-sections" id="stageGrid"></div>
     </div>
   </div>

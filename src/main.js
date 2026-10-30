@@ -1,6 +1,7 @@
 import { unlockAudio, suspendAudio, initWindAudio, updateWindSpeed, playSnd, triggerHaptic } from './audio.js';
 import { createAttemptReplay } from './replay.js';
 import { getMechanicHints } from './tutorial-hints.js';
+import { calculateStageStars } from './scoring.js';
 import { rk4 } from './physics.js';
 import { createProgressStore, limitGhosts } from './progress.js';
 import { TOTAL_STAGES, SUBSTAGES_PER_STAGE, STAGE_ORDER, STAGE_CONFIGS, indexToStageSub, stageSubToIndex, stageSubToKey } from './data/stage-configs.js';
@@ -347,6 +348,7 @@ let lastTime = 0;
 let clearingTimer = 0;
 let currentStageScore = 0;
 let pulsesLeft = 3;
+let startingPulses = 3;
 
 let screenShake = 0;
 let hitStopTimer = 0;
@@ -444,6 +446,7 @@ function showStageBriefing(stageNum, subNum, displayStageNum = stageNum) {
   const isJa = (currentLang === 'ja');
   const localized = (isJa && cfg.ja) ? cfg.ja : cfg;
 
+  $('starRulesBriefing').hidden = false;
   $('briefingTag').textContent = `STAGE ${displayStageNum}-${subNum} • ${(localized.element || cfg.element).toUpperCase()}`;
   $('briefingTitle').textContent = localized.name;
   $('briefingDesc').textContent = localized.desc;
@@ -725,6 +728,7 @@ function initVisualsOnly() {
 function fire() {
   if (gameStatus !== 'setup') return;
   stopGameLoop();
+  startingPulses = pulsesLeft;
   attemptReplay.begin($('stageDisplay').textContent.trim());
   $('stageBriefing').classList.add('hidden');
   launchParameters = ['sliderN', 'sliderCount', 'sliderAngle', 'sliderVel'].map(id => $(id).value);
@@ -1460,9 +1464,7 @@ function update(rawDt) {
       const timeBonus = timeLimit > 90 ? 0 : Math.round(remainExact * 100);
       const finalScore = currentStageScore + timeBonus;
 
-      let stars = 1;
-      if (pulsesLeft > 0 || pulsesLeft === Infinity) stars++;
-      if (remainExact >= timeLimit * 0.35) stars++;
+      const { stars, pulseBonus, speedBonus } = calculateStageStars({ startingPulses, pulsesLeft, timeRemaining: remainExact, timeLimit });
 
       saveData(currentStageIndex, finalScore, currentRunHistory, stars, timeElapsed);
       const { stage, sub, displayStage } = indexToStageSub(currentStageIndex);
@@ -1471,6 +1473,7 @@ function update(rawDt) {
         ? (displayStage >= TOTAL_STAGES ? t.allCleared : t.enterStageText(displayStage + 1)) 
         : t.nextBtnText(displayStage, sub + 1);
       showOverlay(t.stageClear, `Score: +${finalScore} (Target: ${currentStageScore} + Time: ${timeBonus})`, nextBtnText, true, stars);
+      $('starResult').textContent = `${t.starClear} ✓ · ${t.starPulse} ${pulseBonus ? '✓' : '—'} · ${t.starSpeed} ${speedBonus ? '✓' : '—'}`;
     }
   }
 }
@@ -1588,6 +1591,7 @@ function showOverlay(title, desc, btnText, isClear, stars = 0) {
   $('overlayTitle').className = isClear ? 'text-clear' : 'text-fail';
   $('overlayDesc').textContent = desc;
 
+  $('starResult').textContent = '';
   const sc = $('starContainer');
   if (isClear) {
     sc.style.display = 'flex';
@@ -1725,14 +1729,15 @@ function renderStageSelect() {
 }
 
 function openStageSelectModal() { renderStageSelect(); $('mapModal').classList.add('active'); }
-$('btnJumpCurrent').addEventListener('click', () => {
-  const idx = currentStageIndex === 'sandbox' ? unlockedStageIndex : currentStageIndex;
+function jumpToStage(idx) {
   const button = $(`stageButton_${idx}`);
   if (button) {
     button.scrollIntoView({ block: 'center', behavior: 'instant' });
     if (!button.disabled) button.focus({ preventScroll: true });
   }
-});
+}
+$('btnJumpCurrent').addEventListener('click', () => jumpToStage(currentStageIndex === 'sandbox' ? unlockedStageIndex : currentStageIndex));
+$('btnJumpFurthest').addEventListener('click', () => jumpToStage(unlockedStageIndex));
 function closeStageSelectModal() { $('mapModal').classList.remove('active'); }
 
 $('btnOpenMap').addEventListener('click', openStageSelectModal);
@@ -1744,6 +1749,7 @@ $('btnHints').addEventListener('click', () => {
   pauseGame();
   const info = indexToStageSub(currentStageIndex);
   if (currentStageIndex === 'sandbox') {
+    $('starRulesBriefing').hidden = true;
     $('briefingTitle').textContent = currentLang === 'ja' ? 'フリープレイ' : 'Free Play';
     $('briefingTag').textContent = '';
     $('briefingDesc').textContent = currentLang === 'ja' ? '角度を調整し、先端をドラッグして放すと開始します。' : 'Adjust the angle, or drag the tip and release to launch.';

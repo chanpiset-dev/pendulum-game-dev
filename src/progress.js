@@ -15,11 +15,10 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
   function report(success = 'Progress loaded.') {
     const values = [...problems.values()];
     const failed = values.some(value => value === 'failed');
-    onStatus({ kind: failed ? 'error' : values.length ? 'warning' : 'ok', message: failed
+    // Recovery and optional replay failures must not worry players when essential
+    // progress remains usable. Keep reporting genuine storage-access failures.
+    onStatus({ kind: failed ? 'error' : 'ok', message: failed
       ? 'Progress could not be fully saved or loaded. You can keep playing; changes may last only for this session.'
-      : values.includes('optional') ? 'Progress saved; optional replay data could not be saved.'
-      : values.includes('evicted') ? 'Optional replay data was cleared to make room for progress.'
-      : values.length ? 'Some saved settings were invalid. Valid progress was kept; defaults were used where needed.'
       : success });
   }
   function read(key) {

@@ -1078,3 +1078,8 @@ button.action:active { transform: scale(0.96); }
 .replay-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
 #replaySpeed { background: #07120a; color: #e6ffed; padding: 8px; }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
+.star-rules { font-size: 0.8rem; line-height: 1.6; color: var(--muted); }
+details.star-rules { margin-bottom: 12px; }
+details.star-rules summary { cursor: pointer; color: var(--yellow); }
+
+.briefing-box { max-height: 100%; overflow-y: auto; box-sizing: border-box; }

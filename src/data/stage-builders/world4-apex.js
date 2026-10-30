@@ -675,7 +675,7 @@ export function buildWorld(stage, sub, BASE_PIVOT) {
 
   // --- STAGE 41: CHAOS CASCADE / INVERTED WHIP (4-Link Inverted Gravity) ---
   if (stage === 41) {
-    const invInterval = 999; // stays inverted
+    gravity = -9.8; // Constant upward gravity; no periodic inversion.
 
     if (sub === 1) {
       // 41-1: Clean Inverted Ceiling Arc
@@ -722,7 +722,7 @@ export function buildWorld(stage, sub, BASE_PIVOT) {
         tgs.push({ x: BASE_PIVOT.x + Math.sin(a) * 230, y: BASE_PIVOT.y - Math.cos(a) * 230, r: 18, alive: true, hp: isArmored ? 2 : 1, maxHp: isArmored ? 2 : 1 });
       }
     }
-    return { maxN: 4, lockedN: 4, maxClone: 1, timeLimit: 18 + sub * 2, targets: tgs, obstacles: obs, wind: wind, gravityInversionInterval: invInterval };
+    return { maxN: 4, lockedN: 4, maxClone: 1, timeLimit: 18 + sub * 2, targets: tgs, obstacles: obs, wind: wind, gravity: gravity };
   }
 
 
@@ -1388,7 +1388,7 @@ export function buildWorld(stage, sub, BASE_PIVOT) {
       tgs.push({ x: BASE_PIVOT.x - 145, y: BASE_PIVOT.y + 160, r: 18, alive: true, hp: 2, maxHp: 2 });
       tgs.push({ x: BASE_PIVOT.x + 145, y: BASE_PIVOT.y + 160, r: 18, alive: true, hp: 2, maxHp: 2 });
     }
-    return { maxN: 3, lockedN: 3, maxClone: 1, timeLimit: 22 + sub * 2, targets: tgs, obstacles: obs, rail: rail, boostRings: boostRings, lasers: lasers, portals: portals, gravityInversionInterval: invInterval };
+    return { maxN: 3, lockedN: 3, maxClone: 1, timeLimit: 22 + sub * 2, targets: tgs, obstacles: obs, rail: rail, wind: wind, boostRings: boostRings, lasers: lasers, portals: portals, gravityInversionInterval: invInterval };
   }
 
   return null; // This world does not define the requested stage.

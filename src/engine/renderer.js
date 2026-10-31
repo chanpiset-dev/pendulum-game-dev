@@ -87,15 +87,9 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     sprite(b.isRepulsor ? 'repulsor' : 'blackhole', b.x, b.y, b.coreRadius * 48 / 25.5, artworkTime);
   }
   for (const target of targets) {
-    if (!target.alive) {
-      const age = timeElapsed - (target.artworkHitTime ?? -100);
-      if (style === 'shaded' && !target.isBomb && age >= 0 && age < 0.12 && !artworkMotionPreference.matches) {
-        ctx.save(); ctx.translate(target.x,target.y); ctx.scale(1.06,0.88); ctx.globalAlpha=1-age/0.12;
-        sprite('target',0,0,target.r*48/31);
-        ctx.globalAlpha*=0.35; ctx.fillStyle='#fff5db'; ctx.beginPath();ctx.arc(0,0,target.r,0,Math.PI*2);ctx.fill();ctx.restore();
-      }
-      continue;
-    }
+    // Cleared targets stay absent, even when scoring time freezes at STAGE CLEAR.
+    // Hit feedback comes from fragments/flash; never resurrect a dead target here.
+    if (!target.alive) continue;
     const kind = target.isBomb ? 'bomb' : target.hp > 1 ? 'armored' : 'target';
     const size = target.r * (kind === 'armored' ? 48 / 36 : kind === 'bomb' ? 48 / 27.5 : 48 / 31);
     ctx.save(); const impact=Math.max(0,1-(timeElapsed-(target.artworkHitTime ?? -100))/0.18); ctx.translate(target.x,target.y); ctx.scale(1+impact*0.05,1-impact*0.10);

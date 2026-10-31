@@ -1098,3 +1098,34 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
   input[type=range] { min-height: 44px; touch-action: pan-y; }
   .header-actions { gap: 8px; }
 }
+
+/* Desktop play fills the window; touch layouts retain their existing sizing. */
+@media (min-width: 821px) and (hover: hover) and (pointer: fine) {
+  body {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  #mainGame {
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .game-container {
+    grid-template-columns: minmax(0, 1fr) clamp(280px, 20vw, 340px);
+    grid-template-rows: minmax(0, 1fr);
+    max-width: none;
+    max-height: none;
+    min-height: 0;
+  }
+
+  .canvas-wrapper {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .game-container > .panel {
+    min-height: 0;
+    overflow-y: auto;
+  }
+}

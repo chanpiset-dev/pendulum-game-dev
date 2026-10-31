@@ -133,3 +133,10 @@ A separate [verification viewer](verification/) plays saved successful solutions
 without writing player progress. See [verification/README.md](verification/README.md)
 for the search command, scope, fixed-frame timing model and limitations. All 250 substages now have saved repeatable clears, including a user-guided
 solution for 44-2. No stage layouts were changed.
+
+### Physics guide
+
+Read the [illustrated physics guide (PDF)](docs/physics/pendulum-physics.pdf) for a
+beginner-friendly explanation of the v0.1.0 simulation, including multi-link motion,
+numerical integration and gameplay gimmicks. The [LaTeX source and build instructions](docs/physics/README.md)
+and [complete source ZIP](docs/physics/pendulum-physics-latex.zip) are included.

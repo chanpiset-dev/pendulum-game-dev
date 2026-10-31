@@ -9,6 +9,12 @@ const {openVerification}=require('../scripts/verification-browser.cjs');
    localStorage.setItem('pendulum_stage_scores_v7','{"stage_1_sub_1":9876}');
    window.storageBefore=JSON.stringify(localStorage);
   });
+  // Keep the interactive smoke test short; the batch verifier replays the full report.
+  const fs=require('node:fs'),path=require('node:path');
+  const report=JSON.parse(fs.readFileSync(path.join(__dirname,'../verification/solutions.json'),'utf8'));
+  let sample={...report,results:report.results.filter(row=>[1,111,126,176].includes(row.index))};
+  assert.equal(sample.results.filter(row=>row.status==='verified').length,4);
+  await page.route('**/verification/solutions.json',route=>route.fulfill({body:JSON.stringify(sample),contentType:'application/json'}));
   await page.goto('https://game.test/verification/');await page.waitForFunction(()=>!document.getElementById('play').disabled);
   assert.match(await page.locator('#summary').innerText(),/4 \/ 250 substages verified/);
   assert.equal(await page.locator('#stage option').count(),250);
@@ -27,6 +33,15 @@ const {openVerification}=require('../scripts/verification-browser.cjs');
   assert.match(await page.locator('#status').innerText(),/Not searched yet/);
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+  sample=report;
+  await page.reload();await page.waitForFunction(()=>!document.getElementById('play').disabled);
+  assert.match(await page.locator('#summary').innerText(),new RegExp(`${report.results.filter(r=>r.status==='verified').length} / 250 substages verified`));
+  const unresolved=report.results.find(row=>row.status==='unresolved');
+  if(unresolved){
+   await page.selectOption('#stage',String(unresolved.index));
+   assert.equal(await page.locator('#play').isDisabled(),true);
+   assert.match(await page.locator('#status').innerText(),/No successful solution/);
+  }
   // Stale solution reports must not play on changed physics.
   await page.route('**/src/physics.js',async route=>{const fs=require('node:fs');const body=fs.readFileSync(require('node:path').join(__dirname,'../src/physics.js'),'utf8')+'\n// changed';await route.fulfill({body,contentType:'text/javascript'});});
   await page.reload();await page.waitForFunction(()=>document.getElementById('summary').textContent.includes('different game version'));
@@ -36,6 +51,6 @@ const {openVerification}=require('../scripts/verification-browser.cjs');
   await page.waitForFunction(()=>document.getElementById('btnStartGame'));
   assert.equal(await page.evaluate(()=>typeof window.verificationAPI),'undefined');
   assert.deepEqual(errors,[]);
-  console.log('Verification viewer passed: four real clears, PLAY/PAUSE/REPLAY/PLAY ALL, untested labels, mobile sizing, untouched saves, stale-version blocking and no normal-game API.');
+  console.log('Verification viewer passed: full coverage report, four real clears, PLAY/PAUSE/REPLAY/PLAY ALL, untested labels, mobile sizing, untouched saves, stale-version blocking and no normal-game API.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

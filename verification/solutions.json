@@ -18,8 +18,8 @@
     "src/verification.js"
   ],
   "step": 0.016666666666666666,
-  "generatedAt": "2026-10-31T06:34:06.176Z",
-  "scope": "Pilot; unresolved means search budget exhausted, not impossible.",
+  "generatedAt": "2026-10-31T07:43:06.878Z",
+  "scope": "Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.",
   "results": [
     {
       "index": 1,
@@ -36,6 +36,1911 @@
         "pulses": [],
         "frames": 369,
         "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 2,
+      "stage": 1,
+      "sub": 2,
+      "name": "FIRST SWING",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 2,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 485,
+        "clearTime": 4.800000000000048
+      }
+    },
+    {
+      "index": 3,
+      "stage": 1,
+      "sub": 3,
+      "name": "FIRST SWING",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 3,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 491,
+        "clearTime": 4.850000000000045
+      }
+    },
+    {
+      "index": 4,
+      "stage": 1,
+      "sub": 4,
+      "name": "FIRST SWING",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 4,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 493,
+        "clearTime": 4.833333333333379
+      }
+    },
+    {
+      "index": 5,
+      "stage": 1,
+      "sub": 5,
+      "name": "FIRST SWING",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 5,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 498,
+        "clearTime": 4.866666666666711
+      }
+    },
+    {
+      "index": 6,
+      "stage": 2,
+      "sub": 1,
+      "name": "FREE FALL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 6,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 370,
+        "clearTime": 2.8833333333333715
+      }
+    },
+    {
+      "index": 7,
+      "stage": 2,
+      "sub": 2,
+      "name": "FREE FALL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 7,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 489,
+        "clearTime": 4.8166666666667135
+      }
+    },
+    {
+      "index": 8,
+      "stage": 2,
+      "sub": 3,
+      "name": "FREE FALL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 8,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 492,
+        "clearTime": 4.866666666666711
+      }
+    },
+    {
+      "index": 9,
+      "stage": 2,
+      "sub": 4,
+      "name": "FREE FALL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 9,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 492,
+        "clearTime": 4.8166666666667135
+      }
+    },
+    {
+      "index": 10,
+      "stage": 2,
+      "sub": 5,
+      "name": "FREE FALL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 10,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 498,
+        "clearTime": 4.866666666666711
+      }
+    },
+    {
+      "index": 11,
+      "stage": 3,
+      "sub": 1,
+      "name": "FULL THROTTLE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 11,
+        "angle": 90,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 539,
+        "clearTime": 5.6499999999999995
+      }
+    },
+    {
+      "index": 12,
+      "stage": 3,
+      "sub": 2,
+      "name": "FULL THROTTLE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 12,
+        "angle": 90,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 912,
+        "clearTime": 11.816666666666316
+      }
+    },
+    {
+      "index": 13,
+      "stage": 3,
+      "sub": 3,
+      "name": "FULL THROTTLE",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 13,
+        "angle": 90,
+        "velocity": -2,
+        "pulses": [],
+        "frames": 455,
+        "clearTime": 4.266666666666745
+      }
+    },
+    {
+      "index": 14,
+      "stage": 3,
+      "sub": 4,
+      "name": "FULL THROTTLE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 14,
+        "angle": 90,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 541,
+        "clearTime": 5.583333333333337
+      }
+    },
+    {
+      "index": 15,
+      "stage": 3,
+      "sub": 5,
+      "name": "FULL THROTTLE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 15,
+        "angle": 90,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 927,
+        "clearTime": 11.966666666666308
+      }
+    },
+    {
+      "index": 16,
+      "stage": 4,
+      "sub": 1,
+      "name": "BOMB CARNIVAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 16,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 457,
+        "clearTime": 4.383333333333405
+      }
+    },
+    {
+      "index": 17,
+      "stage": 4,
+      "sub": 2,
+      "name": "BOMB CARNIVAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 17,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 255,
+        "clearTime": 1.0166666666666644
+      }
+    },
+    {
+      "index": 18,
+      "stage": 4,
+      "sub": 3,
+      "name": "BOMB CARNIVAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 18,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 491,
+        "clearTime": 4.766666666666716
+      }
+    },
+    {
+      "index": 19,
+      "stage": 4,
+      "sub": 4,
+      "name": "BOMB CARNIVAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 19,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 485,
+        "clearTime": 4.766666666666716
+      }
+    },
+    {
+      "index": 20,
+      "stage": 4,
+      "sub": 5,
+      "name": "BOMB CARNIVAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 20,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 487,
+        "clearTime": 4.750000000000051
+      }
+    },
+    {
+      "index": 21,
+      "stage": 5,
+      "sub": 1,
+      "name": "BANK SHOT",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 21,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 683,
+        "clearTime": 8.049999999999864
+      }
+    },
+    {
+      "index": 22,
+      "stage": 5,
+      "sub": 2,
+      "name": "BANK SHOT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 22,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 375,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 23,
+      "stage": 5,
+      "sub": 3,
+      "name": "BANK SHOT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 23,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 557,
+        "clearTime": 5.899999999999985
+      }
+    },
+    {
+      "index": 24,
+      "stage": 5,
+      "sub": 4,
+      "name": "BANK SHOT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 24,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 247,
+        "clearTime": 0.9333333333333312
+      }
+    },
+    {
+      "index": 25,
+      "stage": 5,
+      "sub": 5,
+      "name": "BANK SHOT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 25,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1161,
+        "clearTime": 15.916666666666083
+      }
+    },
+    {
+      "index": 26,
+      "stage": 6,
+      "sub": 1,
+      "name": "BEAT THE PATROL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 26,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 375,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 27,
+      "stage": 6,
+      "sub": 2,
+      "name": "BEAT THE PATROL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 27,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 378,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 28,
+      "stage": 6,
+      "sub": 3,
+      "name": "BEAT THE PATROL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 28,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 484,
+        "clearTime": 4.683333333333388
+      }
+    },
+    {
+      "index": 29,
+      "stage": 6,
+      "sub": 4,
+      "name": "BEAT THE PATROL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 29,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 490,
+        "clearTime": 4.733333333333385
+      }
+    },
+    {
+      "index": 30,
+      "stage": 6,
+      "sub": 5,
+      "name": "BEAT THE PATROL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 30,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 654,
+        "clearTime": 7.416666666666566
+      }
+    },
+    {
+      "index": 31,
+      "stage": 7,
+      "sub": 1,
+      "name": "ARMORED TARGETS",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 31,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 415,
+        "clearTime": 3.633333333333409
+      }
+    },
+    {
+      "index": 32,
+      "stage": 7,
+      "sub": 2,
+      "name": "ARMORED TARGETS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 32,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 281,
+        "clearTime": 1.4499999999999962
+      }
+    },
+    {
+      "index": 33,
+      "stage": 7,
+      "sub": 3,
+      "name": "ARMORED TARGETS",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 33,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 627,
+        "clearTime": 7.066666666666586
+      }
+    },
+    {
+      "index": 34,
+      "stage": 7,
+      "sub": 4,
+      "name": "ARMORED TARGETS",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 34,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 592,
+        "clearTime": 6.449999999999954
+      }
+    },
+    {
+      "index": 35,
+      "stage": 7,
+      "sub": 5,
+      "name": "ARMORED TARGETS",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 35,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 851,
+        "clearTime": 10.783333333333042
+      }
+    },
+    {
+      "index": 36,
+      "stage": 8,
+      "sub": 1,
+      "name": "SUPER BOUNCER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 36,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 697,
+        "clearTime": 8.283333333333184
+      }
+    },
+    {
+      "index": 37,
+      "stage": 8,
+      "sub": 2,
+      "name": "SUPER BOUNCER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 37,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 535,
+        "clearTime": 5.550000000000005
+      }
+    },
+    {
+      "index": 38,
+      "stage": 8,
+      "sub": 3,
+      "name": "SUPER BOUNCER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 38,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 512,
+        "clearTime": 5.050000000000034
+      }
+    },
+    {
+      "index": 39,
+      "stage": 8,
+      "sub": 4,
+      "name": "SUPER BOUNCER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 39,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 577,
+        "clearTime": 6.149999999999971
+      }
+    },
+    {
+      "index": 40,
+      "stage": 8,
+      "sub": 5,
+      "name": "SUPER BOUNCER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 40,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 751,
+        "clearTime": 8.916666666666481
+      }
+    },
+    {
+      "index": 41,
+      "stage": 9,
+      "sub": 1,
+      "name": "GALE VALLEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 41,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 637,
+        "clearTime": 7.233333333333243
+      }
+    },
+    {
+      "index": 42,
+      "stage": 9,
+      "sub": 2,
+      "name": "GALE VALLEY",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 42,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 650,
+        "clearTime": 7.449999999999897
+      }
+    },
+    {
+      "index": 43,
+      "stage": 9,
+      "sub": 3,
+      "name": "GALE VALLEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 43,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1223,
+        "clearTime": 16.966666666666026
+      }
+    },
+    {
+      "index": 44,
+      "stage": 9,
+      "sub": 4,
+      "name": "GALE VALLEY",
+      "status": "verified",
+      "attempts": 34,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 44,
+        "angle": 30,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 383,
+        "clearTime": 3.000000000000044
+      }
+    },
+    {
+      "index": 45,
+      "stage": 9,
+      "sub": 5,
+      "name": "GALE VALLEY",
+      "status": "verified",
+      "attempts": 6,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 45,
+        "angle": -150,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 469,
+        "clearTime": 4.350000000000073
+      }
+    },
+    {
+      "index": 46,
+      "stage": 10,
+      "sub": 1,
+      "name": "WIND SURFER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 46,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1146,
+        "clearTime": 15.716666666666095
+      }
+    },
+    {
+      "index": 47,
+      "stage": 10,
+      "sub": 2,
+      "name": "WIND SURFER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 47,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1005,
+        "clearTime": 13.316666666666231
+      }
+    },
+    {
+      "index": 48,
+      "stage": 10,
+      "sub": 3,
+      "name": "WIND SURFER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 48,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1230,
+        "clearTime": 16.98333333333269
+      }
+    },
+    {
+      "index": 49,
+      "stage": 10,
+      "sub": 4,
+      "name": "WIND SURFER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 49,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1206,
+        "clearTime": 16.59999999999938
+      }
+    },
+    {
+      "index": 50,
+      "stage": 10,
+      "sub": 5,
+      "name": "WIND SURFER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 50,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 580,
+        "clearTime": 6.149999999999971
+      }
+    },
+    {
+      "index": 51,
+      "stage": 11,
+      "sub": 1,
+      "name": "MOON BOUNCE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 51,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 731,
+        "clearTime": 8.749999999999824
+      }
+    },
+    {
+      "index": 52,
+      "stage": 11,
+      "sub": 2,
+      "name": "MOON BOUNCE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 52,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 789,
+        "clearTime": 9.666666666666439
+      }
+    },
+    {
+      "index": 53,
+      "stage": 11,
+      "sub": 3,
+      "name": "MOON BOUNCE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 53,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 730,
+        "clearTime": 8.749999999999824
+      }
+    },
+    {
+      "index": 54,
+      "stage": 11,
+      "sub": 4,
+      "name": "MOON BOUNCE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 54,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 735,
+        "clearTime": 8.733333333333158
+      }
+    },
+    {
+      "index": 55,
+      "stage": 11,
+      "sub": 5,
+      "name": "MOON BOUNCE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 55,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 736,
+        "clearTime": 8.749999999999824
+      }
+    },
+    {
+      "index": 56,
+      "stage": 12,
+      "sub": 1,
+      "name": "METEOR DIVE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 56,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 642,
+        "clearTime": 7.2499999999999085
+      }
+    },
+    {
+      "index": 57,
+      "stage": 12,
+      "sub": 2,
+      "name": "METEOR DIVE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 57,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 402,
+        "clearTime": 3.2500000000000564
+      }
+    },
+    {
+      "index": 58,
+      "stage": 12,
+      "sub": 3,
+      "name": "METEOR DIVE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 58,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 518,
+        "clearTime": 5.083333333333365
+      }
+    },
+    {
+      "index": 59,
+      "stage": 12,
+      "sub": 4,
+      "name": "METEOR DIVE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 59,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 328,
+        "clearTime": 1.9833333333333276
+      }
+    },
+    {
+      "index": 60,
+      "stage": 12,
+      "sub": 5,
+      "name": "METEOR DIVE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 60,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 459,
+        "clearTime": 4.05000000000009
+      }
+    },
+    {
+      "index": 61,
+      "stage": 13,
+      "sub": 1,
+      "name": "BLACK HOLE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 61,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 383,
+        "clearTime": 3.0500000000000465
+      }
+    },
+    {
+      "index": 62,
+      "stage": 13,
+      "sub": 2,
+      "name": "BLACK HOLE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 62,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 613,
+        "clearTime": 6.8333333333332655
+      }
+    },
+    {
+      "index": 63,
+      "stage": 13,
+      "sub": 3,
+      "name": "BLACK HOLE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 63,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 428,
+        "clearTime": 3.8000000000000838
+      }
+    },
+    {
+      "index": 64,
+      "stage": 13,
+      "sub": 4,
+      "name": "BLACK HOLE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 64,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 438,
+        "clearTime": 3.9166666666667562
+      }
+    },
+    {
+      "index": 65,
+      "stage": 13,
+      "sub": 5,
+      "name": "BLACK HOLE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 65,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 447,
+        "clearTime": 3.9666666666667587
+      }
+    },
+    {
+      "index": 66,
+      "stage": 14,
+      "sub": 1,
+      "name": "TWIN VORTEX",
+      "status": "verified",
+      "attempts": 68,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 66,
+        "angle": -60,
+        "velocity": -4,
+        "pulses": [
+          60
+        ],
+        "frames": 768,
+        "clearTime": 9.366666666666456
+      }
+    },
+    {
+      "index": 67,
+      "stage": 14,
+      "sub": 2,
+      "name": "TWIN VORTEX",
+      "status": "verified",
+      "attempts": 25,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 67,
+        "angle": 120,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 808,
+        "clearTime": 9.983333333333087
+      }
+    },
+    {
+      "index": 68,
+      "stage": 14,
+      "sub": 3,
+      "name": "TWIN VORTEX",
+      "status": "verified",
+      "attempts": 19,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 68,
+        "angle": 60,
+        "velocity": 2,
+        "pulses": [],
+        "frames": 395,
+        "clearTime": 3.166666666666719
+      }
+    },
+    {
+      "index": 69,
+      "stage": 14,
+      "sub": 4,
+      "name": "TWIN VORTEX",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 69,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 341,
+        "clearTime": 2.3166666666666766
+      }
+    },
+    {
+      "index": 70,
+      "stage": 14,
+      "sub": 5,
+      "name": "TWIN VORTEX",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 70,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 316,
+        "clearTime": 1.716666666666662
+      }
+    },
+    {
+      "index": 71,
+      "stage": 15,
+      "sub": 1,
+      "name": "FORCE FIELD",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 71,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 633,
+        "clearTime": 7.116666666666583
+      }
+    },
+    {
+      "index": 72,
+      "stage": 15,
+      "sub": 2,
+      "name": "FORCE FIELD",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 72,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 597,
+        "clearTime": 6.46666666666662
+      }
+    },
+    {
+      "index": 73,
+      "stage": 15,
+      "sub": 3,
+      "name": "FORCE FIELD",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 73,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 624,
+        "clearTime": 6.883333333333263
+      }
+    },
+    {
+      "index": 74,
+      "stage": 15,
+      "sub": 4,
+      "name": "FORCE FIELD",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 74,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 754,
+        "clearTime": 8.983333333333144
+      }
+    },
+    {
+      "index": 75,
+      "stage": 15,
+      "sub": 5,
+      "name": "FORCE FIELD",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 75,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 607,
+        "clearTime": 6.549999999999948
+      }
+    },
+    {
+      "index": 76,
+      "stage": 16,
+      "sub": 1,
+      "name": "PUSH & PULL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 76,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 506,
+        "clearTime": 5.050000000000034
+      }
+    },
+    {
+      "index": 77,
+      "stage": 16,
+      "sub": 2,
+      "name": "PUSH & PULL",
+      "status": "verified",
+      "attempts": 27,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 77,
+        "angle": 90,
+        "velocity": 4,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 494,
+        "clearTime": 4.866666666666711
+      }
+    },
+    {
+      "index": 78,
+      "stage": 16,
+      "sub": 3,
+      "name": "PUSH & PULL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 78,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 604,
+        "clearTime": 6.683333333333274
+      }
+    },
+    {
+      "index": 79,
+      "stage": 16,
+      "sub": 4,
+      "name": "PUSH & PULL",
+      "status": "verified",
+      "attempts": 9,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 79,
+        "angle": 180,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 733,
+        "clearTime": 8.76666666666649
+      }
+    },
+    {
+      "index": 80,
+      "stage": 16,
+      "sub": 5,
+      "name": "PUSH & PULL",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 80,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 434,
+        "clearTime": 3.9166666666667562
+      }
+    },
+    {
+      "index": 81,
+      "stage": 17,
+      "sub": 1,
+      "name": "ROLLER TRACK",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 81,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 403,
+        "clearTime": 3.3833333333333964
+      }
+    },
+    {
+      "index": 82,
+      "stage": 17,
+      "sub": 2,
+      "name": "ROLLER TRACK",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 82,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 395,
+        "clearTime": 3.200000000000054
+      }
+    },
+    {
+      "index": 83,
+      "stage": 17,
+      "sub": 3,
+      "name": "ROLLER TRACK",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 83,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 327,
+        "clearTime": 2.133333333333334
+      }
+    },
+    {
+      "index": 84,
+      "stage": 17,
+      "sub": 4,
+      "name": "ROLLER TRACK",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 84,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 625,
+        "clearTime": 7.04999999999992
+      }
+    },
+    {
+      "index": 85,
+      "stage": 17,
+      "sub": 5,
+      "name": "ROLLER TRACK",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 85,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 840,
+        "clearTime": 10.51666666666639
+      }
+    },
+    {
+      "index": 86,
+      "stage": 18,
+      "sub": 1,
+      "name": "SKY LIFT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 86,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 371,
+        "clearTime": 2.800000000000034
+      }
+    },
+    {
+      "index": 87,
+      "stage": 18,
+      "sub": 2,
+      "name": "SKY LIFT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 87,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 360,
+        "clearTime": 2.7166666666666965
+      }
+    },
+    {
+      "index": 88,
+      "stage": 18,
+      "sub": 3,
+      "name": "SKY LIFT",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 88,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 578,
+        "clearTime": 6.216666666666634
+      }
+    },
+    {
+      "index": 89,
+      "stage": 18,
+      "sub": 4,
+      "name": "SKY LIFT",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 89,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 592,
+        "clearTime": 6.333333333333294
+      }
+    },
+    {
+      "index": 90,
+      "stage": 18,
+      "sub": 5,
+      "name": "SKY LIFT",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 90,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 287,
+        "clearTime": 1.33333333333333
+      }
+    },
+    {
+      "index": 91,
+      "stage": 19,
+      "sub": 1,
+      "name": "CAROUSEL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 91,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 574,
+        "clearTime": 6.1833333333333025
+      }
+    },
+    {
+      "index": 92,
+      "stage": 19,
+      "sub": 2,
+      "name": "CAROUSEL",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 92,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 623,
+        "clearTime": 7.116666666666583
+      }
+    },
+    {
+      "index": 93,
+      "stage": 19,
+      "sub": 3,
+      "name": "CAROUSEL",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 93,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 823,
+        "clearTime": 10.349999999999733
+      }
+    },
+    {
+      "index": 94,
+      "stage": 19,
+      "sub": 4,
+      "name": "CAROUSEL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 94,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 498,
+        "clearTime": 4.983333333333371
+      }
+    },
+    {
+      "index": 95,
+      "stage": 19,
+      "sub": 5,
+      "name": "CAROUSEL",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 95,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 969,
+        "clearTime": 12.599999999999605
+      }
+    },
+    {
+      "index": 96,
+      "stage": 20,
+      "sub": 1,
+      "name": "STORM RUNNER",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 96,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 381,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 97,
+      "stage": 20,
+      "sub": 2,
+      "name": "STORM RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 97,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 397,
+        "clearTime": 3.133333333333384
+      }
+    },
+    {
+      "index": 98,
+      "stage": 20,
+      "sub": 3,
+      "name": "STORM RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 98,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 686,
+        "clearTime": 7.9666666666665344
+      }
+    },
+    {
+      "index": 99,
+      "stage": 20,
+      "sub": 4,
+      "name": "STORM RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 99,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 570,
+        "clearTime": 5.949999999999982
+      }
+    },
+    {
+      "index": 100,
+      "stage": 20,
+      "sub": 5,
+      "name": "STORM RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 100,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 998,
+        "clearTime": 13.116666666666243
+      }
+    },
+    {
+      "index": 101,
+      "stage": 21,
+      "sub": 1,
+      "name": "CYCLONE ELEVATOR",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 101,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 792,
+        "clearTime": 9.81666666666643
+      }
+    },
+    {
+      "index": 102,
+      "stage": 21,
+      "sub": 2,
+      "name": "CYCLONE ELEVATOR",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 102,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 347,
+        "clearTime": 2.5500000000000216
+      }
+    },
+    {
+      "index": 103,
+      "stage": 21,
+      "sub": 3,
+      "name": "CYCLONE ELEVATOR",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 103,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 710,
+        "clearTime": 8.41666666666651
+      }
+    },
+    {
+      "index": 104,
+      "stage": 21,
+      "sub": 4,
+      "name": "CYCLONE ELEVATOR",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 104,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 673,
+        "clearTime": 7.799999999999877
+      }
+    },
+    {
+      "index": 105,
+      "stage": 21,
+      "sub": 5,
+      "name": "CYCLONE ELEVATOR",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 105,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 862,
+        "clearTime": 10.816666666666373
+      }
+    },
+    {
+      "index": 106,
+      "stage": 22,
+      "sub": 1,
+      "name": "ABYSS RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 106,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 376,
+        "clearTime": 2.8833333333333715
+      }
+    },
+    {
+      "index": 107,
+      "stage": 22,
+      "sub": 2,
+      "name": "ABYSS RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 107,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 383,
+        "clearTime": 2.9500000000000415
+      }
+    },
+    {
+      "index": 108,
+      "stage": 22,
+      "sub": 3,
+      "name": "ABYSS RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 108,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 377,
+        "clearTime": 2.8500000000000365
+      }
+    },
+    {
+      "index": 109,
+      "stage": 22,
+      "sub": 4,
+      "name": "ABYSS RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 109,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 377,
+        "clearTime": 2.866666666666704
+      }
+    },
+    {
+      "index": 110,
+      "stage": 22,
+      "sub": 5,
+      "name": "ABYSS RUNNER",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 110,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 419,
+        "clearTime": 3.4500000000000663
       }
     },
     {
@@ -56,6 +1961,248 @@
       }
     },
     {
+      "index": 112,
+      "stage": 23,
+      "sub": 2,
+      "name": "WARP GATES",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 112,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 379,
+        "clearTime": 2.933333333333374
+      }
+    },
+    {
+      "index": 113,
+      "stage": 23,
+      "sub": 3,
+      "name": "WARP GATES",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 113,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 251,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 114,
+      "stage": 23,
+      "sub": 4,
+      "name": "WARP GATES",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 114,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 475,
+        "clearTime": 4.433333333333402
+      }
+    },
+    {
+      "index": 115,
+      "stage": 23,
+      "sub": 5,
+      "name": "WARP GATES",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 115,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 417,
+        "clearTime": 3.400000000000064
+      }
+    },
+    {
+      "index": 116,
+      "stage": 24,
+      "sub": 1,
+      "name": "DASH RINGS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 116,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 858,
+        "clearTime": 10.916666666666368
+      }
+    },
+    {
+      "index": 117,
+      "stage": 24,
+      "sub": 2,
+      "name": "DASH RINGS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 117,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 966,
+        "clearTime": 12.733333333332931
+      }
+    },
+    {
+      "index": 118,
+      "stage": 24,
+      "sub": 3,
+      "name": "DASH RINGS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 118,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 532,
+        "clearTime": 5.433333333333345
+      }
+    },
+    {
+      "index": 119,
+      "stage": 24,
+      "sub": 4,
+      "name": "DASH RINGS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 119,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 504,
+        "clearTime": 4.883333333333376
+      }
+    },
+    {
+      "index": 120,
+      "stage": 24,
+      "sub": 5,
+      "name": "DASH RINGS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 120,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 452,
+        "clearTime": 4.083333333333422
+      }
+    },
+    {
+      "index": 121,
+      "stage": 25,
+      "sub": 1,
+      "name": "SECURITY KEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 121,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 379,
+        "clearTime": 2.933333333333374
+      }
+    },
+    {
+      "index": 122,
+      "stage": 25,
+      "sub": 2,
+      "name": "SECURITY KEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 122,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 123,
+      "stage": 25,
+      "sub": 3,
+      "name": "SECURITY KEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 123,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 124,
+      "stage": 25,
+      "sub": 4,
+      "name": "SECURITY KEY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 124,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 476,
+        "clearTime": 4.450000000000068
+      }
+    },
+    {
+      "index": 125,
+      "stage": 25,
+      "sub": 5,
+      "name": "SECURITY KEY",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 125,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 644,
+        "clearTime": 7.3666666666665686
+      }
+    },
+    {
       "index": 126,
       "stage": 26,
       "sub": 1,
@@ -73,6 +2220,891 @@
       }
     },
     {
+      "index": 127,
+      "stage": 26,
+      "sub": 2,
+      "name": "LASER TRIPWIRE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 127,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 382,
+        "clearTime": 2.9500000000000415
+      }
+    },
+    {
+      "index": 128,
+      "stage": 26,
+      "sub": 3,
+      "name": "LASER TRIPWIRE",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 128,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 544,
+        "clearTime": 5.550000000000005
+      }
+    },
+    {
+      "index": 129,
+      "stage": 26,
+      "sub": 4,
+      "name": "LASER TRIPWIRE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 129,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 473,
+        "clearTime": 4.433333333333402
+      }
+    },
+    {
+      "index": 130,
+      "stage": 26,
+      "sub": 5,
+      "name": "LASER TRIPWIRE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 130,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 387,
+        "clearTime": 2.933333333333374
+      }
+    },
+    {
+      "index": 131,
+      "stage": 27,
+      "sub": 1,
+      "name": "WARP HYPERCUBE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 131,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 379,
+        "clearTime": 2.933333333333374
+      }
+    },
+    {
+      "index": 132,
+      "stage": 27,
+      "sub": 2,
+      "name": "WARP HYPERCUBE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 132,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 347,
+        "clearTime": 2.466666666666684
+      }
+    },
+    {
+      "index": 133,
+      "stage": 27,
+      "sub": 3,
+      "name": "WARP HYPERCUBE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 133,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 763,
+        "clearTime": 9.333333333333124
+      }
+    },
+    {
+      "index": 134,
+      "stage": 27,
+      "sub": 4,
+      "name": "WARP HYPERCUBE",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 134,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 358,
+        "clearTime": 2.5500000000000216
+      }
+    },
+    {
+      "index": 135,
+      "stage": 27,
+      "sub": 5,
+      "name": "WARP HYPERCUBE",
+      "status": "verified",
+      "attempts": 12,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 135,
+        "angle": 0,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 577,
+        "clearTime": 6.166666666666637
+      }
+    },
+    {
+      "index": 136,
+      "stage": 28,
+      "sub": 1,
+      "name": "SECURITY MAZE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 136,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 508,
+        "clearTime": 5.133333333333362
+      }
+    },
+    {
+      "index": 137,
+      "stage": 28,
+      "sub": 2,
+      "name": "SECURITY MAZE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 137,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 138,
+      "stage": 28,
+      "sub": 3,
+      "name": "SECURITY MAZE",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 138,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 407,
+        "clearTime": 3.466666666666734
+      }
+    },
+    {
+      "index": 139,
+      "stage": 28,
+      "sub": 4,
+      "name": "SECURITY MAZE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 139,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 140,
+      "stage": 28,
+      "sub": 5,
+      "name": "SECURITY MAZE",
+      "status": "verified",
+      "attempts": 49,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 140,
+        "angle": 120,
+        "velocity": 6,
+        "pulses": [],
+        "frames": 706,
+        "clearTime": 8.366666666666513
+      }
+    },
+    {
+      "index": 141,
+      "stage": 29,
+      "sub": 1,
+      "name": "LASER PORTAL",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 141,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 561,
+        "clearTime": 5.966666666666648
+      }
+    },
+    {
+      "index": 142,
+      "stage": 29,
+      "sub": 2,
+      "name": "LASER PORTAL",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 142,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 143,
+      "stage": 29,
+      "sub": 3,
+      "name": "LASER PORTAL",
+      "status": "verified",
+      "attempts": 67,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 143,
+        "angle": 60,
+        "velocity": -4,
+        "pulses": [],
+        "frames": 557,
+        "clearTime": 5.849999999999988
+      }
+    },
+    {
+      "index": 144,
+      "stage": 29,
+      "sub": 4,
+      "name": "LASER PORTAL",
+      "status": "verified",
+      "attempts": 15,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 144,
+        "angle": 90,
+        "velocity": 2,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 624,
+        "clearTime": 6.983333333333257
+      }
+    },
+    {
+      "index": 145,
+      "stage": 29,
+      "sub": 5,
+      "name": "LASER PORTAL",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 145,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 579,
+        "clearTime": 6.199999999999968
+      }
+    },
+    {
+      "index": 146,
+      "stage": 30,
+      "sub": 1,
+      "name": "THE VAULT HEIST",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 146,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 573,
+        "clearTime": 6.166666666666637
+      }
+    },
+    {
+      "index": 147,
+      "stage": 30,
+      "sub": 2,
+      "name": "THE VAULT HEIST",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 147,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 566,
+        "clearTime": 6.166666666666637
+      }
+    },
+    {
+      "index": 148,
+      "stage": 30,
+      "sub": 3,
+      "name": "THE VAULT HEIST",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 148,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 384,
+        "clearTime": 3.133333333333384
+      }
+    },
+    {
+      "index": 149,
+      "stage": 30,
+      "sub": 4,
+      "name": "THE VAULT HEIST",
+      "status": "verified",
+      "attempts": 17,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 149,
+        "angle": 150,
+        "velocity": 2,
+        "pulses": [
+          60
+        ],
+        "frames": 763,
+        "clearTime": 9.199999999999799
+      }
+    },
+    {
+      "index": 150,
+      "stage": 30,
+      "sub": 5,
+      "name": "THE VAULT HEIST",
+      "status": "verified",
+      "attempts": 6,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 150,
+        "angle": -150,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 632,
+        "clearTime": 7.066666666666586
+      }
+    },
+    {
+      "index": 151,
+      "stage": 31,
+      "sub": 1,
+      "name": "SOLAR STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 151,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 469,
+        "clearTime": 4.433333333333402
+      }
+    },
+    {
+      "index": 152,
+      "stage": 31,
+      "sub": 2,
+      "name": "SOLAR STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 152,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 374,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 153,
+      "stage": 31,
+      "sub": 3,
+      "name": "SOLAR STORM",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 153,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 463,
+        "clearTime": 4.383333333333405
+      }
+    },
+    {
+      "index": 154,
+      "stage": 31,
+      "sub": 4,
+      "name": "SOLAR STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 154,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 464,
+        "clearTime": 4.316666666666742
+      }
+    },
+    {
+      "index": 155,
+      "stage": 31,
+      "sub": 5,
+      "name": "SOLAR STORM",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 155,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 485,
+        "clearTime": 4.633333333333391
+      }
+    },
+    {
+      "index": 156,
+      "stage": 32,
+      "sub": 1,
+      "name": "SLIME SLOUGH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 156,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 375,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 157,
+      "stage": 32,
+      "sub": 2,
+      "name": "SLIME SLOUGH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 157,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 249,
+        "clearTime": 0.9666666666666645
+      }
+    },
+    {
+      "index": 158,
+      "stage": 32,
+      "sub": 3,
+      "name": "SLIME SLOUGH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 158,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 483,
+        "clearTime": 4.616666666666725
+      }
+    },
+    {
+      "index": 159,
+      "stage": 32,
+      "sub": 4,
+      "name": "SLIME SLOUGH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 159,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 283,
+        "clearTime": 1.3999999999999964
+      }
+    },
+    {
+      "index": 160,
+      "stage": 32,
+      "sub": 5,
+      "name": "SLIME SLOUGH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 160,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 369,
+        "clearTime": 2.733333333333364
+      }
+    },
+    {
+      "index": 161,
+      "stage": 33,
+      "sub": 1,
+      "name": "BRAKE & BOOST",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 161,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 481,
+        "clearTime": 4.633333333333391
+      }
+    },
+    {
+      "index": 162,
+      "stage": 33,
+      "sub": 2,
+      "name": "BRAKE & BOOST",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 162,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 163,
+      "stage": 33,
+      "sub": 3,
+      "name": "BRAKE & BOOST",
+      "status": "verified",
+      "attempts": 15,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 163,
+        "angle": 90,
+        "velocity": 2,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 588,
+        "clearTime": 6.4166666666666226
+      }
+    },
+    {
+      "index": 164,
+      "stage": 33,
+      "sub": 4,
+      "name": "BRAKE & BOOST",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 164,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 522,
+        "clearTime": 5.333333333333351
+      }
+    },
+    {
+      "index": 165,
+      "stage": 33,
+      "sub": 5,
+      "name": "BRAKE & BOOST",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 165,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 370,
+        "clearTime": 2.900000000000039
+      }
+    },
+    {
+      "index": 166,
+      "stage": 34,
+      "sub": 1,
+      "name": "TWIN LAUNCH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 166,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 283,
+        "clearTime": 1.4333333333333296
+      }
+    },
+    {
+      "index": 167,
+      "stage": 34,
+      "sub": 2,
+      "name": "TWIN LAUNCH",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 167,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1150,
+        "clearTime": 15.683333333332763
+      }
+    },
+    {
+      "index": 168,
+      "stage": 34,
+      "sub": 3,
+      "name": "TWIN LAUNCH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 168,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 415,
+        "clearTime": 3.4500000000000663
+      }
+    },
+    {
+      "index": 169,
+      "stage": 34,
+      "sub": 4,
+      "name": "TWIN LAUNCH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 169,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 899,
+        "clearTime": 11.466666666666336
+      }
+    },
+    {
+      "index": 170,
+      "stage": 34,
+      "sub": 5,
+      "name": "TWIN LAUNCH",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 170,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 416,
+        "clearTime": 3.4166666666667314
+      }
+    },
+    {
+      "index": 171,
+      "stage": 35,
+      "sub": 1,
+      "name": "TWIN STORM",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 171,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 818,
+        "clearTime": 10.149999999999745
+      }
+    },
+    {
+      "index": 172,
+      "stage": 35,
+      "sub": 2,
+      "name": "TWIN STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 172,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1234,
+        "clearTime": 17.03333333333269
+      }
+    },
+    {
+      "index": 173,
+      "stage": 35,
+      "sub": 3,
+      "name": "TWIN STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 173,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 849,
+        "clearTime": 10.63333333333305
+      }
+    },
+    {
+      "index": 174,
+      "stage": 35,
+      "sub": 4,
+      "name": "TWIN STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 174,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1262,
+        "clearTime": 17.466666666665997
+      }
+    },
+    {
+      "index": 175,
+      "stage": 35,
+      "sub": 5,
+      "name": "TWIN STORM",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 175,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 919,
+        "clearTime": 11.749999999999654
+      }
+    },
+    {
       "index": 176,
       "stage": 36,
       "sub": 1,
@@ -87,6 +3119,1319 @@
         "pulses": [],
         "frames": 280,
         "clearTime": 1.3833333333333298
+      }
+    },
+    {
+      "index": 177,
+      "stage": 36,
+      "sub": 2,
+      "name": "TRIPLE WHIP",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 177,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 555,
+        "clearTime": 5.7666666666666595
+      }
+    },
+    {
+      "index": 178,
+      "stage": 36,
+      "sub": 3,
+      "name": "TRIPLE WHIP",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 178,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 387,
+        "clearTime": 2.9833333333333765
+      }
+    },
+    {
+      "index": 179,
+      "stage": 36,
+      "sub": 4,
+      "name": "TRIPLE WHIP",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 179,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 408,
+        "clearTime": 3.2833333333333914
+      }
+    },
+    {
+      "index": 180,
+      "stage": 36,
+      "sub": 5,
+      "name": "TRIPLE WHIP",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 180,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 497,
+        "clearTime": 4.716666666666719
+      }
+    },
+    {
+      "index": 181,
+      "stage": 37,
+      "sub": 1,
+      "name": "QUAD CHAOS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 181,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 278,
+        "clearTime": 1.3499999999999965
+      }
+    },
+    {
+      "index": 182,
+      "stage": 37,
+      "sub": 2,
+      "name": "QUAD CHAOS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 182,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 381,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 183,
+      "stage": 37,
+      "sub": 3,
+      "name": "QUAD CHAOS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 183,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 451,
+        "clearTime": 4.033333333333425
+      }
+    },
+    {
+      "index": 184,
+      "stage": 37,
+      "sub": 4,
+      "name": "QUAD CHAOS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 184,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 383,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 185,
+      "stage": 37,
+      "sub": 5,
+      "name": "QUAD CHAOS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 185,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 379,
+        "clearTime": 2.800000000000034
+      }
+    },
+    {
+      "index": 186,
+      "stage": 38,
+      "sub": 1,
+      "name": "FIVE-LINK FRENZY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 186,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 278,
+        "clearTime": 1.3499999999999965
+      }
+    },
+    {
+      "index": 187,
+      "stage": 38,
+      "sub": 2,
+      "name": "FIVE-LINK FRENZY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 187,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 612,
+        "clearTime": 6.7166666666666055
+      }
+    },
+    {
+      "index": 188,
+      "stage": 38,
+      "sub": 3,
+      "name": "FIVE-LINK FRENZY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 188,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 392,
+        "clearTime": 3.066666666666714
+      }
+    },
+    {
+      "index": 189,
+      "stage": 38,
+      "sub": 4,
+      "name": "FIVE-LINK FRENZY",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 189,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 373,
+        "clearTime": 2.700000000000029
+      }
+    },
+    {
+      "index": 190,
+      "stage": 38,
+      "sub": 5,
+      "name": "FIVE-LINK FRENZY",
+      "status": "verified",
+      "attempts": 15,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 190,
+        "angle": 90,
+        "velocity": 2,
+        "pulses": [],
+        "frames": 469,
+        "clearTime": 4.350000000000073
+      }
+    },
+    {
+      "index": 191,
+      "stage": 39,
+      "sub": 1,
+      "name": "CEILING RUSH",
+      "status": "verified",
+      "attempts": 7,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 191,
+        "angle": 60,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 365,
+        "clearTime": 2.700000000000029
+      }
+    },
+    {
+      "index": 192,
+      "stage": 39,
+      "sub": 2,
+      "name": "CEILING RUSH",
+      "status": "verified",
+      "attempts": 7,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 192,
+        "angle": 60,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 365,
+        "clearTime": 2.6500000000000266
+      }
+    },
+    {
+      "index": 193,
+      "stage": 39,
+      "sub": 3,
+      "name": "CEILING RUSH",
+      "status": "verified",
+      "attempts": 7,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 193,
+        "angle": 60,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 369,
+        "clearTime": 2.7833333333333665
+      }
+    },
+    {
+      "index": 194,
+      "stage": 39,
+      "sub": 4,
+      "name": "CEILING RUSH",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 194,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 631,
+        "clearTime": 7.083333333333251
+      }
+    },
+    {
+      "index": 195,
+      "stage": 39,
+      "sub": 5,
+      "name": "CEILING RUSH",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 195,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 376,
+        "clearTime": 2.800000000000034
+      }
+    },
+    {
+      "index": 196,
+      "stage": 40,
+      "sub": 1,
+      "name": "ZERO GRAVITY",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 196,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 723,
+        "clearTime": 8.666666666666496
+      }
+    },
+    {
+      "index": 197,
+      "stage": 40,
+      "sub": 2,
+      "name": "ZERO GRAVITY",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 197,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1240,
+        "clearTime": 17.199999999999346
+      }
+    },
+    {
+      "index": 198,
+      "stage": 40,
+      "sub": 3,
+      "name": "ZERO GRAVITY",
+      "status": "verified",
+      "attempts": 8,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 198,
+        "angle": -60,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1380,
+        "clearTime": 19.63333333333254
+      }
+    },
+    {
+      "index": 199,
+      "stage": 40,
+      "sub": 4,
+      "name": "ZERO GRAVITY",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 199,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 1097,
+        "clearTime": 14.866666666666143
+      }
+    },
+    {
+      "index": 200,
+      "stage": 40,
+      "sub": 5,
+      "name": "ZERO GRAVITY",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 200,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1607,
+        "clearTime": 23.36666666666566
+      }
+    },
+    {
+      "index": 201,
+      "stage": 41,
+      "sub": 1,
+      "name": "GRAVITY METRONOME",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 201,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 715,
+        "clearTime": 8.53333333333317
+      }
+    },
+    {
+      "index": 202,
+      "stage": 41,
+      "sub": 2,
+      "name": "GRAVITY METRONOME",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 202,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1044,
+        "clearTime": 14.033333333332857
+      }
+    },
+    {
+      "index": 203,
+      "stage": 41,
+      "sub": 3,
+      "name": "GRAVITY METRONOME",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 203,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 541,
+        "clearTime": 5.600000000000002
+      }
+    },
+    {
+      "index": 204,
+      "stage": 41,
+      "sub": 4,
+      "name": "GRAVITY METRONOME",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 204,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 813,
+        "clearTime": 9.949999999999756
+      }
+    },
+    {
+      "index": 205,
+      "stage": 41,
+      "sub": 5,
+      "name": "GRAVITY METRONOME",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 205,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1838,
+        "clearTime": 26.966666666665457
+      }
+    },
+    {
+      "index": 206,
+      "stage": 42,
+      "sub": 1,
+      "name": "MIRROR SHADOWS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 206,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 381,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 207,
+      "stage": 42,
+      "sub": 2,
+      "name": "MIRROR SHADOWS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 207,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 248,
+        "clearTime": 0.9499999999999978
+      }
+    },
+    {
+      "index": 208,
+      "stage": 42,
+      "sub": 3,
+      "name": "MIRROR SHADOWS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 208,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 601,
+        "clearTime": 6.499999999999951
+      }
+    },
+    {
+      "index": 209,
+      "stage": 42,
+      "sub": 4,
+      "name": "MIRROR SHADOWS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 209,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 314,
+        "clearTime": 1.799999999999995
+      }
+    },
+    {
+      "index": 210,
+      "stage": 42,
+      "sub": 5,
+      "name": "MIRROR SHADOWS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 210,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1022,
+        "clearTime": 13.51666666666622
+      }
+    },
+    {
+      "index": 211,
+      "stage": 43,
+      "sub": 1,
+      "name": "BUMPER BANKS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 211,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 525,
+        "clearTime": 5.333333333333351
+      }
+    },
+    {
+      "index": 212,
+      "stage": 43,
+      "sub": 2,
+      "name": "BUMPER BANKS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 212,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 647,
+        "clearTime": 7.416666666666566
+      }
+    },
+    {
+      "index": 213,
+      "stage": 43,
+      "sub": 3,
+      "name": "BUMPER BANKS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 213,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 629,
+        "clearTime": 7.04999999999992
+      }
+    },
+    {
+      "index": 214,
+      "stage": 43,
+      "sub": 4,
+      "name": "BUMPER BANKS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 214,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 556,
+        "clearTime": 5.949999999999982
+      }
+    },
+    {
+      "index": 215,
+      "stage": 43,
+      "sub": 5,
+      "name": "BUMPER BANKS",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 215,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 338,
+        "clearTime": 2.2166666666666717
+      }
+    },
+    {
+      "index": 216,
+      "stage": 44,
+      "sub": 1,
+      "name": "VORTEX BOOST",
+      "status": "verified",
+      "attempts": 7,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 216,
+        "angle": 60,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 514,
+        "clearTime": 5.183333333333359
+      }
+    },
+    {
+      "index": 217,
+      "stage": 44,
+      "sub": 2,
+      "name": "VORTEX BOOST",
+      "status": "unresolved",
+      "attempts": 150,
+      "bestRemaining": 1,
+      "solution": null
+    },
+    {
+      "index": 218,
+      "stage": 44,
+      "sub": 3,
+      "name": "VORTEX BOOST",
+      "status": "verified",
+      "attempts": 17,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 218,
+        "angle": 150,
+        "velocity": 2,
+        "pulses": [
+          60
+        ],
+        "frames": 763,
+        "clearTime": 9.249999999999796
+      }
+    },
+    {
+      "index": 219,
+      "stage": 44,
+      "sub": 4,
+      "name": "VORTEX BOOST",
+      "status": "verified",
+      "attempts": 100,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 219,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 519,
+        "clearTime": 5.200000000000025
+      }
+    },
+    {
+      "index": 220,
+      "stage": 44,
+      "sub": 5,
+      "name": "VORTEX BOOST",
+      "status": "verified",
+      "attempts": 15,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 220,
+        "angle": 90,
+        "velocity": 2,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 414,
+        "clearTime": 3.4500000000000663
+      }
+    },
+    {
+      "index": 221,
+      "stage": 45,
+      "sub": 1,
+      "name": "PINBALL MANIA",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 221,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 544,
+        "clearTime": 5.683333333333331
+      }
+    },
+    {
+      "index": 222,
+      "stage": 45,
+      "sub": 2,
+      "name": "PINBALL MANIA",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 222,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 523,
+        "clearTime": 5.450000000000011
+      }
+    },
+    {
+      "index": 223,
+      "stage": 45,
+      "sub": 3,
+      "name": "PINBALL MANIA",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 223,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 409,
+        "clearTime": 3.4500000000000663
+      }
+    },
+    {
+      "index": 224,
+      "stage": 45,
+      "sub": 4,
+      "name": "PINBALL MANIA",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 224,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 568,
+        "clearTime": 6.049999999999977
+      }
+    },
+    {
+      "index": 225,
+      "stage": 45,
+      "sub": 5,
+      "name": "PINBALL MANIA",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 225,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 684,
+        "clearTime": 7.833333333333209
+      }
+    },
+    {
+      "index": 226,
+      "stage": 46,
+      "sub": 1,
+      "name": "THE GAUNTLET",
+      "status": "verified",
+      "attempts": 34,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 226,
+        "angle": 30,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 612,
+        "clearTime": 6.7166666666666055
+      }
+    },
+    {
+      "index": 227,
+      "stage": 46,
+      "sub": 2,
+      "name": "THE GAUNTLET",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 227,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 564,
+        "clearTime": 5.983333333333314
+      }
+    },
+    {
+      "index": 228,
+      "stage": 46,
+      "sub": 3,
+      "name": "THE GAUNTLET",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 228,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 493,
+        "clearTime": 4.7000000000000535
+      }
+    },
+    {
+      "index": 229,
+      "stage": 46,
+      "sub": 4,
+      "name": "THE GAUNTLET",
+      "status": "verified",
+      "attempts": 10,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 229,
+        "angle": 30,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 299,
+        "clearTime": 1.4833333333333294
+      }
+    },
+    {
+      "index": 230,
+      "stage": 46,
+      "sub": 5,
+      "name": "THE GAUNTLET",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 230,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 776,
+        "clearTime": 9.46666666666645
+      }
+    },
+    {
+      "index": 231,
+      "stage": 47,
+      "sub": 1,
+      "name": "CYBER HORIZON",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 231,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1403,
+        "clearTime": 19.94999999999919
+      }
+    },
+    {
+      "index": 232,
+      "stage": 47,
+      "sub": 2,
+      "name": "CYBER HORIZON",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 232,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 741,
+        "clearTime": 8.916666666666481
+      }
+    },
+    {
+      "index": 233,
+      "stage": 47,
+      "sub": 3,
+      "name": "CYBER HORIZON",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 233,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 979,
+        "clearTime": 12.866666666666257
+      }
+    },
+    {
+      "index": 234,
+      "stage": 47,
+      "sub": 4,
+      "name": "CYBER HORIZON",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 234,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 706,
+        "clearTime": 8.249999999999853
+      }
+    },
+    {
+      "index": 235,
+      "stage": 47,
+      "sub": 5,
+      "name": "CYBER HORIZON",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 235,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1410,
+        "clearTime": 19.999999999999186
+      }
+    },
+    {
+      "index": 236,
+      "stage": 48,
+      "sub": 1,
+      "name": "WARP METRONOME",
+      "status": "verified",
+      "attempts": 2,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 236,
+        "angle": -120,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1172,
+        "clearTime": 16.099999999999408
+      }
+    },
+    {
+      "index": 237,
+      "stage": 48,
+      "sub": 2,
+      "name": "WARP METRONOME",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 237,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 610,
+        "clearTime": 6.749999999999937
+      }
+    },
+    {
+      "index": 238,
+      "stage": 48,
+      "sub": 3,
+      "name": "WARP METRONOME",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 238,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1062,
+        "clearTime": 14.199999999999514
+      }
+    },
+    {
+      "index": 239,
+      "stage": 48,
+      "sub": 4,
+      "name": "WARP METRONOME",
+      "status": "verified",
+      "attempts": 5,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 239,
+        "angle": 150,
+        "velocity": 0,
+        "pulses": [
+          60
+        ],
+        "frames": 1134,
+        "clearTime": 15.283333333332786
+      }
+    },
+    {
+      "index": 240,
+      "stage": 48,
+      "sub": 5,
+      "name": "WARP METRONOME",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 240,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1520,
+        "clearTime": 21.833333333332416
+      }
+    },
+    {
+      "index": 241,
+      "stage": 49,
+      "sub": 1,
+      "name": "5-LINK INVERSION",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 241,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 657,
+        "clearTime": 7.416666666666566
+      }
+    },
+    {
+      "index": 242,
+      "stage": 49,
+      "sub": 2,
+      "name": "5-LINK INVERSION",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 242,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 451,
+        "clearTime": 3.9666666666667587
+      }
+    },
+    {
+      "index": 243,
+      "stage": 49,
+      "sub": 3,
+      "name": "5-LINK INVERSION",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 243,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 455,
+        "clearTime": 3.9666666666667587
+      }
+    },
+    {
+      "index": 244,
+      "stage": 49,
+      "sub": 4,
+      "name": "5-LINK INVERSION",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 244,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 818,
+        "clearTime": 9.966666666666422
+      }
+    },
+    {
+      "index": 245,
+      "stage": 49,
+      "sub": 5,
+      "name": "5-LINK INVERSION",
+      "status": "verified",
+      "attempts": 4,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 245,
+        "angle": -90,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 1517,
+        "clearTime": 21.533333333332433
+      }
+    },
+    {
+      "index": 246,
+      "stage": 50,
+      "sub": 1,
+      "name": "COSMIC APEX",
+      "status": "verified",
+      "attempts": 9,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 246,
+        "angle": 180,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 1188,
+        "clearTime": 16.36666666666606
+      }
+    },
+    {
+      "index": 247,
+      "stage": 50,
+      "sub": 2,
+      "name": "COSMIC APEX",
+      "status": "verified",
+      "attempts": 6,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 247,
+        "angle": -150,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 478,
+        "clearTime": 4.7000000000000535
+      }
+    },
+    {
+      "index": 248,
+      "stage": 50,
+      "sub": 3,
+      "name": "COSMIC APEX",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 248,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 704,
+        "clearTime": 8.283333333333184
+      }
+    },
+    {
+      "index": 249,
+      "stage": 50,
+      "sub": 4,
+      "name": "COSMIC APEX",
+      "status": "verified",
+      "attempts": 3,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 249,
+        "angle": 90,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 1250,
+        "clearTime": 17.21666666666601
+      }
+    },
+    {
+      "index": 250,
+      "stage": 50,
+      "sub": 5,
+      "name": "COSMIC APEX",
+      "status": "verified",
+      "attempts": 6,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 250,
+        "angle": -150,
+        "velocity": 0,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 1728,
+        "clearTime": 25.299999999998885
       }
     }
   ]

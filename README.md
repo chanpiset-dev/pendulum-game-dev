@@ -127,9 +127,9 @@ accessible stage; this can unlock intervening content without awarding clears or
 records. Old unversioned share URLs retain their original content; new share URLs
 include numbering=7 and refer directly to current stage numbers.
 
-### Automated verification pilot
+### Automated stage verification
 
 A separate [verification viewer](verification/) plays saved successful solutions
 without writing player progress. See [verification/README.md](verification/README.md)
-for the search command, scope, fixed-frame timing model and limitations. Initial
-coverage is four substages; the other substages have not yet been verified.
+for the search command, scope, fixed-frame timing model and limitations. The first full pass searched all 250 substages: 249 have repeatable clears, while
+44-2 remains unresolved after 150 candidates. No stage layouts were changed.

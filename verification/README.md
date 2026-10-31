@@ -1,13 +1,16 @@
-# Stage verification pilot
+# Stage verification
 
 Open `/verification/` on the same deployed site as the game. Choose a saved verified
 substage, press PLAY, or use PLAY ALL. PAUSE and REPLAY control the same fixed-frame
 simulation; speed changes playback pacing, never physics. The page also lists all
 250 substages, clearly distinguishing verified, unresolved and not searched.
 
-The initial pilot covers 1-1 (basics), 23-1 (portals), 26-1 (lasers) and 36-1
-(three-link chain). Four successful examples do **not** establish that all 250
-substages are completable, nor that portal use is mandatory in a portal stage.
+The first full pass searched all 250 substages with a maximum of 150 candidates
+per substage. It found 249 repeatable clears in 1,096 total candidate attempts.
+Stage **44-2 (Vortex Boost)** remains unresolved; the best attempt left one target.
+An unresolved search is not evidence of impossibility. No layouts or difficulty
+settings were changed. A portal-stage clear does not establish that portal use is
+mandatory, and a successful solution does not measure human difficulty.
 
 ## Find solutions
 
@@ -16,10 +19,11 @@ tests use the same dependencies. Set CHROMIUM_PATH if Chromium is not installed
 at `/usr/bin/chromium`.
 
 ```sh
-node scripts/search-solutions.cjs --indices=1,111,126,176 --budget=150
+node scripts/search-solutions.cjs --indices=all --budget=150
 ```
 
-Indices run from 1 to 250: `(stage - 1) * 5 + substage`. The script serves local
+Use `--indices=217` to search only 44-2, or a comma-separated list for selected
+substages. Indices run from 1 to 250: `(stage - 1) * 5 + substage`. The script serves local
 files through Playwright routing and requires no live Netlify deployment. It tries
 integer angles, launch velocities, and selected fixed-frame pulse schedules within
 each stage's normal restrictions. It uses the actual `loadStage`, `fire`, `update`
@@ -28,7 +32,7 @@ and clear-overlay path, and confirms each successful candidate in a fresh rerun.
 Results are saved in `verification/solutions.json`, with settings, pulse frame
 numbers, clear time and confirmation frame count. Search budgets are bounded;
 **unresolved means no solution was found, not that the stage is impossible**.
-This first search uses coarse candidates, not exhaustive optimization. More precise
+This search uses coarse candidates, not exhaustive optimization. More precise
 angles/velocities and better pulse schedules can be added as needed.
 
 A fingerprint of simulation sources accompanies the report. The viewer refuses
@@ -51,8 +55,12 @@ stops for hit effects. Random particles/fireworks may look different between run
 Run regression checks:
 
 ```sh
+node scripts/verify-solutions.cjs
 node tests/verification.cjs
 ```
 
-The checks exercise every pilot solution through the actual clear overlay, viewer
-controls, mobile sizing, source-version rejection, and preservation of real saves.
+The batch verifier independently replays every saved success through the actual
+clear overlay and checks the confirmation frame count. The browser smoke test
+uses four representative solutions to check viewer controls, mobile sizing,
+source-version rejection, and preservation of real saves without requiring a
+complete real-time PLAY ALL run.

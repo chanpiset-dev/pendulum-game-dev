@@ -1,9 +1,10 @@
-// Run: node scripts/search-solutions.cjs --indices=1,111,126,176 --budget=150
+// Run: node scripts/search-solutions.cjs --indices=all --budget=150
 const fs=require('node:fs');const path=require('node:path');const crypto=require('node:crypto');
 const {openVerification,root}=require('./verification-browser.cjs');
 const arg=(name,fallback)=>process.argv.find(s=>s.startsWith(`--${name}=`))?.split('=')[1]??fallback;
 (async()=>{
- const indices=arg('indices','1,111,126,176').split(',').map(Number),budget=Number(arg('budget','150'));
+ const requested=arg('indices','1,111,126,176');
+ const indices=requested==='all'?Array.from({length:250},(_,i)=>i+1):requested.split(',').map(Number),budget=Number(arg('budget','150'));
  if(indices.some(n=>!Number.isInteger(n)||n<1||n>250)||!Number.isInteger(budget)||budget<1)throw new Error('Invalid search arguments');
  const {STAGE_CONFIGS}=await import('../src/data/stage-configs.js');
  const files=['src/main.js','src/physics.js','src/game-sizes.js','src/data/stage-balance.js','src/data/stage-configs.js','src/data/stage-index.js','src/engine/collisions.js','src/verification.js',...fs.readdirSync(path.join(root,'src/data/stage-builders')).map(n=>'src/data/stage-builders/'+n)];
@@ -11,7 +12,7 @@ const arg=(name,fallback)=>process.argv.find(s=>s.startsWith(`--${name}=`))?.spl
  const engine=fingerprint.digest('hex');
  const output=path.join(root,'verification/solutions.json');
  let previous={results:[]};if(fs.existsSync(output))previous=JSON.parse(fs.readFileSync(output));
- const report={schema:1,engine,engineFiles:files.sort(),step:1/60,generatedAt:new Date().toISOString(),scope:'Pilot; unresolved means search budget exhausted, not impossible.',results:previous.engine===engine?previous.results:[]};
+ const report={schema:1,engine,engineFiles:files.sort(),step:1/60,generatedAt:new Date().toISOString(),scope:'Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.',results:previous.engine===engine?previous.results:[]};
  const {browser,page}=await openVerification();
  try{
   for(const index of indices){

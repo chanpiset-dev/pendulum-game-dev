@@ -156,3 +156,10 @@ object counts, contact radii and the 800 × 600 arena. These are authored correc
 not a global spreading algorithm. Portal/field animation respects reduced-motion
 preferences. Gameplay, tutorial, Home animation and artwork specimens share the
 same drawing entry points; rendering does not modify the physics or player saves.
+
+
+New installations default to Modern → Clean Precision in Dark mode; saved theme
+and mode selections remain respected. The Artwork Review scene uses one carriage
+pivot shared by the real articulated drawing. Each successful target hit now grows
+the bob radius by 2.25px (half the previous 4.5px); the initial 21px and maximum
+54px radii are unchanged. Fixed-frame solutions are refreshed for this model.

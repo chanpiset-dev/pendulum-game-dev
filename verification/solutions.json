@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "engine": "e480acd8f2aa0b105591b6405010e5b4f14dd8d61fa369740afae01e5dc94dc2",
+  "engine": "e8b83d7a136d1659b95c93cad8753594a159b0b984b96dd7da4b35fdb76cce43",
   "engineFiles": [
     "src/data/stage-balance.js",
     "src/data/stage-builders/chapter1-basics.js",
@@ -18,7 +18,7 @@
     "src/verification.js"
   ],
   "step": 0.016666666666666666,
-  "generatedAt": "2026-10-31T16:23:17.635Z",
+  "generatedAt": "2026-10-31T17:14:04.662Z",
   "scope": "Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.",
   "results": [
     {
@@ -34,8 +34,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 369,
-        "clearTime": 2.9166666666667065
+        "frames": 370,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -51,8 +51,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 485,
-        "clearTime": 4.800000000000048
+        "frames": 486,
+        "clearTime": 4.8166666666667135
       }
     },
     {
@@ -68,8 +68,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 491,
-        "clearTime": 4.850000000000045
+        "frames": 492,
+        "clearTime": 4.866666666666711
       }
     },
     {
@@ -85,8 +85,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 493,
-        "clearTime": 4.833333333333379
+        "frames": 494,
+        "clearTime": 4.850000000000045
       }
     },
     {
@@ -102,8 +102,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 498,
-        "clearTime": 4.866666666666711
+        "frames": 626,
+        "clearTime": 6.999999999999923
       }
     },
     {
@@ -119,8 +119,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 370,
-        "clearTime": 2.8833333333333715
+        "frames": 371,
+        "clearTime": 2.900000000000039
       }
     },
     {
@@ -136,8 +136,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 489,
-        "clearTime": 4.8166666666667135
+        "frames": 490,
+        "clearTime": 4.833333333333379
       }
     },
     {
@@ -153,8 +153,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 492,
-        "clearTime": 4.866666666666711
+        "frames": 493,
+        "clearTime": 4.883333333333376
       }
     },
     {
@@ -170,8 +170,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 492,
-        "clearTime": 4.8166666666667135
+        "frames": 493,
+        "clearTime": 4.833333333333379
       }
     },
     {
@@ -187,8 +187,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 498,
-        "clearTime": 4.866666666666711
+        "frames": 499,
+        "clearTime": 4.883333333333376
       }
     },
     {
@@ -204,8 +204,8 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 539,
-        "clearTime": 5.6499999999999995
+        "frames": 932,
+        "clearTime": 12.199999999999628
       }
     },
     {
@@ -221,8 +221,8 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 912,
-        "clearTime": 11.816666666666316
+        "frames": 914,
+        "clearTime": 11.849999999999648
       }
     },
     {
@@ -231,15 +231,15 @@
       "sub": 3,
       "name": "FULL THROTTLE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 13,
         "angle": 90,
-        "velocity": -2,
+        "velocity": 2,
         "pulses": [],
-        "frames": 455,
-        "clearTime": 4.266666666666745
+        "frames": 534,
+        "clearTime": 5.533333333333339
       }
     },
     {
@@ -248,15 +248,15 @@
       "sub": 4,
       "name": "FULL THROTTLE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 5,
       "bestRemaining": 0,
       "solution": {
         "index": 14,
         "angle": 90,
-        "velocity": 4,
+        "velocity": -2,
         "pulses": [],
-        "frames": 541,
-        "clearTime": 5.583333333333337
+        "frames": 554,
+        "clearTime": 5.799999999999991
       }
     },
     {
@@ -272,8 +272,8 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 927,
-        "clearTime": 11.966666666666308
+        "frames": 935,
+        "clearTime": 12.099999999999634
       }
     },
     {
@@ -306,8 +306,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 255,
-        "clearTime": 1.0166666666666644
+        "frames": 256,
+        "clearTime": 1.033333333333331
       }
     },
     {
@@ -340,8 +340,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 485,
-        "clearTime": 4.766666666666716
+        "frames": 486,
+        "clearTime": 4.783333333333382
       }
     },
     {
@@ -357,8 +357,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 487,
-        "clearTime": 4.750000000000051
+        "frames": 488,
+        "clearTime": 4.766666666666716
       }
     },
     {
@@ -376,8 +376,8 @@
         "pulses": [
           60
         ],
-        "frames": 683,
-        "clearTime": 8.049999999999864
+        "frames": 684,
+        "clearTime": 8.06666666666653
       }
     },
     {
@@ -403,15 +403,17 @@
       "sub": 3,
       "name": "BANK SHOT",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 23,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 557,
-        "clearTime": 5.899999999999985
+        "pulses": [
+          60
+        ],
+        "frames": 795,
+        "clearTime": 9.866666666666427
       }
     },
     {
@@ -444,8 +446,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1161,
-        "clearTime": 15.916666666666083
+        "frames": 822,
+        "clearTime": 10.266666666666405
       }
     },
     {
@@ -478,8 +480,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 378,
-        "clearTime": 2.9166666666667065
+        "frames": 781,
+        "clearTime": 9.633333333333107
       }
     },
     {
@@ -495,8 +497,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 484,
-        "clearTime": 4.683333333333388
+        "frames": 479,
+        "clearTime": 4.650000000000056
       }
     },
     {
@@ -529,8 +531,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 654,
-        "clearTime": 7.416666666666566
+        "frames": 384,
+        "clearTime": 2.9166666666667065
       }
     },
     {
@@ -539,17 +541,15 @@
       "sub": 1,
       "name": "ARMORED TARGETS",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 2,
       "bestRemaining": 0,
       "solution": {
         "index": 31,
-        "angle": -120,
+        "angle": 120,
         "velocity": 0,
-        "pulses": [
-          60
-        ],
-        "frames": 415,
-        "clearTime": 3.633333333333409
+        "pulses": [],
+        "frames": 295,
+        "clearTime": 1.6333333333333289
       }
     },
     {
@@ -565,8 +565,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 281,
-        "clearTime": 1.4499999999999962
+        "frames": 285,
+        "clearTime": 1.4666666666666628
       }
     },
     {
@@ -575,17 +575,19 @@
       "sub": 3,
       "name": "ARMORED TARGETS",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 7,
       "bestRemaining": 0,
       "solution": {
         "index": 33,
-        "angle": -120,
+        "angle": -150,
         "velocity": 0,
         "pulses": [
-          60
+          60,
+          150,
+          270
         ],
-        "frames": 627,
-        "clearTime": 7.066666666666586
+        "frames": 524,
+        "clearTime": 5.3500000000000165
       }
     },
     {
@@ -594,17 +596,17 @@
       "sub": 4,
       "name": "ARMORED TARGETS",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 6,
       "bestRemaining": 0,
       "solution": {
         "index": 34,
-        "angle": -120,
+        "angle": 150,
         "velocity": 0,
         "pulses": [
           60
         ],
-        "frames": 592,
-        "clearTime": 6.449999999999954
+        "frames": 694,
+        "clearTime": 8.133333333333193
       }
     },
     {
@@ -613,19 +615,15 @@
       "sub": 5,
       "name": "ARMORED TARGETS",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 5,
       "bestRemaining": 0,
       "solution": {
         "index": 35,
-        "angle": 90,
+        "angle": -90,
         "velocity": 0,
-        "pulses": [
-          60,
-          150,
-          270
-        ],
-        "frames": 851,
-        "clearTime": 10.783333333333042
+        "pulses": [],
+        "frames": 903,
+        "clearTime": 11.64999999999966
       }
     },
     {
@@ -641,8 +639,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 697,
-        "clearTime": 8.283333333333184
+        "frames": 699,
+        "clearTime": 8.316666666666515
       }
     },
     {
@@ -658,8 +656,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 535,
-        "clearTime": 5.550000000000005
+        "frames": 518,
+        "clearTime": 5.266666666666688
       }
     },
     {
@@ -675,8 +673,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 512,
-        "clearTime": 5.050000000000034
+        "frames": 532,
+        "clearTime": 5.3500000000000165
       }
     },
     {
@@ -692,8 +690,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 577,
-        "clearTime": 6.149999999999971
+        "frames": 587,
+        "clearTime": 6.316666666666628
       }
     },
     {
@@ -702,15 +700,17 @@
       "sub": 5,
       "name": "SUPER BOUNCER",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 40,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 751,
-        "clearTime": 8.916666666666481
+        "pulses": [
+          60
+        ],
+        "frames": 479,
+        "clearTime": 4.433333333333402
       }
     },
     {
@@ -745,8 +745,8 @@
         "pulses": [
           60
         ],
-        "frames": 650,
-        "clearTime": 7.449999999999897
+        "frames": 1043,
+        "clearTime": 13.999999999999526
       }
     },
     {
@@ -755,15 +755,17 @@
       "sub": 3,
       "name": "GALE VALLEY",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 43,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 1223,
-        "clearTime": 16.966666666666026
+        "pulses": [
+          60
+        ],
+        "frames": 676,
+        "clearTime": 7.799999999999877
       }
     },
     {
@@ -772,15 +774,19 @@
       "sub": 4,
       "name": "GALE VALLEY",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 16,
       "bestRemaining": 0,
       "solution": {
         "index": 44,
-        "angle": 30,
-        "velocity": 4,
-        "pulses": [],
-        "frames": 383,
-        "clearTime": 3.000000000000044
+        "angle": 90,
+        "velocity": 2,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 597,
+        "clearTime": 6.483333333333285
       }
     },
     {
@@ -800,8 +806,8 @@
           150,
           270
         ],
-        "frames": 469,
-        "clearTime": 4.350000000000073
+        "frames": 1340,
+        "clearTime": 18.81666666666592
       }
     },
     {
@@ -810,15 +816,15 @@
       "sub": 1,
       "name": "WIND SURFER",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 5,
       "bestRemaining": 0,
       "solution": {
         "index": 46,
-        "angle": 120,
+        "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 1146,
-        "clearTime": 15.716666666666095
+        "frames": 790,
+        "clearTime": 9.783333333333099
       }
     },
     {
@@ -834,8 +840,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1005,
-        "clearTime": 13.316666666666231
+        "frames": 1249,
+        "clearTime": 17.38333333333267
       }
     },
     {
@@ -851,8 +857,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1230,
-        "clearTime": 16.98333333333269
+        "frames": 1073,
+        "clearTime": 14.33333333333284
       }
     },
     {
@@ -868,8 +874,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1206,
-        "clearTime": 16.59999999999938
+        "frames": 1112,
+        "clearTime": 15.0333333333328
       }
     },
     {
@@ -885,8 +891,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 580,
-        "clearTime": 6.149999999999971
+        "frames": 602,
+        "clearTime": 6.566666666666614
       }
     },
     {
@@ -902,8 +908,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 731,
-        "clearTime": 8.749999999999824
+        "frames": 1062,
+        "clearTime": 14.266666666666177
       }
     },
     {
@@ -919,8 +925,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 789,
-        "clearTime": 9.666666666666439
+        "frames": 783,
+        "clearTime": 9.566666666666444
       }
     },
     {
@@ -936,8 +942,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 730,
-        "clearTime": 8.749999999999824
+        "frames": 734,
+        "clearTime": 8.816666666666487
       }
     },
     {
@@ -953,8 +959,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 735,
-        "clearTime": 8.733333333333158
+        "frames": 738,
+        "clearTime": 8.783333333333156
       }
     },
     {
@@ -970,8 +976,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 736,
-        "clearTime": 8.749999999999824
+        "frames": 739,
+        "clearTime": 8.799999999999821
       }
     },
     {
@@ -987,8 +993,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 642,
-        "clearTime": 7.2499999999999085
+        "frames": 403,
+        "clearTime": 3.266666666666724
       }
     },
     {
@@ -1004,8 +1010,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 402,
-        "clearTime": 3.2500000000000564
+        "frames": 596,
+        "clearTime": 6.483333333333285
       }
     },
     {
@@ -1021,8 +1027,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 518,
-        "clearTime": 5.083333333333365
+        "frames": 492,
+        "clearTime": 4.650000000000056
       }
     },
     {
@@ -1038,8 +1044,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 328,
-        "clearTime": 1.9833333333333276
+        "frames": 405,
+        "clearTime": 3.2500000000000564
       }
     },
     {
@@ -1055,8 +1061,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 459,
-        "clearTime": 4.05000000000009
+        "frames": 399,
+        "clearTime": 3.1500000000000514
       }
     },
     {
@@ -1072,8 +1078,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 383,
-        "clearTime": 3.0500000000000465
+        "frames": 575,
+        "clearTime": 6.249999999999965
       }
     },
     {
@@ -1089,8 +1095,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 613,
-        "clearTime": 6.8333333333332655
+        "frames": 614,
+        "clearTime": 6.849999999999931
       }
     },
     {
@@ -1106,8 +1112,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 428,
-        "clearTime": 3.8000000000000838
+        "frames": 432,
+        "clearTime": 3.8166666666667513
       }
     },
     {
@@ -1116,15 +1122,17 @@
       "sub": 4,
       "name": "BLACK HOLE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 64,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 438,
-        "clearTime": 3.9166666666667562
+        "pulses": [
+          60
+        ],
+        "frames": 746,
+        "clearTime": 9.049999999999807
       }
     },
     {
@@ -1144,8 +1152,8 @@
           150,
           270
         ],
-        "frames": 447,
-        "clearTime": 3.9666666666667587
+        "frames": 448,
+        "clearTime": 3.983333333333426
       }
     },
     {
@@ -1163,8 +1171,8 @@
         "pulses": [
           60
         ],
-        "frames": 768,
-        "clearTime": 9.366666666666456
+        "frames": 769,
+        "clearTime": 9.383333333333121
       }
     },
     {
@@ -1173,15 +1181,17 @@
       "sub": 2,
       "name": "TWIN VORTEX",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 69,
       "bestRemaining": 0,
       "solution": {
         "index": 67,
-        "angle": 120,
-        "velocity": 4,
-        "pulses": [],
-        "frames": 808,
-        "clearTime": 9.983333333333087
+        "angle": -60,
+        "velocity": -4,
+        "pulses": [
+          60
+        ],
+        "frames": 462,
+        "clearTime": 4.216666666666748
       }
     },
     {
@@ -1190,15 +1200,15 @@
       "sub": 3,
       "name": "TWIN VORTEX",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 5,
       "bestRemaining": 0,
       "solution": {
         "index": 68,
-        "angle": 60,
-        "velocity": 2,
+        "angle": -90,
+        "velocity": 0,
         "pulses": [],
-        "frames": 395,
-        "clearTime": 3.166666666666719
+        "frames": 436,
+        "clearTime": 3.8500000000000862
       }
     },
     {
@@ -1214,8 +1224,8 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 341,
-        "clearTime": 2.3166666666666766
+        "frames": 409,
+        "clearTime": 3.400000000000064
       }
     },
     {
@@ -1224,17 +1234,17 @@
       "sub": 5,
       "name": "TWIN VORTEX",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 15,
       "bestRemaining": 0,
       "solution": {
         "index": 70,
-        "angle": 150,
-        "velocity": 0,
+        "angle": -120,
+        "velocity": 2,
         "pulses": [
           60
         ],
-        "frames": 316,
-        "clearTime": 1.716666666666662
+        "frames": 642,
+        "clearTime": 7.2499999999999085
       }
     },
     {
@@ -1250,8 +1260,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 633,
-        "clearTime": 7.116666666666583
+        "frames": 594,
+        "clearTime": 6.46666666666662
       }
     },
     {
@@ -1267,8 +1277,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 597,
-        "clearTime": 6.46666666666662
+        "frames": 541,
+        "clearTime": 5.533333333333339
       }
     },
     {
@@ -1284,8 +1294,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 624,
-        "clearTime": 6.883333333333263
+        "frames": 587,
+        "clearTime": 6.249999999999965
       }
     },
     {
@@ -1301,8 +1311,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 754,
-        "clearTime": 8.983333333333144
+        "frames": 556,
+        "clearTime": 5.733333333333328
       }
     },
     {
@@ -1318,8 +1328,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 607,
-        "clearTime": 6.549999999999948
+        "frames": 627,
+        "clearTime": 6.8333333333332655
       }
     },
     {
@@ -1328,15 +1338,17 @@
       "sub": 1,
       "name": "PUSH & PULL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 76,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 506,
-        "clearTime": 5.050000000000034
+        "pulses": [
+          60
+        ],
+        "frames": 651,
+        "clearTime": 7.466666666666563
       }
     },
     {
@@ -1345,19 +1357,19 @@
       "sub": 2,
       "name": "PUSH & PULL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 4,
       "bestRemaining": 0,
       "solution": {
         "index": 77,
         "angle": 90,
-        "velocity": 4,
+        "velocity": 0,
         "pulses": [
           60,
           150,
           270
         ],
-        "frames": 494,
-        "clearTime": 4.866666666666711
+        "frames": 871,
+        "clearTime": 11.09999999999969
       }
     },
     {
@@ -1366,15 +1378,17 @@
       "sub": 3,
       "name": "PUSH & PULL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 78,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 604,
-        "clearTime": 6.683333333333274
+        "pulses": [
+          60
+        ],
+        "frames": 388,
+        "clearTime": 3.0833333333333814
       }
     },
     {
@@ -1394,8 +1408,8 @@
           150,
           270
         ],
-        "frames": 733,
-        "clearTime": 8.76666666666649
+        "frames": 696,
+        "clearTime": 8.149999999999858
       }
     },
     {
@@ -1430,8 +1444,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 403,
-        "clearTime": 3.3833333333333964
+        "frames": 404,
+        "clearTime": 3.400000000000064
       }
     },
     {
@@ -1447,8 +1461,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 395,
-        "clearTime": 3.200000000000054
+        "frames": 402,
+        "clearTime": 3.3166666666667264
       }
     },
     {
@@ -1464,8 +1478,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 327,
-        "clearTime": 2.133333333333334
+        "frames": 393,
+        "clearTime": 3.233333333333389
       }
     },
     {
@@ -1474,15 +1488,17 @@
       "sub": 4,
       "name": "ROLLER TRACK",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 84,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 625,
-        "clearTime": 7.04999999999992
+        "pulses": [
+          60
+        ],
+        "frames": 445,
+        "clearTime": 3.950000000000091
       }
     },
     {
@@ -1498,8 +1514,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 840,
-        "clearTime": 10.51666666666639
+        "frames": 845,
+        "clearTime": 10.599999999999719
       }
     },
     {
@@ -1515,8 +1531,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 371,
-        "clearTime": 2.800000000000034
+        "frames": 372,
+        "clearTime": 2.8166666666667015
       }
     },
     {
@@ -1551,8 +1567,8 @@
         "pulses": [
           60
         ],
-        "frames": 578,
-        "clearTime": 6.216666666666634
+        "frames": 580,
+        "clearTime": 6.249999999999965
       }
     },
     {
@@ -1561,17 +1577,17 @@
       "sub": 4,
       "name": "SKY LIFT",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 6,
       "bestRemaining": 0,
       "solution": {
         "index": 89,
-        "angle": -120,
+        "angle": 150,
         "velocity": 0,
         "pulses": [
           60
         ],
-        "frames": 592,
-        "clearTime": 6.333333333333294
+        "frames": 961,
+        "clearTime": 12.483333333332945
       }
     },
     {
@@ -1587,8 +1603,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 287,
-        "clearTime": 1.33333333333333
+        "frames": 288,
+        "clearTime": 1.3499999999999965
       }
     },
     {
@@ -1604,8 +1620,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 574,
-        "clearTime": 6.1833333333333025
+        "frames": 577,
+        "clearTime": 6.2333333333333
       }
     },
     {
@@ -1623,8 +1639,8 @@
         "pulses": [
           60
         ],
-        "frames": 623,
-        "clearTime": 7.116666666666583
+        "frames": 624,
+        "clearTime": 7.1333333333332485
       }
     },
     {
@@ -1644,8 +1660,8 @@
           150,
           270
         ],
-        "frames": 823,
-        "clearTime": 10.349999999999733
+        "frames": 490,
+        "clearTime": 4.800000000000048
       }
     },
     {
@@ -1661,8 +1677,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 498,
-        "clearTime": 4.983333333333371
+        "frames": 404,
+        "clearTime": 3.4166666666667314
       }
     },
     {
@@ -1671,17 +1687,19 @@
       "sub": 5,
       "name": "CAROUSEL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 4,
       "bestRemaining": 0,
       "solution": {
         "index": 95,
-        "angle": -120,
+        "angle": 90,
         "velocity": 0,
         "pulses": [
-          60
+          60,
+          150,
+          270
         ],
-        "frames": 969,
-        "clearTime": 12.599999999999605
+        "frames": 1763,
+        "clearTime": 25.833333333332188
       }
     },
     {
@@ -1716,8 +1734,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 397,
-        "clearTime": 3.133333333333384
+        "frames": 398,
+        "clearTime": 3.1500000000000514
       }
     },
     {
@@ -1733,8 +1751,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 686,
-        "clearTime": 7.9666666666665344
+        "frames": 703,
+        "clearTime": 8.266666666666518
       }
     },
     {
@@ -1750,8 +1768,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 570,
-        "clearTime": 5.949999999999982
+        "frames": 398,
+        "clearTime": 3.0833333333333814
       }
     },
     {
@@ -1760,15 +1778,17 @@
       "sub": 5,
       "name": "STORM RUNNER",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 100,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 998,
-        "clearTime": 13.116666666666243
+        "pulses": [
+          60
+        ],
+        "frames": 1193,
+        "clearTime": 16.266666666666065
       }
     },
     {
@@ -1777,15 +1797,17 @@
       "sub": 1,
       "name": "CYCLONE ELEVATOR",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 101,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 792,
-        "clearTime": 9.81666666666643
+        "pulses": [
+          60
+        ],
+        "frames": 862,
+        "clearTime": 10.98333333333303
       }
     },
     {
@@ -1835,8 +1857,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 673,
-        "clearTime": 7.799999999999877
+        "frames": 837,
+        "clearTime": 10.533333333333056
       }
     },
     {
@@ -1845,17 +1867,15 @@
       "sub": 5,
       "name": "CYCLONE ELEVATOR",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 2,
       "bestRemaining": 0,
       "solution": {
         "index": 105,
-        "angle": -120,
+        "angle": 120,
         "velocity": 0,
-        "pulses": [
-          60
-        ],
-        "frames": 862,
-        "clearTime": 10.816666666666373
+        "pulses": [],
+        "frames": 887,
+        "clearTime": 11.233333333333016
       }
     },
     {
@@ -1871,8 +1891,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
-        "clearTime": 2.8833333333333715
+        "frames": 377,
+        "clearTime": 2.900000000000039
       }
     },
     {
@@ -1888,8 +1908,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 383,
-        "clearTime": 2.9500000000000415
+        "frames": 474,
+        "clearTime": 4.466666666666733
       }
     },
     {
@@ -1905,8 +1925,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 377,
-        "clearTime": 2.8500000000000365
+        "frames": 378,
+        "clearTime": 2.866666666666704
       }
     },
     {
@@ -1922,8 +1942,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 377,
-        "clearTime": 2.866666666666704
+        "frames": 378,
+        "clearTime": 2.8833333333333715
       }
     },
     {
@@ -1932,15 +1952,17 @@
       "sub": 5,
       "name": "ABYSS RUNNER",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 110,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 419,
-        "clearTime": 3.4500000000000663
+        "pulses": [
+          60
+        ],
+        "frames": 381,
+        "clearTime": 2.8166666666667015
       }
     },
     {
@@ -2007,8 +2029,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 475,
-        "clearTime": 4.433333333333402
+        "frames": 476,
+        "clearTime": 4.450000000000068
       }
     },
     {
@@ -2024,8 +2046,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 417,
-        "clearTime": 3.400000000000064
+        "frames": 492,
+        "clearTime": 4.7000000000000535
       }
     },
     {
@@ -2041,8 +2063,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 858,
-        "clearTime": 10.916666666666368
+        "frames": 784,
+        "clearTime": 9.683333333333104
       }
     },
     {
@@ -2075,8 +2097,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 532,
-        "clearTime": 5.433333333333345
+        "frames": 612,
+        "clearTime": 6.766666666666603
       }
     },
     {
@@ -2092,8 +2114,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 504,
-        "clearTime": 4.883333333333376
+        "frames": 506,
+        "clearTime": 4.916666666666708
       }
     },
     {
@@ -2109,8 +2131,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 452,
-        "clearTime": 4.083333333333422
+        "frames": 808,
+        "clearTime": 9.999999999999753
       }
     },
     {
@@ -2126,7 +2148,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
+        "frames": 376,
         "clearTime": 2.933333333333374
       }
     },
@@ -2177,8 +2199,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 476,
-        "clearTime": 4.450000000000068
+        "frames": 477,
+        "clearTime": 4.466666666666733
       }
     },
     {
@@ -2187,19 +2209,15 @@
       "sub": 5,
       "name": "SECURITY KEY",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 5,
       "bestRemaining": 0,
       "solution": {
         "index": 125,
-        "angle": 90,
+        "angle": -90,
         "velocity": 0,
-        "pulses": [
-          60,
-          150,
-          270
-        ],
-        "frames": 644,
-        "clearTime": 7.3666666666665686
+        "pulses": [],
+        "frames": 1073,
+        "clearTime": 14.483333333332832
       }
     },
     {
@@ -2215,8 +2233,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 377,
-        "clearTime": 2.900000000000039
+        "frames": 378,
+        "clearTime": 2.9166666666667065
       }
     },
     {
@@ -2232,8 +2250,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 382,
-        "clearTime": 2.9500000000000415
+        "frames": 383,
+        "clearTime": 2.966666666666709
       }
     },
     {
@@ -2268,8 +2286,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 473,
-        "clearTime": 4.433333333333402
+        "frames": 474,
+        "clearTime": 4.450000000000068
       }
     },
     {
@@ -2285,8 +2303,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 387,
-        "clearTime": 2.933333333333374
+        "frames": 388,
+        "clearTime": 2.9500000000000415
       }
     },
     {
@@ -2329,19 +2347,19 @@
       "sub": 3,
       "name": "WARP HYPERCUBE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 113,
       "bestRemaining": 0,
       "solution": {
         "index": 133,
-        "angle": 90,
-        "velocity": 0,
+        "angle": -90,
+        "velocity": 2,
         "pulses": [
           60,
           150,
           270
         ],
-        "frames": 763,
-        "clearTime": 9.333333333333124
+        "frames": 556,
+        "clearTime": 5.8833333333333195
       }
     },
     {
@@ -2359,8 +2377,8 @@
         "pulses": [
           60
         ],
-        "frames": 358,
-        "clearTime": 2.5500000000000216
+        "frames": 361,
+        "clearTime": 2.600000000000024
       }
     },
     {
@@ -2369,19 +2387,15 @@
       "sub": 5,
       "name": "WARP HYPERCUBE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 38,
       "bestRemaining": 0,
       "solution": {
         "index": 135,
-        "angle": 0,
-        "velocity": 0,
-        "pulses": [
-          60,
-          150,
-          270
-        ],
-        "frames": 577,
-        "clearTime": 6.166666666666637
+        "angle": 120,
+        "velocity": -2,
+        "pulses": [],
+        "frames": 647,
+        "clearTime": 7.316666666666571
       }
     },
     {
@@ -2397,8 +2411,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 508,
-        "clearTime": 5.133333333333362
+        "frames": 662,
+        "clearTime": 7.699999999999883
       }
     },
     {
@@ -2435,8 +2449,8 @@
           150,
           270
         ],
-        "frames": 407,
-        "clearTime": 3.466666666666734
+        "frames": 415,
+        "clearTime": 3.600000000000074
       }
     },
     {
@@ -2462,15 +2476,17 @@
       "sub": 5,
       "name": "SECURITY MAZE",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 51,
       "bestRemaining": 0,
       "solution": {
         "index": 140,
-        "angle": 120,
+        "angle": -120,
         "velocity": 6,
-        "pulses": [],
-        "frames": 706,
-        "clearTime": 8.366666666666513
+        "pulses": [
+          60
+        ],
+        "frames": 1078,
+        "clearTime": 14.56666666666616
       }
     },
     {
@@ -2490,8 +2506,8 @@
           150,
           270
         ],
-        "frames": 561,
-        "clearTime": 5.966666666666648
+        "frames": 534,
+        "clearTime": 5.516666666666674
       }
     },
     {
@@ -2517,15 +2533,19 @@
       "sub": 3,
       "name": "LASER PORTAL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 131,
       "bestRemaining": 0,
       "solution": {
         "index": 143,
-        "angle": 60,
-        "velocity": -4,
-        "pulses": [],
-        "frames": 557,
-        "clearTime": 5.849999999999988
+        "angle": 30,
+        "velocity": 4,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 676,
+        "clearTime": 7.883333333333206
       }
     },
     {
@@ -2534,19 +2554,19 @@
       "sub": 4,
       "name": "LASER PORTAL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 10,
       "bestRemaining": 0,
       "solution": {
         "index": 144,
-        "angle": 90,
-        "velocity": 2,
+        "angle": 180,
+        "velocity": 0,
         "pulses": [
           60,
           150,
           270
         ],
-        "frames": 624,
-        "clearTime": 6.983333333333257
+        "frames": 458,
+        "clearTime": 4.250000000000079
       }
     },
     {
@@ -2555,19 +2575,19 @@
       "sub": 5,
       "name": "LASER PORTAL",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 7,
       "bestRemaining": 0,
       "solution": {
         "index": 145,
-        "angle": 90,
+        "angle": -150,
         "velocity": 0,
         "pulses": [
           60,
           150,
           270
         ],
-        "frames": 579,
-        "clearTime": 6.199999999999968
+        "frames": 411,
+        "clearTime": 3.4833333333334013
       }
     },
     {
@@ -2583,8 +2603,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 573,
-        "clearTime": 6.166666666666637
+        "frames": 564,
+        "clearTime": 6.016666666666645
       }
     },
     {
@@ -2633,17 +2653,17 @@
       "sub": 4,
       "name": "THE VAULT HEIST",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 21,
       "bestRemaining": 0,
       "solution": {
         "index": 149,
-        "angle": 150,
+        "angle": -60,
         "velocity": 2,
         "pulses": [
           60
         ],
-        "frames": 763,
-        "clearTime": 9.199999999999799
+        "frames": 701,
+        "clearTime": 8.18333333333319
       }
     },
     {
@@ -2652,19 +2672,15 @@
       "sub": 5,
       "name": "THE VAULT HEIST",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 14,
       "bestRemaining": 0,
       "solution": {
         "index": 150,
-        "angle": -150,
-        "velocity": 0,
-        "pulses": [
-          60,
-          150,
-          270
-        ],
-        "frames": 632,
-        "clearTime": 7.066666666666586
+        "angle": 120,
+        "velocity": 2,
+        "pulses": [],
+        "frames": 549,
+        "clearTime": 5.6499999999999995
       }
     },
     {
@@ -2680,8 +2696,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 469,
-        "clearTime": 4.433333333333402
+        "frames": 470,
+        "clearTime": 4.450000000000068
       }
     },
     {
@@ -2697,8 +2713,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 374,
-        "clearTime": 2.9166666666667065
+        "frames": 375,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -2714,8 +2730,8 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 463,
-        "clearTime": 4.383333333333405
+        "frames": 523,
+        "clearTime": 5.300000000000019
       }
     },
     {
@@ -2731,8 +2747,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 464,
-        "clearTime": 4.316666666666742
+        "frames": 467,
+        "clearTime": 4.366666666666739
       }
     },
     {
@@ -2752,8 +2768,8 @@
           150,
           270
         ],
-        "frames": 485,
-        "clearTime": 4.633333333333391
+        "frames": 765,
+        "clearTime": 9.299999999999793
       }
     },
     {
@@ -2769,8 +2785,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 375,
-        "clearTime": 2.9166666666667065
+        "frames": 376,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -2803,8 +2819,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 483,
-        "clearTime": 4.616666666666725
+        "frames": 484,
+        "clearTime": 4.633333333333391
       }
     },
     {
@@ -2820,8 +2836,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 283,
-        "clearTime": 1.3999999999999964
+        "frames": 333,
+        "clearTime": 2.233333333333339
       }
     },
     {
@@ -2830,15 +2846,17 @@
       "sub": 5,
       "name": "SLIME SLOUGH",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 160,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 369,
-        "clearTime": 2.733333333333364
+        "pulses": [
+          60
+        ],
+        "frames": 289,
+        "clearTime": 1.3166666666666633
       }
     },
     {
@@ -2858,8 +2876,8 @@
           150,
           270
         ],
-        "frames": 481,
-        "clearTime": 4.633333333333391
+        "frames": 484,
+        "clearTime": 4.683333333333388
       }
     },
     {
@@ -2896,8 +2914,8 @@
           150,
           270
         ],
-        "frames": 588,
-        "clearTime": 6.4166666666666226
+        "frames": 589,
+        "clearTime": 6.433333333333288
       }
     },
     {
@@ -2913,8 +2931,8 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 522,
-        "clearTime": 5.333333333333351
+        "frames": 481,
+        "clearTime": 4.650000000000056
       }
     },
     {
@@ -2930,8 +2948,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 284,
-        "clearTime": 1.3666666666666631
+        "frames": 626,
+        "clearTime": 7.066666666666586
       }
     },
     {
@@ -2947,8 +2965,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 283,
-        "clearTime": 1.4333333333333296
+        "frames": 284,
+        "clearTime": 1.4499999999999962
       }
     },
     {
@@ -2957,15 +2975,15 @@
       "sub": 2,
       "name": "TWIN LAUNCH",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 2,
       "bestRemaining": 0,
       "solution": {
         "index": 167,
-        "angle": -90,
+        "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1150,
-        "clearTime": 15.683333333332763
+        "frames": 815,
+        "clearTime": 10.099999999999747
       }
     },
     {
@@ -2981,8 +2999,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 415,
-        "clearTime": 3.4500000000000663
+        "frames": 423,
+        "clearTime": 3.5833333333334063
       }
     },
     {
@@ -2998,8 +3016,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 899,
-        "clearTime": 11.466666666666336
+        "frames": 718,
+        "clearTime": 8.449999999999841
       }
     },
     {
@@ -3015,8 +3033,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 416,
-        "clearTime": 3.4166666666667314
+        "frames": 485,
+        "clearTime": 4.600000000000059
       }
     },
     {
@@ -3032,8 +3050,8 @@
         "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 818,
-        "clearTime": 10.149999999999745
+        "frames": 841,
+        "clearTime": 10.533333333333056
       }
     },
     {
@@ -3042,15 +3060,15 @@
       "sub": 2,
       "name": "TWIN STORM",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 172,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1234,
-        "clearTime": 17.03333333333269
+        "frames": 877,
+        "clearTime": 11.083333333333025
       }
     },
     {
@@ -3066,8 +3084,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 849,
-        "clearTime": 10.63333333333305
+        "frames": 1123,
+        "clearTime": 15.133333333332795
       }
     },
     {
@@ -3083,8 +3101,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1262,
-        "clearTime": 17.466666666665997
+        "frames": 858,
+        "clearTime": 10.733333333333045
       }
     },
     {
@@ -3100,8 +3118,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 919,
-        "clearTime": 11.749999999999654
+        "frames": 928,
+        "clearTime": 11.79999999999965
       }
     },
     {
@@ -3117,8 +3135,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 280,
-        "clearTime": 1.3833333333333298
+        "frames": 281,
+        "clearTime": 1.3999999999999964
       }
     },
     {
@@ -3134,8 +3152,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 555,
-        "clearTime": 5.7666666666666595
+        "frames": 557,
+        "clearTime": 5.799999999999991
       }
     },
     {
@@ -3151,8 +3169,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 387,
-        "clearTime": 2.9833333333333765
+        "frames": 388,
+        "clearTime": 3.000000000000044
       }
     },
     {
@@ -3168,8 +3186,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 408,
-        "clearTime": 3.2833333333333914
+        "frames": 406,
+        "clearTime": 3.2500000000000564
       }
     },
     {
@@ -3185,8 +3203,8 @@
         "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 497,
-        "clearTime": 4.716666666666719
+        "frames": 578,
+        "clearTime": 5.99999999999998
       }
     },
     {
@@ -3202,8 +3220,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 278,
-        "clearTime": 1.3499999999999965
+        "frames": 279,
+        "clearTime": 1.3666666666666631
       }
     },
     {
@@ -3219,8 +3237,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 381,
-        "clearTime": 2.9166666666667065
+        "frames": 382,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -3236,8 +3254,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 451,
-        "clearTime": 4.033333333333425
+        "frames": 530,
+        "clearTime": 5.3500000000000165
       }
     },
     {
@@ -3253,8 +3271,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 383,
-        "clearTime": 2.9166666666667065
+        "frames": 384,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -3270,8 +3288,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
-        "clearTime": 2.800000000000034
+        "frames": 381,
+        "clearTime": 2.833333333333369
       }
     },
     {
@@ -3304,8 +3322,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 612,
-        "clearTime": 6.7166666666666055
+        "frames": 591,
+        "clearTime": 6.366666666666625
       }
     },
     {
@@ -3321,8 +3339,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 392,
-        "clearTime": 3.066666666666714
+        "frames": 393,
+        "clearTime": 3.0833333333333814
       }
     },
     {
@@ -3338,8 +3356,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 373,
-        "clearTime": 2.700000000000029
+        "frames": 374,
+        "clearTime": 2.7166666666666965
       }
     },
     {
@@ -3355,8 +3373,8 @@
         "angle": 90,
         "velocity": 2,
         "pulses": [],
-        "frames": 469,
-        "clearTime": 4.350000000000073
+        "frames": 379,
+        "clearTime": 2.8500000000000365
       }
     },
     {
@@ -3372,8 +3390,8 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 365,
-        "clearTime": 2.700000000000029
+        "frames": 366,
+        "clearTime": 2.7166666666666965
       }
     },
     {
@@ -3389,8 +3407,8 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 365,
-        "clearTime": 2.6500000000000266
+        "frames": 462,
+        "clearTime": 4.266666666666745
       }
     },
     {
@@ -3406,8 +3424,8 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 369,
-        "clearTime": 2.7833333333333665
+        "frames": 370,
+        "clearTime": 2.800000000000034
       }
     },
     {
@@ -3416,15 +3434,15 @@
       "sub": 4,
       "name": "CEILING RUSH",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 8,
       "bestRemaining": 0,
       "solution": {
         "index": 194,
-        "angle": 90,
+        "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 631,
-        "clearTime": 7.083333333333251
+        "frames": 365,
+        "clearTime": 2.6500000000000266
       }
     },
     {
@@ -3440,8 +3458,8 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
-        "clearTime": 2.800000000000034
+        "frames": 383,
+        "clearTime": 2.9166666666667065
       }
     },
     {
@@ -3461,8 +3479,8 @@
           150,
           270
         ],
-        "frames": 723,
-        "clearTime": 8.666666666666496
+        "frames": 755,
+        "clearTime": 9.199999999999799
       }
     },
     {
@@ -3471,17 +3489,19 @@
       "sub": 2,
       "name": "ZERO GRAVITY",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 4,
       "bestRemaining": 0,
       "solution": {
         "index": 197,
-        "angle": -120,
+        "angle": 90,
         "velocity": 0,
         "pulses": [
-          60
+          60,
+          150,
+          270
         ],
-        "frames": 1240,
-        "clearTime": 17.199999999999346
+        "frames": 1347,
+        "clearTime": 18.983333333332578
       }
     },
     {
@@ -3499,8 +3519,8 @@
         "pulses": [
           60
         ],
-        "frames": 1380,
-        "clearTime": 19.63333333333254
+        "frames": 1640,
+        "clearTime": 23.966666666665628
       }
     },
     {
@@ -3509,19 +3529,17 @@
       "sub": 4,
       "name": "ZERO GRAVITY",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 6,
       "bestRemaining": 0,
       "solution": {
         "index": 199,
-        "angle": 90,
+        "angle": 150,
         "velocity": 0,
         "pulses": [
-          60,
-          150,
-          270
+          60
         ],
-        "frames": 1097,
-        "clearTime": 14.866666666666143
+        "frames": 605,
+        "clearTime": 6.7166666666666055
       }
     },
     {
@@ -3539,8 +3557,8 @@
         "pulses": [
           60
         ],
-        "frames": 1607,
-        "clearTime": 23.36666666666566
+        "frames": 1619,
+        "clearTime": 23.56666666666565
       }
     },
     {
@@ -3556,8 +3574,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 715,
-        "clearTime": 8.53333333333317
+        "frames": 856,
+        "clearTime": 10.883333333333036
       }
     },
     {
@@ -3592,8 +3610,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 541,
-        "clearTime": 5.600000000000002
+        "frames": 896,
+        "clearTime": 11.516666666666334
       }
     },
     {
@@ -3611,8 +3629,8 @@
         "pulses": [
           60
         ],
-        "frames": 813,
-        "clearTime": 9.949999999999756
+        "frames": 987,
+        "clearTime": 12.849999999999591
       }
     },
     {
@@ -3621,17 +3639,19 @@
       "sub": 5,
       "name": "GRAVITY METRONOME",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 4,
       "bestRemaining": 0,
       "solution": {
         "index": 205,
-        "angle": -120,
+        "angle": 90,
         "velocity": 0,
         "pulses": [
-          60
+          60,
+          150,
+          270
         ],
-        "frames": 1838,
-        "clearTime": 26.966666666665457
+        "frames": 829,
+        "clearTime": 10.149999999999745
       }
     },
     {
@@ -3647,8 +3667,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 381,
-        "clearTime": 2.9166666666667065
+        "frames": 382,
+        "clearTime": 2.933333333333374
       }
     },
     {
@@ -3681,8 +3701,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 601,
-        "clearTime": 6.499999999999951
+        "frames": 592,
+        "clearTime": 6.34999999999996
       }
     },
     {
@@ -3698,8 +3718,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 314,
-        "clearTime": 1.799999999999995
+        "frames": 524,
+        "clearTime": 5.200000000000025
       }
     },
     {
@@ -3732,8 +3752,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 525,
-        "clearTime": 5.333333333333351
+        "frames": 548,
+        "clearTime": 5.716666666666662
       }
     },
     {
@@ -3749,8 +3769,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 647,
-        "clearTime": 7.416666666666566
+        "frames": 855,
+        "clearTime": 10.933333333333033
       }
     },
     {
@@ -3766,8 +3786,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 629,
-        "clearTime": 7.04999999999992
+        "frames": 539,
+        "clearTime": 5.600000000000002
       }
     },
     {
@@ -3783,8 +3803,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 556,
-        "clearTime": 5.949999999999982
+        "frames": 378,
+        "clearTime": 2.9833333333333765
       }
     },
     {
@@ -3800,8 +3820,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 338,
-        "clearTime": 2.2166666666666717
+        "frames": 272,
+        "clearTime": 1.2166666666666637
       }
     },
     {
@@ -3810,15 +3830,17 @@
       "sub": 1,
       "name": "VORTEX BOOST",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 9,
       "bestRemaining": 0,
       "solution": {
         "index": 216,
-        "angle": 60,
+        "angle": -60,
         "velocity": 0,
-        "pulses": [],
-        "frames": 514,
-        "clearTime": 5.183333333333359
+        "pulses": [
+          60
+        ],
+        "frames": 428,
+        "clearTime": 3.7500000000000813
       }
     },
     {
@@ -3831,14 +3853,15 @@
       "bestRemaining": 0,
       "solution": {
         "index": 217,
-        "angle": -105,
-        "velocity": -1.2,
+        "angle": -95,
+        "velocity": -1,
         "pulses": [
           36,
-          100
+          100,
+          180
         ],
-        "frames": 406,
-        "clearTime": 3.400000000000064
+        "frames": 846,
+        "clearTime": 10.733333333333045
       }
     },
     {
@@ -3847,17 +3870,15 @@
       "sub": 3,
       "name": "VORTEX BOOST",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 26,
       "bestRemaining": 0,
       "solution": {
         "index": 218,
-        "angle": 150,
-        "velocity": 2,
-        "pulses": [
-          60
-        ],
-        "frames": 763,
-        "clearTime": 9.249999999999796
+        "angle": 120,
+        "velocity": 4,
+        "pulses": [],
+        "frames": 877,
+        "clearTime": 11.149999999999688
       }
     },
     {
@@ -3866,19 +3887,17 @@
       "sub": 4,
       "name": "VORTEX BOOST",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 21,
       "bestRemaining": 0,
       "solution": {
         "index": 219,
-        "angle": -90,
-        "velocity": 0,
+        "angle": -60,
+        "velocity": 2,
         "pulses": [
-          60,
-          150,
-          270
+          60
         ],
-        "frames": 519,
-        "clearTime": 5.200000000000025
+        "frames": 646,
+        "clearTime": 7.316666666666571
       }
     },
     {
@@ -3898,8 +3917,8 @@
           150,
           270
         ],
-        "frames": 414,
-        "clearTime": 3.4500000000000663
+        "frames": 411,
+        "clearTime": 3.400000000000064
       }
     },
     {
@@ -3915,8 +3934,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 544,
-        "clearTime": 5.683333333333331
+        "frames": 600,
+        "clearTime": 6.616666666666611
       }
     },
     {
@@ -3932,8 +3951,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 523,
-        "clearTime": 5.450000000000011
+        "frames": 477,
+        "clearTime": 4.683333333333388
       }
     },
     {
@@ -3949,8 +3968,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 409,
-        "clearTime": 3.4500000000000663
+        "frames": 911,
+        "clearTime": 11.749999999999654
       }
     },
     {
@@ -3966,8 +3985,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 568,
-        "clearTime": 6.049999999999977
+        "frames": 347,
+        "clearTime": 2.400000000000014
       }
     },
     {
@@ -3983,8 +4002,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 684,
-        "clearTime": 7.833333333333209
+        "frames": 621,
+        "clearTime": 6.899999999999928
       }
     },
     {
@@ -4000,8 +4019,8 @@
         "angle": 30,
         "velocity": 4,
         "pulses": [],
-        "frames": 612,
-        "clearTime": 6.7166666666666055
+        "frames": 433,
+        "clearTime": 3.7333333333334138
       }
     },
     {
@@ -4010,17 +4029,15 @@
       "sub": 2,
       "name": "THE GAUNTLET",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 11,
       "bestRemaining": 0,
       "solution": {
         "index": 227,
-        "angle": 150,
+        "angle": 30,
         "velocity": 0,
-        "pulses": [
-          60
-        ],
-        "frames": 564,
-        "clearTime": 5.983333333333314
+        "pulses": [],
+        "frames": 519,
+        "clearTime": 5.133333333333362
       }
     },
     {
@@ -4029,17 +4046,17 @@
       "sub": 3,
       "name": "THE GAUNTLET",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 27,
       "bestRemaining": 0,
       "solution": {
         "index": 228,
-        "angle": 150,
-        "velocity": 0,
+        "angle": -120,
+        "velocity": 4,
         "pulses": [
           60
         ],
-        "frames": 493,
-        "clearTime": 4.7000000000000535
+        "frames": 399,
+        "clearTime": 3.100000000000049
       }
     },
     {
@@ -4048,15 +4065,17 @@
       "sub": 4,
       "name": "THE GAUNTLET",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 229,
-        "angle": 30,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 299,
-        "clearTime": 1.4833333333333294
+        "pulses": [
+          60
+        ],
+        "frames": 633,
+        "clearTime": 7.083333333333251
       }
     },
     {
@@ -4072,8 +4091,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 776,
-        "clearTime": 9.46666666666645
+        "frames": 789,
+        "clearTime": 9.683333333333104
       }
     },
     {
@@ -4082,15 +4101,17 @@
       "sub": 1,
       "name": "CYBER HORIZON",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 231,
-        "angle": 120,
+        "angle": -120,
         "velocity": 0,
-        "pulses": [],
-        "frames": 1403,
-        "clearTime": 19.94999999999919
+        "pulses": [
+          60
+        ],
+        "frames": 672,
+        "clearTime": 7.766666666666546
       }
     },
     {
@@ -4110,8 +4131,8 @@
           150,
           270
         ],
-        "frames": 741,
-        "clearTime": 8.916666666666481
+        "frames": 791,
+        "clearTime": 9.799999999999764
       }
     },
     {
@@ -4129,8 +4150,8 @@
         "pulses": [
           60
         ],
-        "frames": 979,
-        "clearTime": 12.866666666666257
+        "frames": 775,
+        "clearTime": 9.46666666666645
       }
     },
     {
@@ -4139,17 +4160,17 @@
       "sub": 4,
       "name": "CYBER HORIZON",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 9,
       "bestRemaining": 0,
       "solution": {
         "index": 234,
-        "angle": -120,
+        "angle": -60,
         "velocity": 0,
         "pulses": [
           60
         ],
-        "frames": 706,
-        "clearTime": 8.249999999999853
+        "frames": 573,
+        "clearTime": 6.083333333333308
       }
     },
     {
@@ -4175,17 +4196,15 @@
       "sub": 1,
       "name": "WARP METRONOME",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 2,
       "bestRemaining": 0,
       "solution": {
         "index": 236,
-        "angle": -120,
+        "angle": 120,
         "velocity": 0,
-        "pulses": [
-          60
-        ],
-        "frames": 1172,
-        "clearTime": 16.099999999999408
+        "pulses": [],
+        "frames": 872,
+        "clearTime": 11.09999999999969
       }
     },
     {
@@ -4194,15 +4213,19 @@
       "sub": 2,
       "name": "WARP METRONOME",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 19,
       "bestRemaining": 0,
       "solution": {
         "index": 237,
-        "angle": 120,
-        "velocity": 0,
-        "pulses": [],
-        "frames": 610,
-        "clearTime": 6.749999999999937
+        "angle": -150,
+        "velocity": 2,
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 761,
+        "clearTime": 9.316666666666459
       }
     },
     {
@@ -4228,17 +4251,17 @@
       "sub": 4,
       "name": "WARP METRONOME",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 3,
       "bestRemaining": 0,
       "solution": {
         "index": 239,
-        "angle": 150,
+        "angle": -120,
         "velocity": 0,
         "pulses": [
           60
         ],
-        "frames": 1134,
-        "clearTime": 15.283333333332786
+        "frames": 1069,
+        "clearTime": 14.233333333332846
       }
     },
     {
@@ -4247,15 +4270,15 @@
       "sub": 5,
       "name": "WARP METRONOME",
       "status": "verified",
-      "attempts": 8,
+      "attempts": 1,
       "bestRemaining": 0,
       "solution": {
         "index": 240,
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 1439,
-        "clearTime": 20.433333333332495
+        "frames": 1174,
+        "clearTime": 16.01666666666608
       }
     },
     {
@@ -4271,8 +4294,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 657,
-        "clearTime": 7.416666666666566
+        "frames": 659,
+        "clearTime": 7.449999999999897
       }
     },
     {
@@ -4288,8 +4311,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 451,
-        "clearTime": 3.9666666666667587
+        "frames": 827,
+        "clearTime": 10.28333333333307
       }
     },
     {
@@ -4305,8 +4328,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 455,
-        "clearTime": 3.9666666666667587
+        "frames": 452,
+        "clearTime": 3.9166666666667562
       }
     },
     {
@@ -4322,8 +4345,8 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 818,
-        "clearTime": 9.966666666666422
+        "frames": 529,
+        "clearTime": 5.150000000000028
       }
     },
     {
@@ -4339,8 +4362,8 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 1517,
-        "clearTime": 21.533333333332433
+        "frames": 1799,
+        "clearTime": 26.233333333332165
       }
     },
     {
@@ -4360,8 +4383,8 @@
           150,
           270
         ],
-        "frames": 1188,
-        "clearTime": 16.36666666666606
+        "frames": 1190,
+        "clearTime": 16.39999999999939
       }
     },
     {
@@ -4391,15 +4414,19 @@
       "sub": 3,
       "name": "COSMIC APEX",
       "status": "verified",
-      "attempts": 1,
+      "attempts": 4,
       "bestRemaining": 0,
       "solution": {
         "index": 248,
-        "angle": 120,
+        "angle": 90,
         "velocity": 0,
-        "pulses": [],
-        "frames": 704,
-        "clearTime": 8.283333333333184
+        "pulses": [
+          60,
+          150,
+          270
+        ],
+        "frames": 645,
+        "clearTime": 7.299999999999906
       }
     },
     {
@@ -4419,8 +4446,8 @@
           150,
           270
         ],
-        "frames": 1250,
-        "clearTime": 17.21666666666601
+        "frames": 1368,
+        "clearTime": 19.183333333332566
       }
     },
     {

@@ -73,3 +73,13 @@ clear overlay and checks the confirmation frame count. The browser smoke test
 uses four representative solutions to check viewer controls, mobile sizing,
 source-version rejection, and preservation of real saves without requiring a
 complete real-time PLAY ALL run.
+
+
+## Reduced bob growth revision
+
+Bob growth is now 2.25px of radius per successful target hit (previously 4.5px).
+All 250 fixed-frame solutions have been refreshed for this model. The historical
+player-guided 44-2 settings above are preserved as a seed, but are not the current
+verified solution. The new 44-2 candidate uses −95°, angular velocity −1.0, and
+pulses at frames 36, 100 and 180; its clear time is 10.73 game seconds. Both seeds
+remain in seeds.json, with the current candidate first.

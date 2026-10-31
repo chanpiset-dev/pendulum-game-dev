@@ -2,7 +2,7 @@
 export const OBJECT_SCALE = 1.5;
 export const BOB_MIN_RADIUS = 14 * OBJECT_SCALE;
 export const BOB_MAX_RADIUS = 36 * OBJECT_SCALE;
-export const BOB_GROWTH = 3 * OBJECT_SCALE;
+export const BOB_GROWTH = 1.5 * OBJECT_SCALE;
 export const BOB_SHRINK = 3 * OBJECT_SCALE;
 export const JOINT_RADIUS = 5 * OBJECT_SCALE;
 export const ROD_WIDTH = 4 * OBJECT_SCALE;

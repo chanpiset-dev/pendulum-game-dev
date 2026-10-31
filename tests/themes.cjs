@@ -23,7 +23,7 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05) / (Math
     });
     await page.goto('http://game.test');
     await page.waitForFunction(() => window.testRun, null, { polling: 50 });
-    assert.deepEqual(await page.evaluate(() => ({ ...document.documentElement.dataset })), { theme: 'neon-arcade', mode: 'dark' });
+    assert.deepEqual(await page.evaluate(() => ({ ...document.documentElement.dataset })), { theme: 'clean-precision', mode: 'dark' });
     await page.click('#btnStartGame');
     await page.evaluate(() => document.getElementById('stageBriefing').classList.add('hidden'));
     await page.click('#btnSettings');
@@ -83,7 +83,7 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05) / (Math
     await page.click('#replayClose');
     await page.evaluate(() => localStorage.setItem('pendulum_preferences_v1', '{"theme":"bad","mode":"bad","volume":0.3,"muted":true}'));
     await page.reload(); await page.waitForFunction(() => window.testRun, null, { polling: 50 });
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'neon-arcade');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'clean-precision');
     assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'dark');
     assert.equal(await page.evaluate(() => window.testRun('savedProgress.preferences.volume')), 0.3);
     assert.deepEqual(errors, []);

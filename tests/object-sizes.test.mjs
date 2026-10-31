@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateStageData, buildAuthoredStageData } from '../src/data/stage-index.js';
-import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, enlargeStageObjects } from '../src/game-sizes.js';
+import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, BOB_GROWTH, enlargeStageObjects } from '../src/game-sizes.js';
 const pivot = { x: 400, y: 300 };
 test('All 250 stages enlarge circles without moving authored geometry or changing settings', () => {
   for (let stage = 1; stage <= 250; stage++) {
@@ -27,3 +27,5 @@ test('Scaling leaves source data intact and does not accumulate on restart', () 
   assert.deepEqual(generateStageData(1,pivot),generateStageData(1,pivot));
   assert.equal(BOB_MIN_RADIUS,21); assert.equal(BOB_MAX_RADIUS,54);
 });
+
+test("Bob growth per hit is half the original increment",()=>{assert.equal(BOB_GROWTH,2.25);assert.equal(BOB_MIN_RADIUS+6*BOB_GROWTH,34.5);});

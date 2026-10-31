@@ -1,4 +1,4 @@
-import { ARTWORK_ITEMS, artworkStyleForTheme, drawArtwork } from './engine/artwork.js';
+import { ARTWORK_ITEMS, artworkStyleForTheme, drawArtwork, drawLivePendulum } from './engine/artwork.js';
 import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
 export function installArtworkPreview({ $, language }) {
   const dialog = $('artworkDialog'), canvas = $('artworkStage'), ctx = canvas.getContext('2d');
@@ -13,8 +13,8 @@ export function installArtworkPreview({ $, language }) {
     ctx.strokeStyle = palette.rod; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(325, 55); ctx.lineTo(475, 55); ctx.stroke();
     ctx.fillStyle = palette.platform; ctx.fillRect(390, 43, 20, 24);
     ctx.translate(400, 55); ctx.rotate(Math.sin(seconds * 0.8) * 0.18);
-    // Align the specimen's actual first joint to the carriage pivot.
-    drawArtwork(ctx, 'pendulum', 44, 70, 105, { style, palette, time: seconds }); ctx.restore();
+    // Draw real link geometry at the carriage, without the specimen’s embedded rail.
+    drawLivePendulum(ctx, { N:2, L:[0.9,0.9], state:[0.30,0.58,0,0], currentR:16 }, {x:0,y:0}, 95, 16, {style,palette}); ctx.restore();
     for (const [kind, x, y, radius] of [['target',160,275,35], ['armored',610,275,38], ['bomb',350,300,36], ['portal',700,145,45], ['boost',245,175,35], ['blackhole',500,325,45], ['repulsor',100,130,42], ['spring',105,365,35], ['laser',645,365,42], ['wind',660,55,35]]) drawArtwork(ctx, kind, x, y, radius, { style, palette, time: seconds });
   }
   function gallery() {

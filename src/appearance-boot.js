@@ -2,7 +2,7 @@
 (() => {
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem('pendulum_preferences_v1')) || {}; } catch {}
-  document.documentElement.dataset.theme = typeof saved.theme === 'string' ? saved.theme : 'neon-arcade';
+  document.documentElement.dataset.theme = typeof saved.theme === 'string' ? saved.theme : 'clean-precision';
   const mode = ['dark', 'light', 'system'].includes(saved.mode) ? saved.mode : 'dark';
   document.documentElement.dataset.mode = mode === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : mode;
 })();

@@ -1,4 +1,4 @@
-export const DEFAULT_THEME = 'neon-arcade';
+export const DEFAULT_THEME = 'clean-precision';
 export const DEFAULT_MODE = 'dark';
 export const THEMES = [
   ['neon-arcade', 'Neon Arcade', 'retro', '#020503', '#eff9ee', '#56d364'],

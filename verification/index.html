@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pendulum — Stage Verification</title><link rel="stylesheet" href="viewer.css"></head>
+<body>
+<main>
+ <header><h1>Stage Verification</h1><a href="../">Back to game</a></header>
+ <p id="summary" role="status">Loading saved solutions…</p>
+ <p>This separate viewer uses session-only progress. It does not change your normal saves. Unresolved does not mean impossible.</p>
+ <label for="stage">Substage</label><select id="stage" disabled></select>
+ <div class="controls">
+  <button id="play" disabled>PLAY</button><button id="pause" disabled>PAUSE</button><button id="replay" disabled>REPLAY</button><button id="all" disabled>PLAY ALL</button>
+  <label for="speed">Speed</label><select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select>
+ </div>
+ <p id="status" role="status">Preparing the isolated game…</p>
+ <iframe id="game" src="../?verification=1" title="Automated stage solution" tabindex="-1"></iframe>
+ <p id="details"></p>
+ <p>Pulse times below use playback time; the game timer can pause briefly during hit effects. Recorded gameplay is reproduced with a fixed 60-frame-per-second simulation.</p>
+ <details><summary>Coverage report</summary><div id="coverage"></div></details>
+</main>
+<script type="module" src="viewer.js"></script>
+</body></html>

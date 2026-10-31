@@ -478,3 +478,10 @@
 
 /* Fixed stage configuration stays internal; only Free Play exposes these controls. */
 #f-N[hidden], #f-Count[hidden] { display: none; }
+
+/* The verification iframe displays gameplay only, controlled by its separate viewer. */
+.verification-mode :is(header,.panel,#titleScreen,#tutorialScreen,#stageBriefing,.overlay-actions) { display:none !important; }
+.verification-mode main { padding:0; }
+.verification-mode .game-container { display:block;max-width:none;max-height:none;height:100vh; }
+.verification-mode #canvasWrapper { width:100%;height:100%;border:0; }
+.verification-mode #canvas { object-fit:contain; }

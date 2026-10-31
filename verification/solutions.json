@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "engine": "543ed1f7c14ada3f7648225ef4fd7102570cafee511c6f0cf841980f1ad3c1a6",
+  "engineFiles": [
+    "src/data/stage-balance.js",
+    "src/data/stage-builders/chapter1-basics.js",
+    "src/data/stage-builders/chapter2-forces.js",
+    "src/data/stage-builders/chapter3-anchors.js",
+    "src/data/stage-builders/chapter4-gadgets.js",
+    "src/data/stage-builders/chapter5-dynamics.js",
+    "src/data/stage-builders/chapter6-mastery.js",
+    "src/data/stage-configs.js",
+    "src/data/stage-index.js",
+    "src/engine/collisions.js",
+    "src/game-sizes.js",
+    "src/main.js",
+    "src/physics.js",
+    "src/verification.js"
+  ],
+  "step": 0.016666666666666666,
+  "generatedAt": "2026-10-31T06:34:06.176Z",
+  "scope": "Pilot; unresolved means search budget exhausted, not impossible.",
+  "results": [
+    {
+      "index": 1,
+      "stage": 1,
+      "sub": 1,
+      "name": "FIRST SWING",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 1,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 369,
+        "clearTime": 2.9166666666667065
+      }
+    },
+    {
+      "index": 111,
+      "stage": 23,
+      "sub": 1,
+      "name": "WARP GATES",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 111,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 376,
+        "clearTime": 2.933333333333374
+      }
+    },
+    {
+      "index": 126,
+      "stage": 26,
+      "sub": 1,
+      "name": "LASER TRIPWIRE",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 126,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 377,
+        "clearTime": 2.900000000000039
+      }
+    },
+    {
+      "index": 176,
+      "stage": 36,
+      "sub": 1,
+      "name": "TRIPLE WHIP",
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 176,
+        "angle": 120,
+        "velocity": 0,
+        "pulses": [],
+        "frames": 280,
+        "clearTime": 1.3833333333333298
+      }
+    }
+  ]
+}

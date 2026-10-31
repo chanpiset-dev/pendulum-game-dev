@@ -1,3 +1,4 @@
+import { createMemoryStorage, createVerificationDriver } from './verification.js';
 import { migrateLegacyIndex } from './data/stage-migration.js';
 import { DIFFICULTIES, chapterForStage } from './data/chapters.js';
 import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, BOB_GROWTH, BOB_SHRINK, JOINT_RADIUS, SEGMENT_HIT_RADIUS, RAIL_HIT_RADIUS } from './game-sizes.js';
@@ -43,7 +44,9 @@ const BOB_POP_FACTOR = 1.30;       // Pop scale multiplier on target hit
 const BOB_PULSE_DECAY = 4.0;       // Speed of easing back to neutral scale
 
 // --- i18n Localization Dictionary (Default: English) ---
-const progressStore = createProgressStore({ onStatus: showSaveStatus });
+const verificationMode = new URLSearchParams(location.search).get('verification') === '1';
+const verificationStorage = verificationMode ? createMemoryStorage() : null;
+const progressStore = createProgressStore({ onStatus: showSaveStatus, ...(verificationMode ? { getStorage: () => verificationStorage } : {}) });
 const savedProgress = progressStore.load();
 let currentLang = savedProgress.language;
 setAudioPreferences(savedProgress.preferences);
@@ -1563,6 +1566,7 @@ function resetPauseControls() {
 }
 
 function pauseGame() {
+  if (verificationMode) return; // The separate viewer owns pause/resume in verification runs.
   if (!['playing', 'clearing', 'blackhole_death'].includes(gameStatus)) return;
   pausedStatus = gameStatus;
   gameStatus = 'paused';
@@ -1861,3 +1865,29 @@ setLanguage(currentLang);
 loadStage(unlockedStageIndex);
 restoreFromUrl();
 visualsReady = true;
+
+
+// The viewer/search controller is exposed only in explicit verification mode.
+if (verificationMode) {
+  document.body.classList.add('verification-mode');
+  $('titleScreen').classList.add('hidden');
+  cancelAnimationFrame(titleAnimId); titleAnimId = null;
+  setAudioPreferences({volume:0,muted:true});
+  const driver = createVerificationDriver({
+    start(solution) {
+      loadStage(solution.index);
+      for(const [id,value] of [['sliderAngle',solution.angle],['sliderVel',solution.velocity]]) if(!$(id).disabled) $(id).value=value;
+      $('stageBriefing').classList.add('hidden');
+      initVisualsOnly(); fire(); stopGameLoop();
+      return {angle:Number($('sliderAngle').value),velocity:Number($('sliderVel').value),pulses:startingPulses};
+    },
+    pulse:triggerPulse, update,
+    draw() { draw(); },
+    status() {
+      const cleared = targets.every(target => !target.alive) && ['clearing','end'].includes(gameStatus);
+      const confirmed = gameStatus === 'end' && $('overlayTitle').textContent === I18N[currentLang].stageClear;
+      return {index:currentStageIndex,status:gameStatus,cleared,confirmed,ended:gameStatus==='end',failed:gameStatus==='blackhole_death'||(gameStatus==='end'&&!confirmed),remaining:targets.filter(target=>target.alive).length,time:timeElapsed,pulsesLeft};
+    }
+  });
+  window.verificationAPI = driver;
+}

@@ -1355,6 +1355,7 @@ function update(rawDt) {
         if (gameStatus === 'playing' || gameStatus === 'clearing') {
           for (let t of targets) {
             if (t.alive && Math.hypot(px - t.x, py - t.y) < (effectiveTipR + t.r)) {
+              t.artworkHitTime = timeElapsed;
               if (t.hp && t.hp > 1 && !t.isBomb) {
                 t.hp--;
                 playSnd('shield_hit');

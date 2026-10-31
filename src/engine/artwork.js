@@ -1,3 +1,4 @@
+import { paintShaded } from './shaded-artwork.js';
 import { OBJECT_SCALE, JOINT_RADIUS, ROD_WIDTH } from '../game-sizes.js';
 // Reusable Canvas 2D concept artwork. These functions never read or mutate physics.
 export const ARTWORK_ITEMS = [
@@ -8,9 +9,9 @@ export const ARTWORK_ITEMS = [
   ['switch', 'Switch', 'スイッチ'], ['gate', 'Switch gate', 'ゲート'], ['rail', 'Horizontal rail', '水平レール'],
   ['lift', 'Vertical lift', '昇降レール'], ['orbit', 'Orbiting anchor', '公転支点'], ['wind', 'Wind / gusts', '風・突風'],
   ['blackhole', 'Black hole', 'ブラックホール'], ['repulsor', 'Repulsor', '反発力場'], ['gravity', 'Gravity modes', '重力モード'],
-  ['slime', 'Slime zone', 'スライム'], ['resin', 'Resin zone', 'レジン'], ['moving', 'Moving obstacle', '移動障害物'], ['reflector', 'Reflector', '反射板'],
+  ['slime', 'Slime zone', 'スライム'], ['resin', 'Resin zone', 'レジン'], ['moving', 'Moving obstacle', '移動障害物'],
 ];
-export const artworkStyleForTheme = theme => ['neon-arcade', 'pocket-console', '16bit-adventure'].includes(theme) ? 'pixel' : 'vector';
+export const artworkStyleForTheme = theme => ['neon-arcade', 'pocket-console', '16bit-adventure'].includes(theme) ? 'pixel' : 'shaded';
 let pixelCanvas;
 function paint(ctx, kind, p, time, pixel, hits = 4) {
   const ink = '#102238', white = '#f3fbff', red = '#ed4057', blue = '#159fe3', cyan = '#27cceb', green = '#23c878', amber = '#efb02e', purple = '#ab64ee';
@@ -103,6 +104,8 @@ function paint(ctx, kind, p, time, pixel, hits = 4) {
 }
 export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette, time = 0, hits = 4 }) {
   ctx.save();
+  if (style === 'shaded') { ctx.translate(x,y); ctx.scale(radius/48,radius/48); paintShaded(ctx,kind,palette,time,hits); ctx.restore(); return; }
+  if (kind === 'portal-in' || kind === 'portal-out') kind = 'portal';
   if (style === 'pixel') {
     pixelCanvas ||= document.createElement('canvas'); pixelCanvas.width = 64; pixelCanvas.height = 64;
     const small = pixelCanvas.getContext('2d'); small.save(); small.translate(32, 32); small.scale(0.65, 0.65); paint(small, kind, palette, time, true, hits); small.restore();
@@ -119,9 +122,10 @@ export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, p
   for (let i = 0; i < chain.N; i++) {
     const nx = x + scale * chain.L[i] * Math.sin(chain.state[i]), ny = y + scale * chain.L[i] * Math.cos(chain.state[i]);
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = ROD_WIDTH * 2; ctx.stroke();
-    ctx.strokeStyle = palette.rod; ctx.lineWidth = ROD_WIDTH; ctx.stroke();
+    if (style === 'shaded') { const length=Math.hypot(nx-x,ny-y)||1, ox=-(ny-y)/length*ROD_WIDTH/2, oy=(nx-x)/length*ROD_WIDTH/2; const g=ctx.createLinearGradient(x-ox,y-oy,x+ox,y+oy); g.addColorStop(0,'#556f85'); g.addColorStop(.35,'#eef8ff'); g.addColorStop(.7,'#a9bfcd'); g.addColorStop(1,'#3a5167'); ctx.strokeStyle=g; } else ctx.strokeStyle = palette.rod; ctx.lineWidth = ROD_WIDTH; ctx.stroke();
     const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : JOINT_RADIUS;
     let fill = tip ? color : palette.rod;
+    if (!tip && style === 'shaded') {fill=ctx.createLinearGradient(nx-radius,ny-radius,nx+radius,ny+radius);fill.addColorStop(0,'#e7f4fc');fill.addColorStop(.5,'#97afc1');fill.addColorStop(1,'#3a536b');}
     if (tip && style !== 'pixel') {
       fill = ctx.createRadialGradient(nx - radius / 3, ny - radius / 3, 1, nx, ny, radius);
       fill.addColorStop(0, '#f3fbff'); fill.addColorStop(0.35, color); fill.addColorStop(1, '#102238');

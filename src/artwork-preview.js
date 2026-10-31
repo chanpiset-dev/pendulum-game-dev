@@ -20,7 +20,7 @@ export function installArtworkPreview({ $, language }) {
   function gallery() {
     const palette = getCanvasPalette(), style = currentStyle();
     canvas.style.imageRendering = style === 'pixel' ? 'pixelated' : 'auto';
-    $('artworkStyleName').textContent = style === 'pixel' ? 'Pixel Arcade' : 'Clean Vector';
+    $('artworkStyleName').textContent = style === 'pixel' ? 'Pixel Arcade' : style === 'shaded' ? 'Shaded Canvas' : 'Clean Vector';
     const cards = ARTWORK_ITEMS.map(([kind, en, ja]) => {
       const item = document.createElement('div'); item.className = 'artwork-card';
       const label = document.createElement('span'); label.textContent = language() === 'ja' ? ja : en;

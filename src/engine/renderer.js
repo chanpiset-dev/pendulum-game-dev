@@ -6,10 +6,13 @@ import { I18N } from '../i18n.js';
 
 let pixelLayer;
 let windMotionPreference;
+let artworkMotionPreference;
 // Render the new artwork at the real simulation coordinates. Never change state.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
   const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0 } = renderOptions;
   const palette = getCanvasPalette(), style = artworkStyleForTheme(palette.theme);
+  artworkMotionPreference ||= matchMedia('(prefers-reduced-motion: reduce)');
+  const artworkTime = artworkMotionPreference.matches ? 0 : timeElapsed;
   const output = ctx;
   if (style === 'pixel') {
     pixelLayer ||= document.createElement('canvas');
@@ -45,15 +48,20 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
   }
   if (rail) {
     const rx = rail.ampX || rail.amp || 0, ry = rail.ampY || 0;
+    const trackFill = (vertical=false) => {
+      if(style !== 'shaded') return palette.rod;
+      const g=vertical ? ctx.createLinearGradient(pivot.x-12,0,pivot.x+12,0) : ctx.createLinearGradient(0,pivot.y-12,0,pivot.y+12);
+      g.addColorStop(0,'#536d83');g.addColorStop(.3,'#e7f4fc');g.addColorStop(.6,'#a7bfce');g.addColorStop(1,'#344e66');return g;
+    };
     ctx.strokeStyle = palette.rod; ctx.lineWidth = RAIL_HIT_RADIUS * 2;
     // Both axes move independently; these tracks match the rail collision geometry.
     // An ellipse is incorrect when axis speeds or phases differ.
-    if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, RAIL_HIT_RADIUS * 2);
-    if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, RAIL_HIT_RADIUS * 2);
-    ctx.fillStyle = palette.platform; ctx.fillRect(pivot.x - 22.5, pivot.y - 18, 45, 36); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 22.5, pivot.y - 18, 45, 36);
+    if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, trackFill(), RAIL_HIT_RADIUS * 2);
+    if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, trackFill(true), RAIL_HIT_RADIUS * 2);
+    ctx.fillStyle = trackFill(); ctx.fillRect(pivot.x - 22.5, pivot.y - 18, 45, 36); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 22.5, pivot.y - 18, 45, 36);
   }
   for (const port of portals) {
-    sprite('portal', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34);
+    sprite(port.targetId ? 'portal-in' : 'portal-out', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34, artworkTime);
     ctx.fillStyle = palette.text; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(currentLang === 'ja' ? (port.label || (port.targetId ? 'IN' : 'OUT')).replace(/IN/g, '入口').replace(/OUT/g, '出口') : port.label || (port.targetId ? 'IN' : 'OUT'), port.x, port.y + (port.r || 24) * 1.7 + 14);
   }
   for (const ring of boostRings) { ctx.save(); ctx.translate(ring.x, ring.y); ctx.rotate(ring.angle || 0); sprite('boost', 0, 0, ring.r * 48 / 34); ctx.restore(); }
@@ -76,13 +84,22 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     const aura = ctx.createRadialGradient(b.x, b.y, b.coreRadius, b.x, b.y, Math.max(b.coreRadius + 1, b.pullRadius));
     aura.addColorStop(0, color + '40'); aura.addColorStop(1, color + '00');
     ctx.beginPath(); ctx.arc(b.x, b.y, b.pullRadius, 0, Math.PI * 2); ctx.fillStyle = aura; ctx.fill();
-    sprite(b.isRepulsor ? 'repulsor' : 'blackhole', b.x, b.y, b.coreRadius * 48 / 25.5, timeElapsed);
+    sprite(b.isRepulsor ? 'repulsor' : 'blackhole', b.x, b.y, b.coreRadius * 48 / 25.5, artworkTime);
   }
   for (const target of targets) {
-    if (!target.alive) continue;
+    if (!target.alive) {
+      const age = timeElapsed - (target.artworkHitTime ?? -100);
+      if (style === 'shaded' && !target.isBomb && age >= 0 && age < 0.12 && !artworkMotionPreference.matches) {
+        ctx.save(); ctx.translate(target.x,target.y); ctx.scale(1.06,0.88); ctx.globalAlpha=1-age/0.12;
+        sprite('target',0,0,target.r*48/31);
+        ctx.globalAlpha*=0.35; ctx.fillStyle='#fff5db'; ctx.beginPath();ctx.arc(0,0,target.r,0,Math.PI*2);ctx.fill();ctx.restore();
+      }
+      continue;
+    }
     const kind = target.isBomb ? 'bomb' : target.hp > 1 ? 'armored' : 'target';
     const size = target.r * (kind === 'armored' ? 48 / 36 : kind === 'bomb' ? 48 / 27.5 : 48 / 31);
-    sprite(kind, target.x, target.y - (kind === 'bomb' ? 7 * size / 48 : 0), size, 0, target.hp);
+    ctx.save(); const impact=Math.max(0,1-(timeElapsed-(target.artworkHitTime ?? -100))/0.18); ctx.translate(target.x,target.y); ctx.scale(1+impact*0.05,1-impact*0.10);
+    sprite(kind, 0, -(kind === 'bomb' ? 7 * size / 48 : 0), size, 0, target.hp); ctx.restore();
     if (kind === 'armored') { ctx.fillStyle = palette.text; ctx.font = 'bold 10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(String(target.hp), target.x, target.y - target.r - 5); }
   }
   const systems = Array.isArray(chainOrSystems) ? chainOrSystems : [chainOrSystems];

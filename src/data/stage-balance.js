@@ -48,5 +48,25 @@ export function balanceStage(data, stage, sub, pivot) {
       { x1:pivot.x+60,y1:pivot.y+155,x2:pivot.x+170,y2:pivot.y+155 }
     ];
   }
+  applyApprovedSpacing(data, stage, sub, pivot);
   return data;
+}
+
+// Approved before/after layout review: only these three substages change.
+function applyApprovedSpacing(data, stage, sub, pivot) {
+  if (sub !== 5 || ![33,48,50].includes(stage)) return;
+  const move=(item,x,y)=>{item.x=pivot.x+x-400;item.y=pivot.y+y-300;};
+  if(stage===48 || stage===50){
+    const points=[[244,524],[556,524],[400,550],[400,92],[313,550],[487,550],[315,175],[485,175],[196,449],[604,449]];
+    data.targets.forEach((target,i)=>move(target,...points[i]));
+    move(data.boostRings[0],400,172);
+    if(stage===50){move(data.portals[0],183,342);move(data.portals[1],617,342);}
+    else move(data.portals[0],184,350);
+    [[250,383,350,420],[550,383,450,420],[310,408,490,408]].forEach(([x1,y1,x2,y2],i)=>Object.assign(data.lasers[i],{x1:pivot.x+x1-400,y1:pivot.y+y1-300,x2:pivot.x+x2-400,y2:pivot.y+y2-300}));
+  }else{
+    const points=[[400,550],[244,524],[556,524],[199.47834398617704,402.0591273207549],[310,555],[490,555],[600.521656013823,402.0591273207549]];
+    data.targets.forEach((target,i)=>move(target,...points[i]));
+    move(data.boostRings[1],270,395);move(data.boostRings[2],530,395);
+    data.zones.forEach(zone=>zone.h=95);
+  }
 }

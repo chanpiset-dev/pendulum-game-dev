@@ -140,3 +140,19 @@ Read the [illustrated physics guide (PDF)](docs/physics/pendulum-physics.pdf) fo
 beginner-friendly explanation of the v0.1.0 simulation, including multi-link motion,
 numerical integration and gameplay gimmicks. The [LaTeX source and build instructions](docs/physics/README.md)
 and [complete source ZIP](docs/physics/pendulum-physics-latex.zip) are included.
+
+
+## Shaded Canvas artwork
+
+On `dev/shaded-canvas-artwork`, the six modern/creative themes use procedural
+Shaded Canvas artwork: enamel impact targets, oval animated cyan IN / violet OUT
+portals, violet-infall black holes, rounded gimmicks and cylindrical links.
+The three retro themes retain Pixel Arcade. Artwork Review also offers the
+original Clean Vector style for comparison. The shared gallery and gimmick guide
+show 24 entries; Reflector remains an arrangement of bumpers, not a separate object.
+
+The approved spacing proposals change only substages 33-5, 48-5 and 50-5, retaining
+object counts, contact radii and the 800 × 600 arena. These are authored corrections,
+not a global spreading algorithm. Portal/field animation respects reduced-motion
+preferences. Gameplay, tutorial, Home animation and artwork specimens share the
+same drawing entry points; rendering does not modify the physics or player saves.

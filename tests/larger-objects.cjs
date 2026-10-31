@@ -13,8 +13,8 @@ const{chromium}=require('playwright');
  }
  for(const theme of ['neon-arcade','clean-precision']){
   await page.evaluate(theme=>window.testRun(`appearance.set(${JSON.stringify(theme)},'dark');loadStage(1);draw();`),theme);
-  const white=await page.evaluate(()=>window.testRun('(()=>{const t=targets[0];return Array.from(ctx.getImageData(Math.round(t.x),Math.round(t.y),1,1).data).slice(0,3).every(v=>v>190);})()'));
-  assert.equal(white,true,'Enlarged artwork renders in each style');
+  const center=await page.evaluate(()=>window.testRun('(()=>{const t=targets[0];return Array.from(ctx.getImageData(Math.round(t.x),Math.round(t.y),1,1).data).slice(0,3);})()'));
+  if(theme==='neon-arcade') assert.ok(center.every(v=>v>190)); else assert.ok(center[0]>center[1]*1.3,'Enlarged enamel target has a red bullseye center');
  }
  assert.deepEqual(errors,[]);console.log('Larger objects passed: mobile bob/target sizes, matching new hit boundary and both artwork styles.');
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

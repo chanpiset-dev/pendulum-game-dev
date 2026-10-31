@@ -27,8 +27,8 @@ const { chromium } = require('playwright');
         const target=targets.find(t=>!t.isBomb), rgba=Array.from(ctx.getImageData(Math.round(target.x),Math.round(target.y),1,1).data);
         return {rgba,style:artworkStyleForTheme(getCanvasPalette().theme)};
       })()`), theme);
-      assert.ok(result.rgba.slice(0,3).every(v=>v>190), 'Live targets now have white bullseye centers');
-      assert.equal(result.style, theme === 'neon-arcade' ? 'pixel' : 'vector');
+      if(result.style === 'pixel') assert.ok(result.rgba.slice(0,3).every(v=>v>190)); else assert.ok(result.rgba[0]>result.rgba[1]*1.3, 'Enamel pad has a red bullseye core');
+      assert.equal(result.style, theme === 'neon-arcade' ? 'pixel' : 'shaded');
     }
     assert.deepEqual(await page.evaluate(() => window.testRun('(()=>{loadStage(196);return [baseGravity,currentGravity]})()')), [0,0], 'Zero gravity survives stage loading');
     await page.evaluate(async () => {
@@ -53,8 +53,8 @@ const { chromium } = require('playwright');
     await page.click('#btnGoTutorial');
     await page.click('#tutorialGimmicks');
     assert.equal(await page.locator('#gimmickGuide').isVisible(), true);
-    assert.equal(await page.locator('.gimmick-card').count(), 25);
-    assert.equal(await page.locator('.gimmick-card canvas').count(), 25);
+    assert.equal(await page.locator('.gimmick-card').count(), 24);
+    assert.equal(await page.locator('.gimmick-card canvas').count(), 24);
     assert.equal(await page.locator('.gimmick-card p').evaluateAll(nodes => nodes.every(n=>n.textContent.length>30)), true);
     assert.match(await page.locator('[data-gimmick="bomb"] p').innerText(), /clears nearby targets/);
     assert.match(await page.locator('[data-gimmick="switch"] p').innerText(), /temporarily/);
@@ -71,6 +71,6 @@ const { chromium } = require('playwright');
     assert.match(await page.locator('[data-gimmick="blackhole"] p').innerText(), /引力/);
     assert.equal(await page.locator('.gimmick-card canvas').first().getAttribute('aria-label'), '振り子');
     assert.deepEqual(errors, []);
-    console.log('Live artwork passed: all 250 substages render in both styles without changing physics or saves; bullseyes appear in real stages; 25 illustrated functions, mobile layout, Japanese guide and tutorial loop transitions pass.');
+    console.log('Live artwork passed: all 250 substages render in both styles without changing physics or saves; bullseyes appear in real stages; 24 illustrated functions, mobile layout, Japanese guide and tutorial loop transitions pass.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode=1; });

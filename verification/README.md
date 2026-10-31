@@ -12,8 +12,11 @@ the player-provided launch settings: -105° angle, -1.2 initial angular velocity
 with automated pulses at frames 36 and 100 (0.60s and 1.67s playback time).
 It clears in 3.40 seconds of game time. All **250 substages** now have saved
 repeatable clears under the fixed-frame model.
-An unresolved search is not evidence of impossibility. No layouts or difficulty
-settings were changed. A portal-stage clear does not establish that portal use is
+An unresolved search is not evidence of impossibility. That initial pass did not change layouts or difficulty settings.
+The shaded-artwork branch subsequently applies the approved spacing review to
+33-5, 48-5 and 50-5. All 250 solutions were regenerated against its current
+fingerprint and independently replayed through STAGE CLEAR; 48-5 uses a new
+launch candidate. Artwork changes retain 2D movement, collision radii and scoring. A portal-stage clear does not establish that portal use is
 mandatory, and a successful solution does not measure human difficulty.
 
 ## Find solutions

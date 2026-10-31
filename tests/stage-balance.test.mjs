@@ -37,3 +37,19 @@ test('Every substage has valid targets, portal destinations and repeatable fresh
   assert.deepEqual(d,get(s,u));
  }
 });
+
+test('Approved spacing candidates preserve radii/counts and remove initial target-circle overlaps',()=>{
+ for(const stage of [33,48,50]){
+  const d=generateStageData((stage-1)*5+5,{x:400,y:300});
+  assert.equal(d.targets.length,stage===33?7:10);
+  assert.equal(d.obstacles.length,2);
+  const objects=[...d.targets.map(t=>({...t,target:true})),...d.obstacles.map(o=>({...o,x:o.baseX+Math.sin(o.phase||0)*(o.ampX||0)})),...(d.portals||[]),...(d.boostRings||[])];
+  for(let i=0;i<objects.length;i++)for(let j=i+1;j<objects.length;j++){
+   const a=objects[i],b=objects[j];if(!a.target&&!b.target)continue;
+   assert.ok(Math.hypot(a.x-b.x,a.y-b.y)>=a.r+b.r,`${stage}-5: circles ${i}/${j}`);
+  }
+  assert.ok(d.targets.every(t=>Math.hypot(t.x-400,t.y-300)<=300));
+  const shifted=generateStageData((stage-1)*5+5,{x:500,y:350});
+  d.targets.forEach((t,i)=>{assert.ok(Math.abs(shifted.targets[i].x-t.x-100)<1e-9);assert.ok(Math.abs(shifted.targets[i].y-t.y-50)<1e-9);assert.equal(shifted.targets[i].r,t.r)});
+ }
+});

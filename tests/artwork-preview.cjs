@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     assert.equal(await page.locator('#artworkDialog').isVisible(), true);
     assert.equal(await page.locator('#settingsDialog').isVisible(), false);
     assert.equal(await page.locator('#artworkStyleName').innerText(), 'Pixel Arcade');
-    assert.equal(await page.locator('#artworkGallery canvas').count(), 25);
+    assert.equal(await page.locator('#artworkGallery canvas').count(), 24);
     assert.equal(await page.locator('#artworkStage').evaluate(el => getComputedStyle(el).imageRendering), 'pixelated');
     const pixels = await page.locator('#artworkStage').evaluate(canvas => canvas.toDataURL());
     await page.selectOption('#artworkStyle', 'vector');
@@ -47,7 +47,7 @@ const { chromium } = require('playwright');
       await page.click(`[data-theme-choice="${theme}"]`);
       for (const mode of ['dark', 'light']) {
         await page.selectOption('#appearanceMode', mode); await page.click('#btnArtworkPreview');
-        assert.equal(await page.locator('#artworkStyleName').innerText(), ['neon-arcade','pocket-console','16bit-adventure'].includes(theme) ? 'Pixel Arcade' : 'Clean Vector');
+        assert.equal(await page.locator('#artworkStyleName').innerText(), ['neon-arcade','pocket-console','16bit-adventure'].includes(theme) ? 'Pixel Arcade' : 'Shaded Canvas');
         assert.equal(await page.locator('#artworkGallery canvas').evaluateAll(nodes => nodes.every(canvas => {
           const data = canvas.getContext('2d').getImageData(0,0,160,128).data;
           let count=0; for(let i=0;i<data.length;i+=4) if(data[i]!==data[0] || data[i+1]!==data[1] || data[i+2]!==data[2]) count++;
@@ -61,6 +61,6 @@ const { chromium } = require('playwright');
     assert.match(await page.locator('#artworkTitle').innerText(), /プレビュー/);
     assert.equal(await page.locator('.artwork-card > span').first().innerText(), '振り子');
     assert.deepEqual(errors, []);
-    console.log('Artwork preview passed: 25 visible specimens in 18 themes, automatic style mapping, distinct pixel/vector output, mobile fit, localization, paused gameplay and unchanged saves.');
+    console.log('Artwork preview passed: 24 visible specimens in 18 themes, automatic style mapping, distinct pixel/vector output, mobile fit, localization, paused gameplay and unchanged saves.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

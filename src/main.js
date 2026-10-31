@@ -493,7 +493,7 @@ function loadStage(stgIdx) {
   blackhole = data.blackhole;
   currentRail = data.rail;
   currentWind = data.wind || null;
-  baseGravity = data.gravity || 9.8;
+  baseGravity = data.gravity ?? 9.8;
   currentGravity = baseGravity;
   gravityInversionInterval = data.gravityInversionInterval || 0;
   gravityInversionTimer = gravityInversionInterval;

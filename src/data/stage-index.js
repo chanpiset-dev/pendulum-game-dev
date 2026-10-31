@@ -1,3 +1,4 @@
+import { balanceStage } from './stage-balance.js';
 import { enlargeStageObjects } from '../game-sizes.js';
 // Aggregates stage builders and keeps the public generateStageData API stable.
 import { indexToStageSub } from './stage-configs.js';
@@ -47,7 +48,7 @@ export function buildAuthoredStageData(stgIdx, BASE_PIVOT) {
   else if (stage >= 21 && stage <= 30) result = buildWorld3(stage, sub, BASE_PIVOT);
   else if (stage >= 31 && stage <= 50) result = buildWorld4(stage, sub, BASE_PIVOT);
 
-  if (result) return result;
+  if (result) return balanceStage(result, stage, sub, BASE_PIVOT);
   return { maxN: 2, maxClone: 1, timeLimit: 14, targets: [], obstacles: [], blackhole: null, rail: null };
 }
 

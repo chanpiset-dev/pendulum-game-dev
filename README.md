@@ -92,3 +92,17 @@ Gameplay circles now use **1.5×** their authored radius: targets, bombs, bumper
 Stage coordinates, pendulum lengths, timers, wind strength, force-field influence ranges, scoring rules and saved records stay intact. Larger contact areas intentionally change difficulty. All 250 authored layouts are checked for clipped target/bumper circles and targets completely hidden inside bumpers; this does not establish that every stage has the same difficulty or solution as before.
 
 The centralized dimensions are in `src/game-sizes.js`. Stage builders remain authored at their original dimensions; the generator applies enlargement exactly once. Verify with `node --test tests/object-sizes.test.mjs` and `node tests/larger-objects.cjs`.
+
+### Stage balance pass
+
+Stage identities and ordering remain unchanged, preserving existing unlocks and records.
+`src/data/stage-balance.js` applies targeted adjustments before object scaling:
+flagged stationary passages fit the fully grown bob with clearance; the first twin/long-chain
+exercises use fewer targets and no bumpers; sharp armor increases are reduced with extra time.
+Two-axis rails begin at Carousel, Warp Metronome includes portals throughout, and the finale
+opening has a distinct vault layout. Stage 47 uses actual zero gravity. English/Japanese tips
+reflect repeatable launch phases and the real circular bumper geometry.
+
+Verification covers all 250 generated layouts and selected progression invariants. These checks
+do not establish that every stage has an equally difficult solution; mobile playtesting remains
+necessary, especially for moving hazards and stages 27-5, 28-5, 31-5, 46-4 and 50-4.

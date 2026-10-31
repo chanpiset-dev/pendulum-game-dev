@@ -64,12 +64,12 @@ export const STAGE_CONFIGS = {
   5: {
     name: "BEAT THE PATROL",
     desc: "Moving barrier guards patrol the arena! Learn their rhythm and slip through the opening.",
-    tip: "💡 Tip: Wait for the guard block to start retreating before you launch.",
+    tip: "💡 Tip: Adjust your launch angle to pass the patrol on its first outward sweep.",
     element: "Moving Patrol",
     ja: {
       name: "巡回防壁",
       desc: "動くカベが左右を行ったり来たり！ 動きのリズムを見て、あいた隙間を通そう。",
-      tip: "💡 コツ: あわてずに、カベが端まで行って戻り始めたときに発射しよう。",
+      tip: "💡 コツ: 巡回ブロックが外へ動く最初の動きに合わせて、発射角度を調整しよう。",
       element: "動体回避"
     }
   },
@@ -102,12 +102,12 @@ export const STAGE_CONFIGS = {
   8: {
     name: "ROLLER TRACK",
     desc: "Your anchor cart slides on an overhead rail! The cart's sliding momentum adds huge whip speed to your swings.",
-    tip: "💡 Tip: Release when the cart is sliding in the same direction as your targets.",
+    tip: "💡 Tip: The cart starts the same motion each attempt. Adjust your angle to use its first sweep.",
     element: "Sliding Anchor",
     ja: {
       name: "滑走台車",
       desc: "頭の上の台車が左右に走るぞ！ 台車のスピードがそのまま振り子の勢いになります。",
-      tip: "💡 コツ: 台車が的の方向へ走っている瞬間に手をはなすと、一番勢いが乗ります。",
+      tip: "💡 コツ: 台車は毎回同じ動きで始まります。最初の移動を利用できる角度を探そう。",
       element: "水平移動"
     }
   },
@@ -126,14 +126,14 @@ export const STAGE_CONFIGS = {
   },
   10: {
     name: "ABYSS RUNNER",
-    desc: "An overhead track slides directly above a hungry black hole! Time your launch so you don't get sucked down.",
-    tip: "💡 Tip: Release when the carriage slides away from the black hole to maintain escape speed.",
+    desc: "An overhead track slides directly above a hungry black hole! Tune your launch angle so you don't get sucked down.",
+    tip: "💡 Tip: Aim away from the core and use a pulse if the carriage carries you too close.",
     element: "Cart & Vortex",
     lockedParams: { pulses: 5 },
     ja: {
       name: "深淵滑走",
       desc: "吸い寄せる暗黒の渦の真上を台車が走る！ 落ちないようにタイミングをはかって放とう。",
-      tip: "💡 コツ: 台車が渦から離れる向きに走っているときに放すと、吸い込まれにくいです。",
+      tip: "💡 コツ: 渦の中心から離れる角度を選び、近づきすぎたら衝撃波を使おう。",
       element: "台車引力"
     }
   },
@@ -152,12 +152,12 @@ export const STAGE_CONFIGS = {
   12: {
     name: "WIND SURFER",
     desc: "The wind shifts back and forth on a steady beat! Ride the tailwind wave straight into the target zone.",
-    tip: "💡 Tip: Hit PLAY just as the wind arrows switch towards your target side.",
+    tip: "💡 Tip: Wind restarts with each attempt. Adjust your angle to ride the first favorable gust.",
     element: "Shifting Gusts",
     ja: {
       name: "変幻風波",
       desc: "風向きが左右にコロコロ変わる！ 的のほうへ追い風が吹く瞬間を見逃すな！",
-      tip: "💡 コツ: 画面の風の矢印が、的の方向を向く『すぐ前』にスタートしよう。",
+      tip: "💡 コツ: 風は毎回同じ周期で始まります。最初の追い風を利用できる角度を探そう。",
       element: "周期突風"
     }
   },
@@ -188,13 +188,13 @@ export const STAGE_CONFIGS = {
   15: {
     name: "TRIPLE WHIP",
     desc: "A 3-joint pendulum arm unlocked! With three chain links, the tip snaps with wild sensitivity and blazing whip speed.",
-    tip: "💡 Tip: Micro-adjust launch angle by 0.5° at a time—small tweaks create completely different whip paths.",
+    tip: "💡 Tip: Change the launch angle a little between attempts; small changes alter the whip path.",
     element: "3-Joint Whip",
     lockedParams: { pulses: 0 },
     ja: {
       name: "三重連鎖",
       desc: "３つつながった長い振り子！ ムチのようにしなって、先の玉が思いがけない動きをするぞ。",
-      tip: "💡 コツ: 角度をほんの少し（0.5度）変えるだけで飛び方がガラッと変わります。",
+      tip: "💡 コツ: 挑戦ごとに角度を少しずつ変えて、ムチの軌道を探そう。",
       element: "三段連鎖"
     }
   },
@@ -226,12 +226,12 @@ export const STAGE_CONFIGS = {
   18: {
     name: "STORM RUNNER",
     desc: "Your sliding track carriage moves inside a powerful gale! Combine cart speed with wind push to curve around barriers.",
-    tip: "💡 Tip: Release when the carriage moves in sync with the wind for explosive whip speed.",
+    tip: "💡 Tip: Adjust the angle so the first cart sweep and tailwind carry your bob toward the targets.",
     element: "Cart & Wind",
     ja: {
       name: "暴風滑走",
       desc: "強い風の中を台車が走る！ 台車のスピードと追い風をあわせて、すごい勢いで振り回そう。",
-      tip: "💡 コツ: 台車の進む向きと風の向きがぴったり重なったときに手をはなそう！",
+      tip: "💡 コツ: 台車の最初の移動と追い風で的へ向かう角度を探そう。",
       element: "台車追風"
     }
   },
@@ -312,25 +312,25 @@ export const STAGE_CONFIGS = {
   25: {
     name: "SKY LIFT",
     desc: "Your anchor carriage rides an elevator up and down! Rapid upward lifts whip the pendulum skyward.",
-    tip: "💡 Tip: Launch right as the lift begins ascending to vault cleanly over tall barriers.",
+    tip: "💡 Tip: Each attempt starts the lift at the same phase. Tune the angle to use its upward motion.",
     element: "Elevator Lift",
     ja: {
       name: "昇降支点",
       desc: "振り子の根元が上下に動くぞ！ 上にグンと持ち上がるときの力で、高く飛び上がろう。",
-      tip: "💡 コツ: 台が下から上へ動き始めた瞬間に手をはなすと、高いカベも簡単に越えられます。",
+      tip: "💡 コツ: 台は毎回同じ位置と周期で始まります。上昇を利用できる角度を探そう。",
       element: "垂直昇降"
     }
   },
   26: {
     name: "QUAD CHAOS",
     desc: "Four linked chain arms with zero pulses! The fourth joint whips with blistering speed through narrow gaps.",
-    tip: "💡 Tip: The 4-joint chain whips violently at its tip; micro-adjust by 0.5° to sweep different sectors.",
+    tip: "💡 Tip: Try small angle changes between attempts to sweep different target groups.",
     element: "4-Joint Chain",
     lockedParams: { pulses: 0 },
     ja: {
       name: "四重連鎖",
       desc: "４つつながった超長い振り子！ 先が激しくうねって、せまい隙間を鋭く切り裂きます。",
-      tip: "💡 コツ: 先のしなりがとても激しいです。角度を少しずつ変えて狙い通りの道を探そう。",
+      tip: "💡 コツ: 角度を少しずつ変えて、別の的の集まりを狙おう。",
       element: "四段連鎖"
     }
   },
@@ -400,7 +400,7 @@ export const STAGE_CONFIGS = {
     }
   },
   32: {
-    name: "WARP ESCAPE",
+    name: "VORTEX BOOST",
     desc: "Two black holes guard the floor, but a central speed ring offers supersonic escape! Rocket through the vortex.",
     tip: "💡 Tip: Dive straight through the green ring to build escape speed and slingshot out of the vortex pull.",
     element: "Booster Escape",
@@ -428,13 +428,13 @@ export const STAGE_CONFIGS = {
   34: {
     name: "FIVE-LINK FRENZY",
     desc: "The ultimate 5-link pendulum chain is unleashed! Extreme degrees of freedom produce wildly energetic whip snaps.",
-    tip: "💡 Tip: Micro-adjust starting launch angle by 0.2° to control the tip's whip snap trajectory.",
+    tip: "💡 Tip: Adjust the angle gradually and compare replays to understand the five-link whip.",
     element: "5-Joint Whip",
     lockedParams: { pulses: 0 },
     ja: {
       name: "五重狂乱",
       desc: "最も長くて最も難しい５連振り子！ 予測がつかないムチの動きを手なずけよう。",
-      tip: "💡 コツ: ほんの少し角度を変えるだけで結果が激変します。的へ吸い込まれる角度を探そう。",
+      tip: "💡 コツ: 角度を少しずつ調整し、リプレイで５連振り子の動きを比べよう。",
       element: "五段連鎖"
     }
   },
@@ -478,28 +478,28 @@ export const STAGE_CONFIGS = {
     }
   },
   38: {
-    name: "PRISM BOUNCE",
-    desc: "Angled reflector prisms ricochet your tip across the arena like light beams! Master the trick shots.",
-    tip: "💡 Tip: Glancing hits off the prism face will send you flying across the arena diagonally.",
-    element: "Reflector Prism",
+    name: "BUMPER BANKS",
+    desc: "Curved spring bumpers redirect your tip across the arena. Master bank shots around their circular edges.",
+    tip: "💡 Tip: Bank off the curved bumper edges to redirect your swing toward the outer targets.",
+    element: "Curved Bank Shots",
     lockedParams: { pulses: 3 },
     ja: {
       name: "多面跳弾",
-      desc: "ナナメの板に当たると、光のように鋭く跳ね返る！ 部屋の四隅の的を順番に狙おう。",
-      tip: "💡 コツ: ナナメの面に当てれば、反対側の角まで一気にまっすぐ飛んでいきます。",
-      element: "斜面反射"
+      desc: "丸いバンパーで軌道を変えよう！ 外側の的へ向けて跳ね返りを利用しよう。",
+      tip: "💡 コツ: 丸いバンパーの端に当てて、外側の的へ軌道を変えよう。",
+      element: "曲面反射"
     }
   },
   39: {
     name: "CAROUSEL",
-    desc: "Your anchor cart revolves in a full 2D circular orbit overhead! Time your release to harness centrifugal whip energy.",
-    tip: "💡 Tip: Launch when the anchor carriage reaches the top apex of its circular orbit for maximum drop power.",
+    desc: "Your anchor cart revolves in a full 2D orbit overhead! Time your release to harness centrifugal whip energy.",
+    tip: "💡 Tip: The anchor starts its orbit at the same phase each attempt. Tune your angle to use that motion.",
     element: "Orbiting Anchor",
     lockedParams: { pulses: 4 },
     ja: {
       name: "円周公転",
       desc: "頭上の支点が円を描いてぐるぐる回る！ 振り回される力を使ってすごいスピードを出そう。",
-      tip: "💡 コツ: 支点が円の一番てっぺんに来た瞬間に手をはなすと、一番勢いよく落ちます。",
+      tip: "💡 コツ: 支点は毎回同じ周期で公転を始めます。その動きを利用できる角度を探そう。",
       element: "公転支点"
     }
   },
@@ -545,27 +545,27 @@ export const STAGE_CONFIGS = {
   43: {
     name: "CYCLONE ELEVATOR",
     desc: "Vertical elevator carriage movement combined with alternating wind gusts creates extreme compound momentum!",
-    tip: "💡 Tip: Wait for the elevator carriage to ascend before launching into down-wind targets.",
+    tip: "💡 Tip: Adjust your launch angle to combine the first upward lift with the changing wind.",
     element: "Lift & Gale",
     lockedParams: { pulses: 4 },
     ja: {
       name: "昇降突風",
       desc: "上下に動く台と吹き荒れる風！ 上昇する力と追い風をあわせて、部屋じゅうをなぎ倒そう。",
-      tip: "💡 コツ: 台が一番上まで持ち上がった瞬間に放ち、追い風に乗せて遠くへ飛ばそう。",
+      tip: "💡 コツ: 最初の上昇と変化する風を利用できる発射角度を探そう。",
       element: "昇降風力"
     }
   },
   44: {
     name: "SECURITY MAZE",
-    desc: "Multiple timed blast doors bar the way! Hit switches in sequence to unlock path after path through the maze.",
-    tip: "💡 Tip: Bank off the first switch directly toward the next gate before the timer resets.",
-    element: "Switch Sequence",
+    desc: "Timed gates block different routes. Practise single gates, paired gates, then gates guarded by lasers.",
+    tip: "💡 Tip: Hit a switch, then reach its gate before the opening timer expires.",
+    element: "Gate Challenges",
     lockedParams: { pulses: 4 },
     ja: {
       name: "連動扉迷",
-      desc: "いくつものとびらが道をふさぐ迷路！ スイッチを順番に押して、道をひらこう。",
-      tip: "💡 コツ: 最初のスイッチを押した跳ね返りで、とびらが閉まる前に次の部屋へ入ろう。",
-      element: "順序開閉"
+      desc: "時限とびらを開いて進もう！ １つのとびら、２つのとびら、光線つきのとびらに挑戦しよう。",
+      tip: "💡 コツ: スイッチを押したら、とびらが閉まる前に通り抜けよう。",
+      element: "時限開閉"
     }
   },
   45: {
@@ -596,7 +596,7 @@ export const STAGE_CONFIGS = {
   },
   47: {
     name: "ZERO GRAVITY",
-    desc: "Deep space weightlessness! Gravity is completely off. Momentum lasts forever; steer using wall bounces and pulses.",
+    desc: "Deep space weightlessness! Gravity is completely off. Gravity adds no downward pull; steer using bumper bounces and pulses.",
     tip: "💡 Tip: Use small pulse shockwaves to alter your vector since gravity won't pull you back down.",
     element: "Zero-G Space",
     lockedParams: { pulses: 5 },
@@ -623,13 +623,13 @@ export const STAGE_CONFIGS = {
   49: {
     name: "5-LINK INVERSION",
     desc: "The ultimate chaotic multi-body trial: a wild 5-link chain with zero pulses under periodic gravity inversions!",
-    tip: "💡 Tip: Tiny 0.1° launch angle tweaks produce radically different snap trajectories under flipping gravity.",
+    tip: "💡 Tip: Compare small angle changes in replay to learn how gravity flips affect the five-link chain.",
     element: "5-Link Flip",
     lockedParams: { pulses: 0 },
     ja: {
       name: "五連反転",
       desc: "お助けなしの５連振り子×上下入れ替わる重力！ 大暴れする玉の動きを見切ろう。",
-      tip: "💡 コツ: ほんのわずかな角度調整がすべて。重力がひっくり返った瞬間の軌道を見つけよう。",
+      tip: "💡 コツ: 角度を少しずつ変えてリプレイを比べ、重力反転と５連の動きを覚えよう。",
       element: "極限連鎖"
     }
   },

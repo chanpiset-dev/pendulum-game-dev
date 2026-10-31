@@ -30,6 +30,7 @@ const { chromium } = require('playwright');
       assert.ok(result.rgba.slice(0,3).every(v=>v>190), 'Live targets now have white bullseye centers');
       assert.equal(result.style, theme === 'neon-arcade' ? 'pixel' : 'vector');
     }
+    assert.deepEqual(await page.evaluate(() => window.testRun('(()=>{loadStage(231);return [baseGravity,currentGravity]})()')), [0,0], 'Zero gravity survives stage loading');
     await page.evaluate(async () => {
       const { drawGenericScene } = await import('/src/engine/renderer.js');
       const canvas = document.createElement('canvas'); canvas.width=800; canvas.height=600;

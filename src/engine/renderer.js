@@ -54,7 +54,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
   }
   for (const port of portals) {
     sprite('portal', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34);
-    ctx.fillStyle = palette.text; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(port.label || (port.targetId ? 'IN' : 'OUT'), port.x, port.y + (port.r || 24) * 1.7 + 14);
+    ctx.fillStyle = palette.text; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(currentLang === 'ja' ? (port.label || (port.targetId ? 'IN' : 'OUT')).replace(/IN/g, '入口').replace(/OUT/g, '出口') : port.label || (port.targetId ? 'IN' : 'OUT'), port.x, port.y + (port.r || 24) * 1.7 + 14);
   }
   for (const ring of boostRings) { ctx.save(); ctx.translate(ring.x, ring.y); ctx.rotate(ring.angle || 0); sprite('boost', 0, 0, ring.r * 48 / 34); ctx.restore(); }
   for (const laser of lasers) if (!laser.disabled) segment(laser, false, true);

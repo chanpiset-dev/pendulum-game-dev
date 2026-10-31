@@ -39,7 +39,7 @@
 
 <!-- Tutorial Screen -->
 <div id="tutorialScreen" class="hidden">
-  <nav class="tutorial-nav" aria-label="Tutorial sections">
+  <nav id="tutorialNav" class="tutorial-nav" aria-label="Tutorial sections">
     <button id="tutorialBasics" class="btn-nav" aria-pressed="true">HOW TO PLAY</button>
     <button id="tutorialGimmicks" class="btn-nav" aria-pressed="false">GIMMICK GUIDE</button>
   </nav>
@@ -176,7 +176,7 @@
       <div class="stage-navigation">
         <button id="btnJumpCurrent" class="btn-nav">JUMP TO CURRENT</button>
         <button id="btnJumpFurthest" class="btn-nav">JUMP TO FURTHEST UNLOCKED</button>
-        <span>Best times are recorded for new clears.</span>
+        <span id="bestTimesNote">Best times are recorded for new clears.</span>
       </div>
       <details class="star-rules"><summary id="starRulesTitle">How stars work</summary><p id="starRulesMap"></p></details>
       <div class="stage-sections" id="stageGrid"></div>
@@ -188,15 +188,13 @@
   <h2 id="replayTitle">Last attempt</h2>
   <p id="replayDescription"></p>
   <canvas id="replayCanvas" width="800" height="600" aria-label="Recorded attempt playback"></canvas>
-  <label for="replaySeek">Replay position</label>
-  <input id="replaySeek" type="range" min="0" max="0" step="0.01" value="0">
+  <input id="replaySeek" aria-label="Replay position" type="range" min="0" max="0" step="0.01" value="0">
   <output id="replayTime" for="replaySeek"></output>
   <div class="replay-actions">
     <button id="replayPlay" class="btn-nav">PLAY</button>
-    <label>Speed <select id="replaySpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+    <label><span id="replaySpeedLabel">Speed</span> <select id="replaySpeed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
     <button id="replayClose" class="btn-nav">CLOSE</button>
   </div>
-  <p>Silent replay • Kept until your next attempt or page refresh.</p>
 </dialog>
 <dialog id="settingsDialog" aria-labelledby="settingsTitle">
   <h2 id="settingsTitle">Settings</h2>

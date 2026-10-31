@@ -27,7 +27,7 @@ const canvas = $('canvas'), ctx = canvas.getContext('2d');
 const titleCanvas = $('titleCanvas'), tCtx = titleCanvas.getContext('2d');
 const tutCanvas = $('tutorialCanvas'), tutCtx = tutCanvas.getContext('2d');
 const wrapper = $('canvasWrapper');
-const attemptReplay = createAttemptReplay({ canvas, $, pauseGame: () => pauseGame(), getBackground: () => getCanvasPalette().canvas });
+const attemptReplay = createAttemptReplay({ canvas, $, pauseGame: () => pauseGame(), getBackground: () => getCanvasPalette().canvas, language: () => currentLang });
 let W = canvas.width, H = canvas.height;
 let BASE_PIVOT = { x: W / 2, y: H / 2 };
 let PIVOT = { x: BASE_PIVOT.x, y: BASE_PIVOT.y };
@@ -65,7 +65,7 @@ const i18nController = createI18nController({
   indexToStageSub, STAGE_CONFIGS,
   showStageBriefing, renderStageSelect,
   saveLanguage: lang => progressStore.saveSetting('language', lang),
-  refreshProgress: updatePersonalBest
+  refreshProgress: updatePersonalBest, refreshReplay: () => attemptReplay.refresh()
 });
 const setLanguage = lang => i18nController.setLanguage(lang);
 const applyLanguage = () => i18nController.applyLanguage();
@@ -427,7 +427,7 @@ $('btnDismissBriefing').addEventListener('click', () => {
 });
 
 function showSaveStatus({ kind, message }) {
-  $('saveStatus').textContent = message;
+  $('saveStatus').textContent = kind === 'error' ? I18N[document.documentElement.lang === 'ja' ? 'ja' : 'en'].saveError : message;
   $('saveStatus').dataset.kind = kind;
   $('saveStatus').hidden = !['warning', 'error'].includes(kind);
 }
@@ -772,7 +772,12 @@ function fire() {
   if (gameStatus !== 'setup') return;
   stopGameLoop();
   startingPulses = pulsesLeft;
-  attemptReplay.begin($('stageDisplay').textContent.trim());
+  const replayStage = indexToStageSub(currentStageIndex);
+  const replayConfig = STAGE_CONFIGS[replayStage.stage];
+  attemptReplay.begin(currentStageIndex === 'sandbox' ? { en: 'FREE PLAY', ja: 'フリープレイ' } : {
+    en: `${replayStage.label} [${replayConfig.name}]`,
+    ja: `${replayStage.label} [${replayConfig.ja.name}]`
+  });
   $('stageBriefing').classList.add('hidden');
   launchParameters = ['sliderN', 'sliderCount', 'sliderAngle', 'sliderVel'].map(id => $(id).value);
   unlockAudio(); initWindAudio();
@@ -1763,9 +1768,11 @@ function renderStageSelect() {
         if (st > 0) starsHtml = `<span class="mini-stars">${'★'.repeat(st)}${'☆'.repeat(3 - st)}</span>`;
       }
       const bestTime = bestTimes[stageKey];
-      const timeText = bestTime === undefined ? 'Time: —' : `Best: ${bestTime.toFixed(2)}s`;
-      btn.innerHTML = `<span class="num">${isLocked ? '🔒 ' : ''}${displayStage}-${sub}</span><span class="best-score">${best}</span>${isLocked ? '' : `<span class="best-time">${timeText}</span>`}${starsHtml}${isCurrent ? '<span class="current-label">CURRENT</span>' : ''}`;
-      btn.setAttribute('aria-label', `${displayStage}-${sub}${isCurrent ? ', current' : ''}${isLocked ? ', locked' : `, best score ${highScores[stageKey] ?? 'none'}, ${timeText}, ${stageStars[stageKey] || 0} stars`}`);
+      const timeText = bestTime === undefined ? `${I18N[currentLang].timeLabel}: —` : `${I18N[currentLang].fastestLabel}: ${bestTime.toFixed(2)}${isJa ? '秒' : 's'}`;
+      btn.innerHTML = `<span class="num">${isLocked ? '🔒 ' : ''}${displayStage}-${sub}</span><span class="best-score">${best}</span>${isLocked ? '' : `<span class="best-time">${timeText}</span>`}${starsHtml}${isCurrent ? `<span class="current-label">${I18N[currentLang].currentLabel}</span>` : ''}`;
+      btn.setAttribute('aria-label', isJa
+        ? `${displayStage}-${sub}${isCurrent ? '、現在選択中' : ''}${isLocked ? '、未解放' : `、最高スコア ${highScores[stageKey] ?? '記録なし'}、${timeText}、星 ${stageStars[stageKey] || 0}個`}`
+        : `${displayStage}-${sub}${isCurrent ? ', current' : ''}${isLocked ? ', locked' : `, best score ${highScores[stageKey] ?? 'none'}, ${timeText}, ${stageStars[stageKey] || 0} stars`}`);
       if (!isLocked) {
         btn.addEventListener('click', () => { 
           closeStageSelectModal(); 

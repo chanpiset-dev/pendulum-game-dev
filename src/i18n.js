@@ -1,5 +1,10 @@
 export const I18N = {
   en: {
+    hints: 'HINTS', replayButton: 'REPLAY LAST ATTEMPT', replayTitle: 'Last attempt', replayPosition: 'Replay position', replaySpeed: 'Speed', replayCanvas: 'Recorded attempt playback',
+    bestTimesNote: 'Best times are recorded for new clears.', currentLabel: 'CURRENT', timeLabel: 'Time', fastestLabel: 'Best',
+    tutorialSections: 'Tutorial sections', artworkScene: 'Demonstration scene with pendulum, targets, bombs and mechanics',
+    randomTitle: 'Generate new random targets', shareTitle: 'Copy parameter URL', languageTitle: 'Switch language',
+    saveError: 'Progress could not be fully saved or loaded. You can keep playing; changes may last only for this session.',
     tutorialBasics: 'HOW TO PLAY', tutorialGimmicks: 'GIMMICK GUIDE', gimmickGuideTitle: 'Gimmick guide', gimmickGuideIntro: 'Learn each object by its image and function. Artwork follows your selected theme.', gimmickBack: 'BACK TO HOW TO PLAY',
     artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Explore the artwork used in gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
     more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
@@ -72,6 +77,11 @@ export const I18N = {
     warpedFloater: "✦ WARPED (0.6x) ✦"
   },
   ja: {
+    hints: 'ヒント', replayButton: '直前のプレイを再生', replayTitle: '直前のプレイ', replayPosition: '再生位置', replaySpeed: '再生速度', replayCanvas: '直前のプレイの再生映像',
+    bestTimesNote: 'クリア毎に最速タイムを更新', currentLabel: '現在選択中', timeLabel: 'タイム', fastestLabel: '最速',
+    tutorialSections: 'チュートリアルの項目', artworkScene: '振り子、ターゲット、ボムなどの仕掛けのデモ',
+    randomTitle: 'ランダムな配置を再生成', shareTitle: '設定を含むURLをコピー', languageTitle: '言語を切り替える',
+    saveError: '進行状況を保存・読み込みできませんでした。プレイは続けられますが、今回の変更が保存されない場合があります。',
     tutorialBasics: '遊び方', tutorialGimmicks: '仕掛けガイド', gimmickGuideTitle: '仕掛けガイド', gimmickGuideIntro: '画像と機能で仕掛けを確認しましょう。見た目は選択中のテーマに合わせます。', gimmickBack: '遊び方に戻る',
     artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームで使われるアートワークを確認できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
     more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
@@ -147,7 +157,7 @@ export const I18N = {
 
 export function createI18nController({
   $, getCurrentLang, setCurrentLang, getCurrentStageIndex, getPulsesLeft,
-  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage, refreshProgress
+  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage, refreshProgress, refreshReplay
 }) {
   function setLanguage(lang) {
   setCurrentLang(lang === 'ja' ? 'ja' : 'en');
@@ -174,6 +184,14 @@ export function createI18nController({
 
   function applyLanguage() {
   const t = I18N[getCurrentLang()];
+  document.documentElement.lang = getCurrentLang();
+  for (const [id, key] of [['btnHints','hints'],['btnReplay','replayButton'],['replayTitle','replayTitle'],['replaySpeedLabel','replaySpeed'],['bestTimesNote','bestTimesNote']]) $(id).textContent = t[key];
+  $('replayClose').textContent = t.close;
+  for (const [id,key] of [['replaySeek','replayPosition'],['replayCanvas','replayCanvas'],['personalBest','personalBests'],['tutorialNav','tutorialSections'],['artworkStage','artworkScene']]) $(id).setAttribute('aria-label',t[key]);
+  for (const [id,key] of [['btnReroll','randomTitle'],['btnShare','shareTitle'],['btnHeaderLang','languageTitle']]) $(id).title = t[key];
+  if ($('saveStatus').dataset.kind === 'error') $('saveStatus').textContent = t.saveError;
+  refreshReplay?.();
+
   $('titleSubtitle').textContent = t.titleSubtitle;
   $('btnStartGame').textContent = t.startBtn;
   $('btnGoTutorial').textContent = t.tutorialBtn;

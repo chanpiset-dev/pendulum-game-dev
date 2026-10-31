@@ -1,5 +1,5 @@
 // A visual recording, isolated from physics and progress saving. No audio or storage writes.
-export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () => '#020503' }) {
+export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () => '#020503', language = () => 'en' }) {
   const buffer = document.createElement('canvas');
   buffer.width = 640; buffer.height = 480;
   const context = buffer.getContext('2d');
@@ -7,7 +7,7 @@ export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () =
   const dialog = $('replayDialog');
   let frames = [], recording = false, elapsed = 0, interval = 0.1, nextCapture = 0;
   let label = '', position = 0, playing = false, animation = null, previous = 0, renderVersion = 0;
-  const format = value => `${value.toFixed(1)}s`;
+  const format = value => `${value.toFixed(1)}${language() === 'ja' ? '秒' : 's'}`;
   function stop() {
     playing = false;
     cancelAnimationFrame(animation);
@@ -15,8 +15,10 @@ export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () =
     $('replayPlay').textContent = 'PLAY';
   }
   function render() {
+    $('replayDescription').textContent = typeof label === 'object' ? label[language()] : label;
     $('replaySeek').value = position;
     $('replayTime').textContent = `${format(position)} / ${format(elapsed)}`;
+    $('replaySeek').setAttribute('aria-valuetext', `${format(position)} / ${format(elapsed)}`);
     let frame = frames[0];
     for (const candidate of frames) {
       if (candidate.time > position) break;
@@ -42,7 +44,6 @@ export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () =
     if (recording || !frames.length) return;
     pauseGame();
     stop(); position = 0;
-    $('replayDescription').textContent = label;
     $('replaySeek').max = elapsed;
     view.clearRect(0, 0, view.canvas.width, view.canvas.height);
     dialog.showModal(); render(); $('replayPlay').focus();
@@ -61,6 +62,7 @@ export function createAttemptReplay({ canvas, $, pauseGame, getBackground = () =
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   window.addEventListener('blur', stop);
   return {
+    refresh() { if (dialog.open) render(); },
     begin(stageLabel) {
       stop(); frames = []; elapsed = 0; interval = 0.1; nextCapture = 0;
       label = stageLabel; recording = true; $('btnReplay').disabled = true;

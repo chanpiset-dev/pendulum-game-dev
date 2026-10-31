@@ -18,7 +18,7 @@
     "src/verification.js"
   ],
   "step": 0.016666666666666666,
-  "generatedAt": "2026-10-31T07:43:06.878Z",
+  "generatedAt": "2026-10-31T08:05:13.386Z",
   "scope": "Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.",
   "results": [
     {
@@ -3826,10 +3826,20 @@
       "stage": 44,
       "sub": 2,
       "name": "VORTEX BOOST",
-      "status": "unresolved",
-      "attempts": 150,
-      "bestRemaining": 1,
-      "solution": null
+      "status": "verified",
+      "attempts": 1,
+      "bestRemaining": 0,
+      "solution": {
+        "index": 217,
+        "angle": -105,
+        "velocity": -1.2,
+        "pulses": [
+          36,
+          100
+        ],
+        "frames": 406,
+        "clearTime": 3.400000000000064
+      }
     },
     {
       "index": 218,

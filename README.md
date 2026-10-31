@@ -131,5 +131,5 @@ include numbering=7 and refer directly to current stage numbers.
 
 A separate [verification viewer](verification/) plays saved successful solutions
 without writing player progress. See [verification/README.md](verification/README.md)
-for the search command, scope, fixed-frame timing model and limitations. The first full pass searched all 250 substages: 249 have repeatable clears, while
-44-2 remains unresolved after 150 candidates. No stage layouts were changed.
+for the search command, scope, fixed-frame timing model and limitations. All 250 substages now have saved repeatable clears, including a user-guided
+solution for 44-2. No stage layouts were changed.

@@ -13,6 +13,9 @@ const arg=(name,fallback)=>process.argv.find(s=>s.startsWith(`--${name}=`))?.spl
  const output=path.join(root,'verification/solutions.json');
  let previous={results:[]};if(fs.existsSync(output))previous=JSON.parse(fs.readFileSync(output));
  const report={schema:1,engine,engineFiles:files.sort(),step:1/60,generatedAt:new Date().toISOString(),scope:'Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.',results:previous.engine===engine?previous.results:[]};
+ const seedPath=path.resolve(root,arg('seeds','verification/seeds.json'));
+ const seeds=fs.existsSync(seedPath)?JSON.parse(fs.readFileSync(seedPath,'utf8')):[];
+ if(!Array.isArray(seeds))throw new Error('Seed file must contain an array of solutions');
  const {browser,page}=await openVerification();
  try{
   for(const index of indices){
@@ -25,6 +28,7 @@ const arg=(name,fallback)=>process.argv.find(s=>s.startsWith(`--${name}=`))?.spl
    // Interleave pulse schedules so a bounded pilot includes assisted attempts.
    const schedules=[[],[60],[60,150,270]];
    for(let i=0;i<candidates.length;i++) if(i%3&&!(cfg.lockedParams?.pulses===0))candidates[i].pulses=schedules[i%3];
+   candidates.unshift(...seeds.filter(seed=>seed.index===index));
    let best=null,solution=null,attempts=0;
    for(const candidate of candidates.slice(0,budget)){
     const result=await page.evaluate(candidate=>{const api=window.verificationAPI;api.start(candidate);return api.step(6000,false);},candidate);

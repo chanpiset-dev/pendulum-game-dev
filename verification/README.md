@@ -7,7 +7,11 @@ simulation; speed changes playback pacing, never physics. The page also lists al
 
 The first full pass searched all 250 substages with a maximum of 150 candidates
 per substage. It found 249 repeatable clears in 1,096 total candidate attempts.
-Stage **44-2 (Vortex Boost)** remains unresolved; the best attempt left one target.
+The final unresolved stage, **44-2 (Vortex Boost)**, was subsequently solved using
+the player-provided launch settings: -105° angle, -1.2 initial angular velocity,
+with automated pulses at frames 36 and 100 (0.60s and 1.67s playback time).
+It clears in 3.40 seconds of game time. All **250 substages** now have saved
+repeatable clears under the fixed-frame model.
 An unresolved search is not evidence of impossibility. No layouts or difficulty
 settings were changed. A portal-stage clear does not establish that portal use is
 mandatory, and a successful solution does not measure human difficulty.
@@ -23,7 +27,9 @@ node scripts/search-solutions.cjs --indices=all --budget=150
 ```
 
 Use `--indices=217` to search only 44-2, or a comma-separated list for selected
-substages. Indices run from 1 to 250: `(stage - 1) * 5 + substage`. The script serves local
+substages. `verification/seeds.json` preserves the user-guided candidate and is
+tried first; use `--seeds=path/to/seeds.json` for another seed list.
+Indices run from 1 to 250: `(stage - 1) * 5 + substage`. The script serves local
 files through Playwright routing and requires no live Netlify deployment. It tries
 integer angles, launch velocities, and selected fixed-frame pulse schedules within
 each stage's normal restrictions. It uses the actual `loadStage`, `fire`, `update`

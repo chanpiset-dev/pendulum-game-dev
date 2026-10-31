@@ -46,9 +46,10 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
   if (rail) {
     const rx = rail.ampX || rail.amp || 0, ry = rail.ampY || 0;
     ctx.strokeStyle = palette.rod; ctx.lineWidth = RAIL_HIT_RADIUS * 2;
-    if (rx > 0 && ry > 0) { ctx.beginPath(); ctx.ellipse(BASE_PIVOT.x, BASE_PIVOT.y, rx, ry, 0, 0, Math.PI * 2); ctx.stroke(); }
-    else if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, RAIL_HIT_RADIUS * 2);
-    else if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, RAIL_HIT_RADIUS * 2);
+    // Both axes move independently; these tracks match the rail collision geometry.
+    // An ellipse is incorrect when axis speeds or phases differ.
+    if (rx > 0) line(BASE_PIVOT.x - rx - 30, pivot.y, BASE_PIVOT.x + rx + 30, pivot.y, palette.rod, RAIL_HIT_RADIUS * 2);
+    if (ry > 0) line(pivot.x, BASE_PIVOT.y - ry - 30, pivot.x, BASE_PIVOT.y + ry + 30, palette.rod, RAIL_HIT_RADIUS * 2);
     ctx.fillStyle = palette.platform; ctx.fillRect(pivot.x - 22.5, pivot.y - 18, 45, 36); ctx.strokeStyle = palette.rod; ctx.lineWidth = 2; ctx.strokeRect(pivot.x - 22.5, pivot.y - 18, 45, 36);
   }
   for (const port of portals) {

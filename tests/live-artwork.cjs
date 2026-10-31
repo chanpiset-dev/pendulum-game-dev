@@ -30,6 +30,24 @@ const { chromium } = require('playwright');
       assert.ok(result.rgba.slice(0,3).every(v=>v>190), 'Live targets now have white bullseye centers');
       assert.equal(result.style, theme === 'neon-arcade' ? 'pixel' : 'vector');
     }
+    await page.evaluate(async () => {
+      const { drawGenericScene } = await import('/src/engine/renderer.js');
+      const canvas = document.createElement('canvas'); canvas.width=800; canvas.height=600;
+      const context=canvas.getContext('2d'), segments=[];
+      const move=context.moveTo.bind(context), line=context.lineTo.bind(context);
+      let start;
+      context.moveTo=(x,y)=>{start=[x,y];move(x,y);};
+      context.lineTo=(x,y)=>{segments.push([...start,x,y]);line(x,y);};
+      // Unequal speeds/phases put this pivot inside the old ellipse, off its track.
+      for (const t of [0,0.7,2,5]) {
+        const pivot={x:400+60*Math.sin(t*1.3+0.4),y:300+40*Math.sin(t*0.8)};
+        segments.length=0;
+        drawGenericScene(context,[],[],[],null,[],[],[],pivot,{ampX:60,ampY:40,speedX:1.3,speedY:0.8,phaseX:0.4},[],[],[],[],[],{BASE_PIVOT:{x:400,y:300}});
+        for(const expected of [[310,pivot.y,490,pivot.y],[pivot.x,230,pivot.x,370]]) {
+          if(!segments.some(s=>s.every((v,i)=>Math.abs(v-expected[i])<1e-8))) throw new Error('Rail does not pass through moving pivot');
+        }
+      }
+    });
     await page.evaluate(() => window.testRun("$('titleScreen').classList.remove('hidden');$('stageBriefing').classList.add('hidden');setLanguage('en')"));
     await page.click('#btnGoTutorial');
     await page.click('#tutorialGimmicks');

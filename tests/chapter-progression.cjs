@@ -16,6 +16,7 @@ const fs=require('node:fs');const path=require('node:path');const {chromium}=req
    for(let s=1;s<=50;s++){
     loadStage(stageSubToIndex(s,1));const cfg=STAGE_CONFIGS[s];
     if(!document.getElementById('stageDisplay').textContent.includes('STAGE '+s+'-1'))throw new Error('Wrong label '+s);
+    if(getComputedStyle($('f-N')).display!=='none'||getComputedStyle($('f-Count')).display!=='none')throw new Error('Stage configuration controls visible '+s);
     if(pulsesLeft!==(cfg.lockedParams?.pulses??3))throw new Error('Wrong pulse rules '+s);
     if(Boolean(document.getElementById('sliderVel').disabled)!==Boolean(cfg.lockVelocity))throw new Error('Wrong velocity lock '+s);
     if(Boolean(document.getElementById('sliderAngle').disabled)!==Boolean(cfg.lockAngle))throw new Error('Wrong angle lock '+s);
@@ -23,7 +24,13 @@ const fs=require('node:fs');const path=require('node:path');const {chromium}=req
     if(cfg.lockedClone&&Number(document.getElementById('sliderCount').value)!==cfg.lockedClone)throw new Error('Wrong clone lock '+s);
     if(currentLives!==(cfg.shieldLives?2:1))throw new Error('Wrong shield rules '+s);
    }
-   unlockedStageIndex=250;renderStageSelect();return true;
+   loadStage('sandbox');
+   if($('f-N').hidden||$('f-Count').hidden||$('sliderN').disabled||$('sliderCount').disabled)throw new Error('Free Play controls unavailable');
+   $('sliderN').value=4;$('sliderCount').value=3;initVisualsOnly();fire();
+   if(systems.length!==3||systems.some(c=>c.N!==4))throw new Error('Free Play choices not applied');
+   loadStage(stageSubToIndex(34,1));
+   if(!$('f-N').hidden||!$('f-Count').hidden||systems.length!==2||systems[0].N!==2)throw new Error('Fixed stage rules not restored');
+   loadStage(1);unlockedStageIndex=250;renderStageSelect();return true;
   })()`));assert.ok(checks);
   await page.addStyleTag({content:'* { transition: none !important; animation: none !important; }'});
   await page.evaluate(()=>window.testRun("$('titleScreen').classList.add('hidden');$('stageBriefing').classList.add('hidden');openStageSelectModal()"));

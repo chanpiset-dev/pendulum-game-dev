@@ -631,6 +631,9 @@ function loadStage(stgIdx) {
     $('valCount').textContent = slC.value;
   }
 
+  $('f-N').hidden = !isSandbox;
+  $('f-Count').hidden = !isSandbox;
+
   const isVelLocked = Boolean(STAGE_CONFIGS[stage]?.lockVelocity);
   const isAngleLocked = Boolean(STAGE_CONFIGS[stage]?.lockAngle);
 

@@ -475,3 +475,6 @@
   #tutorialScreen .tutorial-guide { top: 66px; max-height: 28vh; }
   #btnTutorialDone { bottom: 12px; padding: 8px 24px; font-size: 1rem; }
 }
+
+/* Fixed stage configuration stays internal; only Free Play exposes these controls. */
+#f-N[hidden], #f-Count[hidden] { display: none; }

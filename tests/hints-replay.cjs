@@ -27,7 +27,7 @@ const { chromium } = require('playwright');
     await page.locator('#btnHints').click();
     await page.locator('#stageBriefing').waitFor({ state: 'visible' });
     await page.locator('#btnDismissBriefing').click();
-    await page.evaluate(() => window.testRun('loadStage(stageSubToIndex(41, 2))'));
+    await page.evaluate(() => window.testRun('loadStage(stageSubToIndex(39, 2))'));
     await page.locator('#btnHints').click();
     assert.match(await page.locator('#mechanicHints').innerText(), /upward/);
     assert.match(await page.locator('#mechanicHints').innerText(), /locked/);

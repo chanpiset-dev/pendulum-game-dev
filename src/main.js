@@ -1,3 +1,5 @@
+import { migrateLegacyIndex } from './data/stage-migration.js';
+import { DIFFICULTIES, chapterForStage } from './data/chapters.js';
 import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, BOB_GROWTH, BOB_SHRINK, JOINT_RADIUS, SEGMENT_HIT_RADIUS, RAIL_HIT_RADIUS } from './game-sizes.js';
 import { drawLivePendulum, artworkStyleForTheme } from './engine/artwork.js';
 import { installGimmickGuide } from './gimmick-guide.js';
@@ -509,7 +511,7 @@ function loadStage(stgIdx) {
   const sub = stageInfo.sub;
   const label = stageInfo.label;
 
-  if ([29, 30, 33, 35, 40, 48, 50].includes(stage)) {
+  if (STAGE_CONFIGS[stage]?.shieldLives) {
     maxLives = sub <= 2 ? 2 : 3;
     currentLives = maxLives;
   } else {
@@ -528,10 +530,6 @@ function loadStage(stgIdx) {
     
     if (cfg.lockedParams && cfg.lockedParams.pulses !== undefined) {
       pulsesLeft = cfg.lockedParams.pulses;
-    } else if ([2, 7, 9, 15, 19, 26, 34, 41, 46, 49].includes(stage)) {
-      pulsesLeft = 0;
-    } else if ([6, 10, 16, 20, 30, 35, 47, 50].includes(stage)) {
-      pulsesLeft = 5;
     } else {
       pulsesLeft = 3;
     }
@@ -558,7 +556,7 @@ function loadStage(stgIdx) {
   activeGhost = (!isSandbox && stageGhosts[currentStageKey]) ? stageGhosts[currentStageKey] : null;
 
   const slN = $('sliderN'); 
-  const lockedN = (data.lockedN !== undefined) ? data.lockedN : (stage === 15 || stage === 20 ? 3 : null);
+  const lockedN = (data.lockedN !== undefined) ? data.lockedN : (STAGE_CONFIGS[stage]?.lockedN ?? null);
   if (lockedN !== null) {
     slN.min = lockedN;
     slN.max = lockedN;
@@ -577,7 +575,7 @@ function loadStage(stgIdx) {
   }
 
   const slC = $('sliderCount'); 
-  const lockedC = (data.lockedClone !== undefined) ? data.lockedClone : (stage === 9 || stage === 19 ? 2 : null);
+  const lockedC = (data.lockedClone !== undefined) ? data.lockedClone : (STAGE_CONFIGS[stage]?.lockedClone ?? null);
   if (lockedC !== null) {
     slC.min = lockedC;
     slC.max = lockedC;
@@ -595,8 +593,8 @@ function loadStage(stgIdx) {
     $('valCount').textContent = slC.value;
   }
 
-  const isVelLocked = (typeof stage === 'number' && stage === 2);
-  const isAngleLocked = (typeof stage === 'number' && stage === 7);
+  const isVelLocked = Boolean(STAGE_CONFIGS[stage]?.lockVelocity);
+  const isAngleLocked = Boolean(STAGE_CONFIGS[stage]?.lockAngle);
 
   const slV = $('sliderVel');
   const slA = $('sliderAngle');
@@ -1636,7 +1634,7 @@ installInputHandlers({
 
 function copyShareUrl() {
   const params = new URLSearchParams({
-    stg: currentStageIndex, n: $('sliderN').value, c: $('sliderCount').value,
+    numbering: '7', stg: currentStageIndex, n: $('sliderN').value, c: $('sliderCount').value,
     a: $('sliderAngle').value, v: $('sliderVel').value
   });
   const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
@@ -1654,12 +1652,17 @@ function restoreFromUrl() {
     if (p.has('stg')) {
       const stg = p.get('stg');
       if (stg === 'sandbox') loadStage('sandbox');
-      else loadStage(parseInt(stg, 10));
+      else {
+        const requested = /^\d+$/.test(stg) ? Number(stg) : NaN;
+        const index = p.get('numbering') === '7' ? requested : migrateLegacyIndex(requested);
+        if (!Number.isInteger(index) || index < 1 || index > 250) return;
+        loadStage(index);
+      }
       
-      if (p.has('n')) $('sliderN').value = p.get('n');
-      if (p.has('c')) $('sliderCount').value = p.get('c');
-      if (p.has('a')) $('sliderAngle').value = p.get('a');
-      if (p.has('v')) $('sliderVel').value = p.get('v');
+      if (p.has('n') && !$('sliderN').disabled) $('sliderN').value = p.get('n');
+      if (p.has('c') && !$('sliderCount').disabled) $('sliderCount').value = p.get('c');
+      if (p.has('a') && !$('sliderAngle').disabled) $('sliderAngle').value = p.get('a');
+      if (p.has('v') && !$('sliderVel').disabled) $('sliderVel').value = p.get('v');
       $('valN').textContent = $('sliderN').value; $('valCount').textContent = $('sliderCount').value;
       $('valAngle').textContent = $('sliderAngle').value + '°'; $('valVel').textContent = parseFloat($('sliderVel').value).toFixed(1);
       initVisualsOnly();
@@ -1681,13 +1684,21 @@ function renderStageSelect() {
     const cfg = STAGE_CONFIGS[actualStage] || { name: `STAGE ${displayStage}`, element: "Mechanics" };
     const localized = (isJa && cfg.ja) ? cfg.ja : cfg;
 
+    const chapter = chapterForStage(displayStage);
+    if (displayStage === chapter.start) {
+      const heading = document.createElement('h3');
+      heading.className = 'chapter-heading';
+      heading.textContent = `${chapter.icon} ${isJa ? 'チャプター' : 'Chapter'} ${chapter.id}: ${isJa ? chapter.ja : chapter.name} · ${chapter.start}–${chapter.end}`;
+      grid.appendChild(heading);
+    }
+    const difficulty = DIFFICULTIES[cfg.difficulty]?.[isJa ? 1 : 0] || '';
     const card = document.createElement('div');
     card.className = 'stage-section-card';
     
     card.innerHTML = `
       <div class="stage-section-header">
         <span class="stage-section-title">STAGE ${displayStage}: ${localized.name}</span>
-        <span style=\"font-size:0.75rem; color:var(--muted)\">${localized.element || cfg.element}</span>
+        <span style=\"font-size:0.75rem; color:var(--muted)\">${cfg.mechanicIcon} ${localized.element || cfg.element} · ${difficulty}</span>
       </div>
       <div class="stage-grid" id="stageGridSection_${displayStage}"></div>
     `;

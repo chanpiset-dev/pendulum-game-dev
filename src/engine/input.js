@@ -60,8 +60,7 @@ wrapper.addEventListener('pointerdown', e => {
   unlockAudio();
   if (getState().gameStatus === 'playing') { triggerPulse(); return; }
   if (getState().gameStatus === 'setup' && getState().systems.length > 0) {
-    const stageInfo = indexToStageSub(getState().currentStageIndex);
-    if (stageInfo.stage === 7) return;
+    if ($('sliderAngle').disabled) return;
 
     const chain = getState().systems[0]; let px = getState().PIVOT.x, py = getState().PIVOT.y;
     for (let i = 0; i < chain.N; i++) {
@@ -79,8 +78,7 @@ wrapper.addEventListener('pointerdown', e => {
 wrapper.addEventListener('pointermove', e => {
   if (e.pointerId !== activePointerId) return;
   if (!canContinueDrag(e)) { cancelDrag(); return; }
-  const stageInfo = indexToStageSub(getState().currentStageIndex);
-  if (stageInfo.stage === 7) return;
+  if ($('sliderAngle').disabled) return;
 
   const p = pointerToCanvas(canvas, e);
   if (!p) { cancelDrag(); return; }

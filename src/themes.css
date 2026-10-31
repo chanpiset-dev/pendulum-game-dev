@@ -458,3 +458,15 @@
 @media(max-width:420px) { #gimmickCards { grid-template-columns: 1fr; } }
 
 :root:is([data-theme='neon-arcade'],[data-theme='pocket-console'],[data-theme='16bit-adventure']) :is(#canvas,#titleCanvas,#tutorialCanvas) { image-rendering: pixelated; }
+
+.chapter-heading {
+  margin: 1.5rem 0 .8rem;
+  padding: .9rem;
+  color: var(--accent);
+  background: var(--panel);
+  border-bottom: 2px solid var(--line);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.stage-section-header { flex-wrap: wrap; gap: .5rem; }

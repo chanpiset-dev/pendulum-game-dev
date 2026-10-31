@@ -2,10 +2,13 @@ import { balanceStage } from './stage-balance.js';
 import { enlargeStageObjects } from '../game-sizes.js';
 // Aggregates stage builders and keeps the public generateStageData API stable.
 import { indexToStageSub } from './stage-configs.js';
-import { buildWorld as buildWorld1 } from './stage-builders/world1-basics.js';
-import { buildWorld as buildWorld2 } from './stage-builders/world2-force.js';
-import { buildWorld as buildWorld3 } from './stage-builders/world3-gadgets.js';
-import { buildWorld as buildWorld4 } from './stage-builders/world4-apex.js';
+
+import { buildWorld as buildChapter1 } from './stage-builders/chapter1-basics.js';
+import { buildWorld as buildChapter2 } from './stage-builders/chapter2-forces.js';
+import { buildWorld as buildChapter3 } from './stage-builders/chapter3-anchors.js';
+import { buildWorld as buildChapter4 } from './stage-builders/chapter4-gadgets.js';
+import { buildWorld as buildChapter5 } from './stage-builders/chapter5-dynamics.js';
+import { buildWorld as buildChapter6 } from './stage-builders/chapter6-mastery.js';
 
 export function buildAuthoredStageData(stgIdx, BASE_PIVOT) {
   if (stgIdx === 'sandbox') {
@@ -43,10 +46,12 @@ export function buildAuthoredStageData(stgIdx, BASE_PIVOT) {
 
   const { stage, sub } = indexToStageSub(stgIdx);
   let result = null;
-  if (stage >= 1 && stage <= 6) result = buildWorld1(stage, sub, BASE_PIVOT);
-  else if (stage >= 7 && stage <= 20) result = buildWorld2(stage, sub, BASE_PIVOT);
-  else if (stage >= 21 && stage <= 30) result = buildWorld3(stage, sub, BASE_PIVOT);
-  else if (stage >= 31 && stage <= 50) result = buildWorld4(stage, sub, BASE_PIVOT);
+  if (stage >= 1 && stage <= 8) result = buildChapter1(stage, sub, BASE_PIVOT);
+  else if (stage >= 9 && stage <= 16) result = buildChapter2(stage, sub, BASE_PIVOT);
+  else if (stage >= 17 && stage <= 22) result = buildChapter3(stage, sub, BASE_PIVOT);
+  else if (stage >= 23 && stage <= 33) result = buildChapter4(stage, sub, BASE_PIVOT);
+  else if (stage >= 34 && stage <= 42) result = buildChapter5(stage, sub, BASE_PIVOT);
+  else if (stage >= 43 && stage <= 50) result = buildChapter6(stage, sub, BASE_PIVOT);
 
   if (result) return balanceStage(result, stage, sub, BASE_PIVOT);
   return { maxN: 2, maxClone: 1, timeLimit: 14, targets: [], obstacles: [], blackhole: null, rail: null };

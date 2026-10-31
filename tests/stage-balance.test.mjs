@@ -1,9 +1,10 @@
+import { LEGACY_STAGE_IDS } from '../src/data/stage-migration.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateStageData } from '../src/data/stage-index.js';
 import { STAGE_ORDER } from '../src/data/stage-configs.js';
 import { BOB_MAX_RADIUS } from '../src/game-sizes.js';
-const get=(s,u)=>generateStageData((s-1)*5+u,{x:400,y:300});
+const get=(s,u)=>generateStageData((LEGACY_STAGE_IDS[s]-1)*5+u,{x:400,y:300});
 const hp=d=>d.targets.filter(t=>!t.isBomb).reduce((n,t)=>n+(t.hp||1),0);
 test('Flagged stationary passages fit the fully grown bob with clearance',()=>{
  for(const [s,u] of [[4,3],[4,4],[11,4],[11,5],[16,5],[38,2],[46,4]]){

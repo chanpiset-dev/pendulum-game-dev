@@ -9,7 +9,7 @@ const {chromium}=require('playwright');
   await page.goto('http://game.test');await page.waitForFunction(()=>window.testRun);
   for(const theme of ['neon-arcade','clean-precision']){
     const result=await page.evaluate(theme=>window.testRun(`(()=>{
-      appearance.set(${JSON.stringify(theme)},'dark');loadStage(stageSubToIndex(11,5));
+      appearance.set(${JSON.stringify(theme)},'dark');loadStage(stageSubToIndex(9,5));
       const snapshot=()=>JSON.stringify({systems,targets,currentWind,pulsesLeft,highScores,stageStars});
       const pixels=()=>Array.from(ctx.getImageData(0,85,800,45).data).join(',');
       timeElapsed=0;draw();const first=pixels(), state=snapshot();timeElapsed=0.5;draw();const second=pixels();

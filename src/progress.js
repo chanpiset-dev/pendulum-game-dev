@@ -1,9 +1,10 @@
+import { MIGRATION_KEY, migrateLegacyProgress } from './data/stage-migration.js';
 import { DEFAULT_THEME, DEFAULT_MODE, isTheme, isMode } from './themes.js';
-// Keep the existing v6 keys so previously earned progress remains compatible.
+// New numbering uses v7 keys. Legacy v6 data remains untouched as a backup.
 export const PROGRESS_KEYS = {
-  unlocked: 'pendulum_sub_unlocked_v6', scores: 'pendulum_stage_scores_v6',
-  stars: 'pendulum_stage_stars_v6', ghosts: 'pendulum_stage_ghosts_v6',
-  briefed: 'pendulum_briefed_stages_v6', times: 'pendulum_stage_times_v6',
+  unlocked: 'pendulum_sub_unlocked_v7', scores: 'pendulum_stage_scores_v7',
+  stars: 'pendulum_stage_stars_v7', ghosts: 'pendulum_stage_ghosts_v7',
+  briefed: 'pendulum_briefed_stages_v7', times: 'pendulum_stage_times_v7',
   language: 'pendulum_lang', preferences: 'pendulum_preferences_v1',
 };
 const validStageKey = key => /^stage_([1-9]|[1-4]\d|50)_sub_[1-5]$/.test(key);
@@ -22,9 +23,31 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
       ? 'Progress could not be fully saved or loaded. You can keep playing; changes may last only for this session.'
       : success });
   }
-  function read(key) {
+  let migration;
+  function readRaw(key) {
     try { return getStorage().getItem(key); }
     catch { problems.set(key, 'failed'); return null; }
+  }
+  function prepareMigration() {
+    if (migration !== undefined) return;
+    const saved = readRaw(MIGRATION_KEY);
+    try {
+      const parsed = JSON.parse(saved);
+      if (record(parsed) && Object.values(parsed).every(value => typeof value === 'string')) {
+        migration = parsed;
+        return;
+      }
+    } catch {}
+    migration = migrateLegacyProgress(readRaw) || {};
+    // One atomic snapshot makes interrupted migrations safe to retry. Normal v7
+    // records override this immutable fallback; v6 records are never rewritten.
+    if (Object.keys(migration).length) write(MIGRATION_KEY, migration);
+  }
+  function read(key) {
+    const raw = readRaw(key);
+    if (raw !== null) return raw;
+    const field = Object.keys(PROGRESS_KEYS).find(name => PROGRESS_KEYS[name] === key);
+    return migration?.[field] ?? null;
   }
   function readRecord(key, validKey, validValue) {
     const raw = read(key);
@@ -41,6 +64,7 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
     } catch { problems.set(key, 'invalid'); return {}; }
   }
   function load() {
+    prepareMigration();
     const rawUnlocked = read(PROGRESS_KEYS.unlocked);
     let unlocked = rawUnlocked === null ? 1 : Number(rawUnlocked);
     if (!Number.isInteger(unlocked) || unlocked < 1 || unlocked > 250) {
@@ -79,6 +103,7 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
         if (optional || error.name !== 'QuotaExceededError') throw error;
         // Optional ghosts must never crowd out essential progress.
         storage.removeItem(PROGRESS_KEYS.ghosts);
+        if (migration?.ghosts) storage.setItem(PROGRESS_KEYS.ghosts, '{}');
         problems.set('replay-eviction', 'evicted');
         storage.setItem(key, serialized);
       }

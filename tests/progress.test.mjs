@@ -12,7 +12,7 @@ function fixture(entries = {}) {
 const progress = () => ({ unlocked: 2, scores: { stage_1_sub_1: 1250 },
   stars: { stage_1_sub_1: 3 }, times: { stage_1_sub_1: 4.2 }, ghosts: { stage_1_sub_1: [{ x: 1, y: 2 }] } });
 
-test('Existing v6 progress loads without inventing old completion times', () => {
+test('Current progress loads without inventing old completion times', () => {
   const f = fixture({ [keys.unlocked]: '80', [keys.scores]: '{"stage_1_sub_1":1500}', [keys.stars]: '{"stage_1_sub_1":3}', [keys.language]: 'ja' });
   const loaded = f.store.load();
   assert.equal(loaded.unlocked, 80);

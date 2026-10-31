@@ -1,56 +1,56 @@
-# Stage Map (Stages 1–50)
+# Sequential chapter progression
 
-Display stage IDs now match the actual stage-builder IDs. The `STAGE_ORDER` array is sequential, so Stage N loads builder Stage N.
+Display numbers, metadata IDs, and builder IDs match. STAGE_ORDER is always 1–50.
 
-| Stage ID / Display ID | Configuration name | Builder section | Builder file |
-|---:|---|---|---|
-| 1 | FIRST SWING | BALLISTIC BASICS | `src/data/stage-builders/world1-basics.js` |
-| 2 | FREE FALL | ANGLE TUNING TRIALS | `src/data/stage-builders/world1-basics.js` |
-| 3 | BOMB CARNIVAL | EXPLOSIVE CHAIN REACTIONS | `src/data/stage-builders/world1-basics.js` |
-| 4 | BANK SHOT | HAZARD BARRIERS | `src/data/stage-builders/world1-basics.js` |
-| 5 | BEAT THE PATROL | PATROLLING OBSTACLES | `src/data/stage-builders/world1-basics.js` |
-| 6 | BLACK HOLE | THE SINGULARITY EVENT | `src/data/stage-builders/world1-basics.js` |
-| 7 | FULL THROTTLE | SPEED TUNING TRIALS | `src/data/stage-builders/world2-force.js` |
-| 8 | ROLLER TRACK | SLIDING PIVOT RAILS | `src/data/stage-builders/world2-force.js` |
-| 9 | TWIN LAUNCH | CHAOTIC DIVERGENCE | `src/data/stage-builders/world2-force.js` |
-| 10 | ABYSS RUNNER | SINGULARITY CORRIDOR | `src/data/stage-builders/world2-force.js` |
-| 11 | GALE VALLEY | ATMOSPHERIC CROSSWIND | `src/data/stage-builders/world2-force.js` |
-| 12 | WIND SURFER | GUSTING WIND SHEAR | `src/data/stage-builders/world2-force.js` |
-| 13 | MOON BOUNCE | LUNAR DRIFT | `src/data/stage-builders/world2-force.js` |
-| 14 | METEOR DIVE | HYPER-GRAVITY ABYSS | `src/data/stage-builders/world2-force.js` |
-| 15 | TRIPLE WHIP | TRIPLE PENDULUM CHAOS | `src/data/stage-builders/world2-force.js` |
-| 16 | TWIN VORTEX | BINARY SINGULARITY | `src/data/stage-builders/world2-force.js` |
-| 17 | FORCE FIELD | REPULSOR FIELD | `src/data/stage-builders/world2-force.js` |
-| 18 | STORM RUNNER | INERTIAL WIND CORRIDOR | `src/data/stage-builders/world2-force.js` |
-| 19 | TWIN STORM | ATMOSPHERIC CHAOS CHAMBER | `src/data/stage-builders/world2-force.js` |
-| 20 | THE GAUNTLET | SINGULARITY CORE MATRIX | `src/data/stage-builders/world2-force.js` |
-| 21 | WARP GATES | WORMHOLE RELAY (One-Way Warp Portals) | `src/data/stage-builders/world3-gadgets.js` |
-| 22 | ARMORED TARGETS | CRUMBLING CITADEL (Armored Multi-Hit Shields) | `src/data/stage-builders/world3-gadgets.js` |
-| 23 | SLIME SLOUGH | VISCOUS DAMPING (Liquid Drag Zones) | `src/data/stage-builders/world3-gadgets.js` |
-| 24 | SUPER BOUNCER | KINETIC SPRINGS (Force Bouncers with Restitution > 1.3x) | `src/data/stage-builders/world3-gadgets.js` |
-| 25 | SKY LIFT | VERTICAL ELEVATOR (Vertical Moving Anchor Rail) | `src/data/stage-builders/world3-gadgets.js` |
-| 26 | QUAD CHAOS | QUADRUPLE CHAOS (N = 4 Locked, Pulses = 0) | `src/data/stage-builders/world3-gadgets.js` |
-| 27 | DASH RINGS | ACCELERATOR GATES (Directional Boost Rings) | `src/data/stage-builders/world3-gadgets.js` |
-| 28 | SECURITY KEY | SECURITY MAZE (Pressure Switches & Gateways) | `src/data/stage-builders/world3-gadgets.js` |
-| 29 | LASER TRIPWIRE | LASER GRID (Lethal Laser Tripwires) | `src/data/stage-builders/world3-gadgets.js` |
-| 30 | CYBER HORIZON | CHAOS HORIZON (The Apex Gauntlet) | `src/data/stage-builders/world3-gadgets.js` |
-| 31 | GRAVITY METRONOME | GRAVITATIONAL METRONOME (Periodic Gravity Inversion) | `src/data/stage-builders/world4-apex.js` |
-| 32 | WARP ESCAPE | BINARY VORTEX (Dual Singularities + Boost Rings) | `src/data/stage-builders/world4-apex.js` |
-| 33 | THE VAULT HEIST | SECURITY LABYRINTH (Lasers + Timed Gates + Armored Vaults) | `src/data/stage-builders/world4-apex.js` |
-| 34 | FIVE-LINK FRENZY | QUINTUPLE WHIP (N = 5 Locked, Pulses = 0) | `src/data/stage-builders/world4-apex.js` |
-| 35 | WARP METRONOME | SINGULARITY OMEGA (The Phase 6 Apex Climax) | `src/data/stage-builders/world4-apex.js` |
-| 36 | BRAKE & BOOST | TIME DILATION FIELD (Viscous Zones + Boost Rings) | `src/data/stage-builders/world4-apex.js` |
-| 37 | PUSH & PULL | MAGNETIC POLARITY (Repulsor + Black Hole Dipole) | `src/data/stage-builders/world4-apex.js` |
-| 38 | PRISM BOUNCE | PRISM REFLECTOR (Kinetic Reflector Bouncers) | `src/data/stage-builders/world4-apex.js` |
-| 39 | CAROUSEL | ORBITAL CENTRIFUGE (2D Carousel Anchor Carriage) | `src/data/stage-builders/world4-apex.js` |
-| 40 | SOLAR STORM | SOLAR FLARE (Lasers + High Crosswind) | `src/data/stage-builders/world4-apex.js` |
-| 41 | CEILING RUSH | CHAOS CASCADE / INVERTED WHIP (4-Link Inverted Gravity) | `src/data/stage-builders/world4-apex.js` |
-| 42 | WARP HYPERCUBE | THE HYPERCUBE (Dual Paired Wormhole Loops) | `src/data/stage-builders/world4-apex.js` |
-| 43 | CYCLONE ELEVATOR | CORIOLIS STORM (Vertical Elevator + Gusting Gale) | `src/data/stage-builders/world4-apex.js` |
-| 44 | SECURITY MAZE | PRESSURE LOCKDOWN (Sequential Switch Maze) | `src/data/stage-builders/world4-apex.js` |
-| 45 | PINBALL MANIA | ELASTIC SLINGSHOT (Boost Rings + Super Bouncers) | `src/data/stage-builders/world4-apex.js` |
-| 46 | MIRROR SHADOWS | ECHO PENDULUMS (Twin Clones / Dual Launch, 0 Pulses) | `src/data/stage-builders/world4-apex.js` |
-| 47 | ZERO GRAVITY | ZERO-G DRIFT (Weightless Inertial Space, g = 0.05) | `src/data/stage-builders/world4-apex.js` |
-| 48 | LASER PORTAL | QUANTUM TUNNEL (Portals Guarded by Lasers) | `src/data/stage-builders/world4-apex.js` |
-| 49 | 5-LINK INVERSION | THE FIVE-LINK METRONOME (5-Link Chaos + Gravity Inversion) | `src/data/stage-builders/world4-apex.js` |
-| 50 | COSMIC APEX | COSMIC APEX: GENESIS (The Grand Finale Gauntlet) | `src/data/stage-builders/world4-apex.js` |
+| New stage | Previous stage | Name | Chapter | Chapter role |
+|---:|---:|---|---|---|
+| 1 | 1 | FIRST SWING | Basics & Collisions | introductory |
+| 2 | 2 | FREE FALL | Basics & Collisions | standard |
+| 3 | 7 | FULL THROTTLE | Basics & Collisions | standard |
+| 4 | 3 | BOMB CARNIVAL | Basics & Collisions | standard |
+| 5 | 4 | BANK SHOT | Basics & Collisions | standard |
+| 6 | 5 | BEAT THE PATROL | Basics & Collisions | advanced |
+| 7 | 22 | ARMORED TARGETS | Basics & Collisions | advanced |
+| 8 | 24 | SUPER BOUNCER | Basics & Collisions | mastery |
+| 9 | 11 | GALE VALLEY | Forces | introductory |
+| 10 | 12 | WIND SURFER | Forces | standard |
+| 11 | 13 | MOON BOUNCE | Forces | standard |
+| 12 | 14 | METEOR DIVE | Forces | standard |
+| 13 | 6 | BLACK HOLE | Forces | standard |
+| 14 | 16 | TWIN VORTEX | Forces | advanced |
+| 15 | 17 | FORCE FIELD | Forces | advanced |
+| 16 | 37 | PUSH & PULL | Forces | mastery |
+| 17 | 8 | ROLLER TRACK | Moving Anchors | introductory |
+| 18 | 25 | SKY LIFT | Moving Anchors | standard |
+| 19 | 39 | CAROUSEL | Moving Anchors | standard |
+| 20 | 18 | STORM RUNNER | Moving Anchors | advanced |
+| 21 | 43 | CYCLONE ELEVATOR | Moving Anchors | advanced |
+| 22 | 10 | ABYSS RUNNER | Moving Anchors | mastery |
+| 23 | 21 | WARP GATES | Portals & Gates | introductory |
+| 24 | 27 | DASH RINGS | Portals & Gates | standard |
+| 25 | 28 | SECURITY KEY | Portals & Gates | standard |
+| 26 | 29 | LASER TRIPWIRE | Portals & Gates | standard |
+| 27 | 42 | WARP HYPERCUBE | Portals & Gates | standard |
+| 28 | 44 | SECURITY MAZE | Portals & Gates | standard |
+| 29 | 48 | LASER PORTAL | Portals & Gates | standard |
+| 30 | 33 | THE VAULT HEIST | Portals & Gates | standard |
+| 31 | 40 | SOLAR STORM | Portals & Gates | advanced |
+| 32 | 23 | SLIME SLOUGH | Portals & Gates | advanced |
+| 33 | 36 | BRAKE & BOOST | Portals & Gates | mastery |
+| 34 | 9 | TWIN LAUNCH | Advanced Dynamics | introductory |
+| 35 | 19 | TWIN STORM | Advanced Dynamics | standard |
+| 36 | 15 | TRIPLE WHIP | Advanced Dynamics | standard |
+| 37 | 26 | QUAD CHAOS | Advanced Dynamics | standard |
+| 38 | 34 | FIVE-LINK FRENZY | Advanced Dynamics | standard |
+| 39 | 41 | CEILING RUSH | Advanced Dynamics | standard |
+| 40 | 47 | ZERO GRAVITY | Advanced Dynamics | advanced |
+| 41 | 31 | GRAVITY METRONOME | Advanced Dynamics | advanced |
+| 42 | 46 | MIRROR SHADOWS | Advanced Dynamics | mastery |
+| 43 | 38 | BUMPER BANKS | Mastery | introductory |
+| 44 | 32 | VORTEX BOOST | Mastery | standard |
+| 45 | 45 | PINBALL MANIA | Mastery | standard |
+| 46 | 20 | THE GAUNTLET | Mastery | standard |
+| 47 | 30 | CYBER HORIZON | Mastery | standard |
+| 48 | 35 | WARP METRONOME | Mastery | advanced |
+| 49 | 49 | 5-LINK INVERSION | Mastery | advanced |
+| 50 | 50 | COSMIC APEX | Mastery | mastery |

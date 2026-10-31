@@ -204,7 +204,7 @@ const { chromium } = require('playwright');
       check(window.testFrames.size === 1 && el('pauseIndicator').classList.contains('hidden'), 'Restart leaves one loop and clears paused indicator');
       el('btnRestart').click();
       check(run("gameStatus === 'playing' && timeElapsed === 0") && window.testFrames.size === 1, 'Restart works during play');
-      run('loadStage(201);fire()');
+      run('loadStage(191);fire()');
       el('btnPause').click();
       el('btnRestart').click();
       check(run('currentGravity === -9.8 && systems[0].N === 4 && pulsesLeft === 0'), 'Restart preserves Stage 41 rules');

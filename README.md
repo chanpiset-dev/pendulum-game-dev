@@ -100,9 +100,29 @@ Stage identities and ordering remain unchanged, preserving existing unlocks and 
 flagged stationary passages fit the fully grown bob with clearance; the first twin/long-chain
 exercises use fewer targets and no bumpers; sharp armor increases are reduced with extra time.
 Two-axis rails begin at Carousel, Warp Metronome includes portals throughout, and the finale
-opening has a distinct vault layout. Stage 47 uses actual zero gravity. English/Japanese tips
+opening has a distinct vault layout. Zero Gravity uses actual zero gravity. English/Japanese tips
 reflect repeatable launch phases and the real circular bumper geometry.
 
 Verification covers all 250 generated layouts and selected progression invariants. These checks
 do not establish that every stage has an equally difficult solution; mobile playtesting remains
-necessary, especially for moving hazards and stages 27-5, 28-5, 31-5, 46-4 and 50-4.
+necessary, especially for moving hazards and the rebalanced armor challenges (see STAGE-MAP.md for current numbering).
+
+
+### Chapter progression and saved-game migration
+
+The six chapters use sequential IDs 1–50 (250 substages). Display numbers, metadata
+and the actual builder conditions agree; there is no runtime shuffle in STAGE_ORDER.
+See [STAGE-MAP.md](STAGE-MAP.md) for the complete previous → current numbering table.
+Stage Select shows bilingual chapter headings, mechanic symbols with text labels,
+and chapter-relative challenge labels. These labels are guidance, not measured ratings.
+
+Progress now uses v7 storage keys. On first load, a single migration snapshot maps
+v6 scores, stars, best times, optional ghost paths and briefing flags to the same
+content at its new number. The original v6 keys remain untouched. Subsequent v7
+saves override the snapshot, so reloads and interrupted writes never remap new
+records a second time. Existing sound and appearance preferences are unchanged.
+
+The single unlock frontier expands enough to retain access to every previously
+accessible stage; this can unlock intervening content without awarding clears or
+records. Old unversioned share URLs retain their original content; new share URLs
+include numbering=7 and refer directly to current stage numbers.

@@ -470,3 +470,8 @@
   overflow-wrap: anywhere;
 }
 .stage-section-header { flex-wrap: wrap; gap: .5rem; }
+
+@media (max-height: 600px) {
+  #tutorialScreen .tutorial-guide { top: 66px; max-height: 28vh; }
+  #btnTutorialDone { bottom: 12px; padding: 8px 24px; font-size: 1rem; }
+}

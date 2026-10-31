@@ -142,8 +142,16 @@ let tutLastTime = 0;
 let tutState = {};
 
 function initTutState() {
-  const tw = tutCanvas.width, th = tutCanvas.height;
-  const tpivot = { x: tw / 2, y: th * 0.58 };
+  tutCanvas.width = window.innerWidth;
+  tutCanvas.height = window.innerHeight;
+  const tw = tutCanvas.width;
+  const guideBottom = document.querySelector('.tutorial-guide').getBoundingClientRect().bottom;
+  const buttonTop = $('btnTutorialDone').getBoundingClientRect().top;
+  const top = guideBottom + 16, bottom = Math.max(top + 100, buttonTop - 16);
+  const height = bottom - top;
+  const reach = Math.min(300, tw * 0.40, height * 0.32);
+  const tpivot = { x: tw / 2, y: top + height * 0.34 };
+  const unit = reach / 300;
   
   tutState = {
     basePivot: { x: tpivot.x, y: tpivot.y },
@@ -151,20 +159,25 @@ function initTutState() {
     timeElapsed: 0,
     chain: {
       N: 2,
-      L: [1.25, 1.25],
+      L: [1.25 * unit, 1.25 * unit],
       m: [1, 1],
       state: [120 * Math.PI / 180, 120 * Math.PI / 180, 0, 0],
       color: { outer: '#34d399', inner: '#10b981' },
       trail: [],
       alive: true,
-      currentR: BOB_MIN_R,
+      currentR: BOB_MIN_R * unit,
       popScale: 1.0
     },
     targets: [
-      { x: tpivot.x - 70, y: tpivot.y + 220, r: 24 * OBJECT_SCALE, alive: true, isBomb: false, hp: 1, maxHp: 1 },
-      { x: tpivot.x + 80, y: tpivot.y + 190, r: 24 * OBJECT_SCALE, alive: true, isBomb: false, hp: 1, maxHp: 1 }
+      { x: tpivot.x - 70 * unit, y: tpivot.y + 220 * unit, r: 24 * OBJECT_SCALE * unit, alive: true, isBomb: false, hp: 1, maxHp: 1 },
+      { x: tpivot.x + 130 * unit, y: tpivot.y + 190 * unit, r: 24 * OBJECT_SCALE * unit, alive: true, isBomb: false, hp: 1, maxHp: 1 },
+      { x: tpivot.x + 230 * unit, y: tpivot.y + 120 * unit, r: 24 * OBJECT_SCALE * unit, alive: true, isBomb: true, hp: 1, maxHp: 1 }
     ],
-    obstacles: [],
+    obstacles: [{ x: tpivot.x - 180 * unit, y: tpivot.y + 90 * unit, r: 24 * OBJECT_SCALE * unit, restitution: -0.8, pulse: 0 }],
+    unit,
+    bumperCooldown: 0,
+    bombTriggered: false,
+    bumperTriggered: false,
     particles: [],
     shockwaves: [],
     floaters: [],
@@ -173,6 +186,8 @@ function initTutState() {
     pulseTriggered: false
   };
 }
+
+window.addEventListener('resize', () => { if (!$('tutorialScreen').classList.contains('hidden')) initTutState(); });
 
 function startTutorial() {
   document.getElementById('tutorialBasics').click();
@@ -208,6 +223,7 @@ function loopTutorial(t) {
 
   for (let step = 0; step < sub; step++) {
     rk4(tutState.chain, sdt, 0, 0, 0, 9.8, 0.04);
+    tutState.bumperCooldown = Math.max(0, tutState.bumperCooldown - sdt);
     
     if (step === sub - 1) {
       let px = tutState.pivot.x, py = tutState.pivot.y;
@@ -234,9 +250,19 @@ function loopTutorial(t) {
       tutState.targets.forEach(tgt => {
         if (tgt.alive && Math.hypot(px - tgt.x, py - tgt.y) < (effTipR + tgt.r)) {
           tgt.alive = false;
-          tutState.chain.currentR = Math.min(BOB_MAX_R, (tutState.chain.currentR || BOB_MIN_R) + BOB_GROWTH_PER_HIT);
+          tutState.chain.currentR = Math.min(BOB_MAX_R * tutState.unit, (tutState.chain.currentR || BOB_MIN_R * tutState.unit) + BOB_GROWTH_PER_HIT * tutState.unit);
           tutState.chain.popScale = BOB_POP_FACTOR;
-          playSnd('hit');
+          if (tgt.isBomb) {
+            tutState.bombTriggered = true;
+            playSnd('bomb');
+            tutState.shockwaves.push({ x: tgt.x, y: tgt.y, r: 14, maxR: 145 * tutState.unit, life: 1, color: '#fb923c' });
+            for (const nearby of tutState.targets) {
+              if (nearby.alive && !nearby.isBomb && Math.hypot(nearby.x-tgt.x, nearby.y-tgt.y) < 145 * tutState.unit) {
+                nearby.alive = false;
+                tutState.floaters.push({ x: nearby.x, y: nearby.y, text: '+100', life: 1 });
+              }
+            }
+          } else playSnd('hit');
           tutState.shockwaves.push({ x: tgt.x, y: tgt.y, r: 16, maxR: 110, life: 1, color: '#f87171' });
           for (let p = 0; p < 16; p++) {
             const pa = Math.random() * Math.PI * 2, ps = Math.random() * 160 + 50;
@@ -245,6 +271,17 @@ function loopTutorial(t) {
           tutState.floaters.push({ x: tgt.x, y: tgt.y, text: "+100", life: 1 });
         }
       });
+      for (const bumper of tutState.obstacles) {
+        if (tutState.bumperCooldown <= 0 && Math.hypot(px-bumper.x, py-bumper.y) < effTipR+bumper.r) {
+          tutState.chain.state[3] *= bumper.restitution;
+          tutState.chain.currentR = Math.max(BOB_MIN_R * tutState.unit, tutState.chain.currentR - BOB_SHRINK_ON_HAZARD * tutState.unit);
+          tutState.bumperCooldown = 0.15;
+          tutState.bumperTriggered = true;
+          bumper.pulse = 1;
+          playSnd('brake');
+          tutState.shockwaves.push({ x: px, y: py, r: 8, maxR: 45 * tutState.unit, life: 1, color: '#38bdf8' });
+        }
+      }
     }
     tutState.timeElapsed += sdt;
   }
@@ -266,13 +303,14 @@ function loopTutorial(t) {
     if (tutState.floaters[i].life <= 0) tutState.floaters.splice(i, 1);
   }
 
-  if (tutState.targets.every(t => !t.alive) && !tutState.completed) {
+  if (tutState.targets.every(t => !t.alive) && tutState.bumperTriggered && !tutState.completed) {
     tutState.completed = true;
     $('btnTutorialDone').classList.remove('hidden');
     playSnd('clear');
     tutState.resetTimer = 3.5;
   }
 
+  if (tutState.timeElapsed > 16 && !tutState.completed) { tutState.completed = true; tutState.resetTimer = 1; }
   if (tutState.completed) {
     tutState.resetTimer -= dt;
     if (tutState.resetTimer <= 0) {
@@ -294,7 +332,7 @@ function loopTutorial(t) {
     tutState.pivot,
     null,
     [], [], [], [], [],
-    { currentLang, BASE_PIVOT, PIVOT: tutState.pivot }
+    { currentLang, BASE_PIVOT: tutState.basePivot, PIVOT: tutState.pivot, BOB_MIN_R: BOB_MIN_R * tutState.unit }
   );
 
   tutAnimId = requestAnimationFrame(loopTutorial);

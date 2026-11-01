@@ -9,6 +9,7 @@ export const I18N = {
     artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Explore the artwork used in gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
     more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
     journeyMap:'Journey map', journeyGrid:'Stage grid', journeyFind:'Find explorer', journeyChapters:'Choose chapter', journeySubstages:'Choose substage', journeyLocked:'Locked', journeyExplorer:'Explorer: next uncleared substage', journeyStars:(n,total)=>`${n} / ${total} ★`, journeyRange:(start,end)=>`Stages ${start}–${end}`, journeyLegend:'✓ Cleared stage   ◉ Available   ▣ Locked\nStars on the map total all five substages (maximum 15).', journeySummary:(n,total,stars,max)=>`${n} / ${total} substages cleared · ${stars} / ${max} stars`, journeyUnlock:previous=>`Clear ${previous} to unlock this substage.`, journeyMissing:'Return to earn the missing stars.', journeyReplay:'All three stars earned. You can replay this chamber.', journeyReady:'Your next challenge is ready.',
+    environmentLabel:'Environment backgrounds',
     explorerLabel:'Explorer bob (turn off for classic bob)', chamberPower:(n,total)=>`Gateway power · ${n} / ${total}`, chamberRestored:'CHAMBER RESTORED!', skipCelebration:'Skip celebration', destination:(stage,sub,name)=>`Next · ${stage}-${sub} / ${name}`, expeditionComplete:'All chambers restored!',
     appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
     groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
@@ -93,6 +94,7 @@ export const I18N = {
     artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームで使われるアートワークを確認できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
     more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
     journeyMap:'冒険マップ', journeyGrid:'ステージ一覧', journeyFind:'探検家の場所へ', journeyChapters:'チャプターを選ぶ', journeySubstages:'サブステージを選ぶ', journeyLocked:'未解放', journeyExplorer:'探検家：次の未クリアステージ', journeyStars:(n,total)=>`${n} / ${total} ★`, journeyRange:(start,end)=>`ステージ ${start}–${end}`, journeyLegend:'✓ クリア済み   ◉ 解放済み   ▣ 未解放\n星は5サブステージの合計です（最大15個）。', journeySummary:(n,total,stars,max)=>`${n} / ${total} サブステージクリア · 星 ${stars} / ${max}`, journeyUnlock:previous=>`${previous}をクリアすると解放されます。`, journeyMissing:'もう一度挑戦して残りの星を獲得しましょう。', journeyReplay:'星を3個獲得済みです。もう一度プレイできます。', journeyReady:'次の挑戦に進めます。',
+    environmentLabel:'背景の風景',
     explorerLabel:'探検家の球（オフで従来の球）', chamberPower:(n,total)=>`ゲートのエネルギー · ${n} / ${total}`, chamberRestored:'ゲートが開きました！', skipCelebration:'演出をスキップ', destination:(stage,sub,name)=>`次へ · ${stage}-${sub} / ${name}`, expeditionComplete:'すべてのゲートが開きました！',
     appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
     groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
@@ -248,11 +250,7 @@ export function createI18nController({
   $('btnArtworkPreview').textContent = t.artworkButton;
   for (const id of ['artworkTitle', 'artworkDescription', 'artworkStyleLabel', 'artworkClose']) $(id).textContent = t[id];
   $('artworkStyle').querySelector('option[value=auto]').textContent = t.artworkAuto;
-  for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle', 'explorerLabel', 'skipCelebration']) $(id).textContent = t[id];
-  for (const [value, key] of [['system', 'modeSystem'], ['dark', 'modeDark'], ['light', 'modeLight']]) $('appearanceMode').querySelector(`option[value="${value}"]`).textContent = t[key];
-  document.querySelectorAll('[data-theme-group]').forEach(heading => {
-    heading.textContent = t['group' + heading.dataset.themeGroup[0].toUpperCase() + heading.dataset.themeGroup.slice(1)];
-  });
+  for (const id of ['appearanceTitle', 'soundTitle', 'explorerLabel', 'skipCelebration', 'environmentLabel']) $(id).textContent = t[id];
   $('volumeLabel').textContent = t.volume;
   $('muteLabel').textContent = t.mute;
   $('settingsClose').textContent = t.close;

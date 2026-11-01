@@ -1,3 +1,4 @@
+import { setEnvironmentsEnabled } from './engine/environments.js';
 import { installJourneyMap } from './journey-map.js';
 import { setExplorerEnabled } from './engine/explorer.js';
 import { MECHANIC_FILTERS, getStageMechanics, matchesProgressFilter } from './stage-filters.js';
@@ -55,6 +56,7 @@ const savedProgress = progressStore.load();
 let currentLang = savedProgress.language;
 setAudioPreferences(savedProgress.preferences);
 setExplorerEnabled(savedProgress.preferences.explorer);
+setEnvironmentsEnabled(savedProgress.preferences.environments);
 let visualsReady = false;
 const appearance = createAppearance(savedProgress.preferences, () => {
   if (!visualsReady) return;
@@ -1537,7 +1539,7 @@ function draw() {
   refreshChamber();
   drawGameFrame({
     ctx,
-    getState: () => ({ W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R }),
+    getState: () => ({ currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R }),
     computePredictionTrail,
     setClearFlashTimer: value => { clearFlashTimer = value; }
   });

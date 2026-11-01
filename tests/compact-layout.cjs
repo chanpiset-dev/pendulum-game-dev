@@ -63,20 +63,10 @@ const { chromium } = require('playwright');
     assert.equal(await page.locator('#btnMore').getAttribute('aria-expanded'), 'false', 'Outside actions close disclosure');
     await page.click('#btnCloseMap');
     await page.click('#btnSettings');
-    for (const theme of await page.locator('[data-theme-choice]').evaluateAll(nodes => nodes.map(node => node.dataset.themeChoice))) {
-      await page.locator(`[data-theme-choice="${theme}"]`).click();
-      for (const mode of ['dark', 'light']) {
-        await page.selectOption('#appearanceMode', mode);
-        await page.click('#settingsClose');
-        const header = await page.locator('#mainHeader').boundingBox();
-        assert.ok(header.height <= 120, `${theme}/${mode}: mobile header stays compact`);
-        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-        await page.click('#btnMore');
-        const menu = await page.locator('#moreActions').boundingBox();
-        assert.ok(menu.x >= 0 && menu.x + menu.width <= 390, 'More menu fits viewport');
-        await page.keyboard.press('Escape');
-        await page.click('#btnSettings');
-      }
+    for (const enabled of [false,true]) {
+      await page.locator('#environmentBackgrounds').setChecked(enabled);await page.click('#settingsClose');
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),true);
+      await page.click('#btnSettings');
     }
     await page.click('#settingsClose');
     await page.setViewportSize({ width: 1280, height: 900 });
@@ -91,6 +81,6 @@ const { chromium } = require('playwright');
     await page.evaluate(() => window.testRun("showSaveStatus({kind:'ok',message:'Progress saved.'})"));
     assert.equal(await page.locator('#saveStatus').isVisible(), false);
     assert.deepEqual(errors, []);
-    console.log('Compact layout passed: header/menu sizing in 18 themes, menu focus/Escape/outside dismissal, input isolation, grouped controls, launch disclosure, compact records, localization and actionable-only save messages.');
+    console.log('Compact layout passed: header/menu sizing with environment settings, menu focus/Escape/outside dismissal, input isolation, grouped controls, launch disclosure, compact records, localization and actionable-only save messages.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

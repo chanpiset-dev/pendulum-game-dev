@@ -246,7 +246,7 @@ const { chromium } = require('playwright');
     if (await live.locator('#stageBriefing').isVisible()) await live.click('#btnDismissBriefing');
     const initialTimer = await live.locator('#timerDisplay').innerText();
     await live.click('#btnFire');
-    await live.waitForTimeout(1200);
+    await live.waitForFunction(value => document.getElementById('timerDisplay').textContent !== value, initialTimer, {timeout:10000,polling:50});
     assert.notEqual(await live.locator('#timerDisplay').innerText(), initialTimer);
     await live.click('#btnPause');
     await live.waitForFunction(() => window.testAudioContext.state === 'suspended');

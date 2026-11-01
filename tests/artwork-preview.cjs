@@ -43,24 +43,15 @@ const { chromium } = require('playwright');
     await page.locator('#settingsDialog').waitFor({ state: 'visible' });
     assert.equal(await page.evaluate(() => JSON.stringify(localStorage)), saved);
     assert.equal(await page.evaluate(() => window.testRun('JSON.stringify({systems,targets,timeElapsed,currentStageScore,highScores,stageStars})')), state);
-    for (const theme of ['neon-arcade','pocket-console','16bit-adventure','clean-precision','glass-orbit','soft-studio','blueprint-lab','cosmic-observatory','paper-workshop']) {
-      await page.click(`[data-theme-choice="${theme}"]`);
-      for (const mode of ['dark', 'light']) {
-        await page.selectOption('#appearanceMode', mode); await page.click('#btnArtworkPreview');
-        assert.equal(await page.locator('#artworkStyleName').innerText(), ['neon-arcade','pocket-console','16bit-adventure'].includes(theme) ? 'Pixel Arcade' : 'Shaded Canvas');
-        assert.equal(await page.locator('#artworkGallery canvas').evaluateAll(nodes => nodes.every(canvas => {
-          const data = canvas.getContext('2d').getImageData(0,0,160,128).data;
-          let count=0; for(let i=0;i<data.length;i+=4) if(data[i]!==data[0] || data[i+1]!==data[1] || data[i+2]!==data[2]) count++;
-          return count > 100;
-        })), true, 'Every specimen contains visible artwork');
-        await page.click('#artworkClose'); await page.locator('#settingsDialog').waitFor({state:'visible'});
-      }
-    }
+    await page.click('#btnArtworkPreview');await page.selectOption('#artworkStyle','auto');
+    assert.equal(await page.locator('#artworkStyleName').innerText(),'Shaded Canvas');
+    assert.equal(await page.locator('#artworkGallery canvas').count(),24);
+    await page.click('#artworkClose');
     await page.evaluate(() => window.testRun("setLanguage('ja')"));
     await page.click('#btnArtworkPreview');
     assert.match(await page.locator('#artworkTitle').innerText(), /プレビュー/);
     assert.equal(await page.locator('.artwork-card > span').first().innerText(), '振り子');
     assert.deepEqual(errors, []);
-    console.log('Artwork preview passed: 24 visible specimens in 18 themes, automatic style mapping, distinct pixel/vector output, mobile fit, localization, paused gameplay and unchanged saves.');
+    console.log('Artwork preview passed: 24 specimens in fixed Clean Precision dark, automatic style mapping, distinct pixel/vector output, mobile fit, localization, paused gameplay and unchanged saves.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

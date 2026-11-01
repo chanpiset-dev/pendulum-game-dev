@@ -1,3 +1,4 @@
+import { drawEnvironment } from './environments.js';
 import { placePortalLabels } from './portal-labels.js';
 import { OBJECT_SCALE, RAIL_HIT_RADIUS, SEGMENT_HIT_RADIUS } from '../game-sizes.js';
 import { windFlowOffset } from './wind-flow.js';
@@ -167,10 +168,10 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 
 // Main game frame: trails, HUD, overlays, and the full scene.
 export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearFlashTimer }) {
-  const { W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R } = getState();
+  const { currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R } = getState();
   const palette = getCanvasPalette();
   ctx.clearRect(0, 0, W, H);
-  drawThemeBackdrop(ctx, W, H);
+  if(!drawEnvironment(ctx,W,H,{index:currentStageIndex,targets,status:gameStatus,time:timeElapsed}))drawThemeBackdrop(ctx,W,H);
   ctx.save();
   if (screenShake > 0.4) { ctx.translate((Math.random() - 0.5) * screenShake * 1.5, (Math.random() - 0.5) * screenShake * 1.5); }
 

@@ -107,17 +107,17 @@ test('Successful retry clears a genuine save failure', () => {
 
 test('Sound preferences persist and legacy vibration values do not affect recovery', () => {
   const f = fixture({ [keys.preferences]: '{"volume":2,"muted":true,"haptics":"bad"}' });
-  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, explorer: true, theme: 'clean-precision', mode: 'dark' });
+  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, explorer: true, environments:true, theme: 'clean-precision', mode: 'dark' });
   assert.equal(f.store.saveSetting('preferences', { volume: 0.35, muted: false }), true);
-  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, explorer: true, theme: 'clean-precision', mode: 'dark' });
+  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, explorer: true, environments:true, theme: 'clean-precision', mode: 'dark' });
   assert.equal(f.statuses.at(-1).kind, 'ok');
 });
 
 test('Appearance preferences recover independently and preserve sound settings', () => {
   const f = fixture({ [keys.preferences]: '{"theme":"unknown","mode":"broken","volume":0.25,"muted":true}' });
-  assert.deepEqual(f.store.load().preferences, { theme: 'clean-precision', mode: 'dark', volume: 0.25, muted: true, explorer: true });
+  assert.deepEqual(f.store.load().preferences, { theme: 'clean-precision', mode: 'dark', volume: 0.25, muted: true, explorer: true, environments:true });
   f.store.saveSetting('preferences', { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true });
-  assert.deepEqual(f.store.load().preferences, { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true, explorer: true });
+  assert.deepEqual(f.store.load().preferences, { theme: 'clean-precision', mode: 'dark', volume: 0.25, muted: true, explorer: true, environments:true });
 });
 
 test('Classic bob preference persists and invalid values recover', () => {
@@ -126,3 +126,5 @@ test('Classic bob preference persists and invalid values recover', () => {
   f.store.saveSetting('preferences',{explorer:false});
   assert.equal(f.store.load().preferences.explorer,false);
 });
+
+test('Environment preference is optional and persists independently',()=>{const f=fixture({});assert.equal(f.store.load().preferences.environments,true);f.store.saveSetting('preferences',{environments:false});assert.equal(f.store.load().preferences.environments,false);});

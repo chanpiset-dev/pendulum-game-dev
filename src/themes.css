@@ -498,3 +498,6 @@
 .stage-filter-empty p { color:var(--muted); line-height:1.6; }
 #stageFilterEmpty[hidden] { display:none; }
 @media(max-width:600px){.stage-progress-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));}.stage-progress-filters button{padding:8px 4px;white-space:normal;font-size:.72rem;}.stage-filter-selects{align-items:stretch;}.stage-filter-selects label{flex:1 1 100%;justify-content:space-between;}.stage-filter-selects select{width:72%;}}
+
+/* Fixed expedition appearance: Clean Precision dark with warm adventure actions. */
+:root[data-theme='clean-precision'][data-mode='dark'] :is(.btn-large.primary,#btnFire,.btn-start-game){background:#edcc80;color:#263a38;border-color:#edcc80}

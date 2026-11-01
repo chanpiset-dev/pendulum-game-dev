@@ -49,15 +49,13 @@ Use **SETTINGS** to adjust sound volume or mute all game audio. Preferences are 
 
 Mobile verification: `node --test tests/input-coordinates.test.mjs` and `node tests/mobile-controls.cjs` (the browser test requires Playwright and Chromium).
 
-## Appearance themes
+## Fixed appearance and gameplay environments
 
-Open **SETTINGS → Appearance** to choose a theme and **System**, **Dark**, or **Light** mode. The nine themes are Neon Arcade, Pocket Console, 16-Bit Adventure, Clean Precision, Glass Orbit, Soft Studio, Blueprint Lab, Cosmic Observatory, and Paper Workshop. Each has dark and light palettes. Existing players default to **Neon Arcade + Dark**.
+The game uses **Clean Precision, dark mode** with warm gold primary actions. Theme/mode selectors and system appearance following are removed. Previously saved themes resolve to this fixed appearance; sound settings and progress are preserved.
 
-Theme and mode are saved alongside volume and mute without replacing sound preferences or game progress. System mode follows device appearance changes; explicit Dark/Light modes stay fixed. If storage is unavailable, appearance still applies for the session.
+**SETTINGS → Environment backgrounds** toggles the six chapter scenes. Chapter 1 uses the approved demo’s arch, vines, layered silhouettes, mossy floor, and powered gateway. The other chapters add force instruments, mechanical rails/gears, sanctuary apertures, paired pendulum instruments, and orbital scenery in their approved palettes. Lighting varies deterministically by stage/substage. All scenery is decorative, drawn behind the actual puzzle, and introduces no collision geometry or new exit requirement. Free Play retains the plain background. The environment toggle is saved with sound and explorer preferences. Because scenery is drawn into the game canvas, replay captures it.
 
-Shared palette tokens live in `src/themes.css`; `src/themes.js` describes the catalog and exposes cached canvas colors. `src/appearance.js` applies the selection and system changes. The small `src/appearance-boot.js` restores appearance before the first CSS paint. Theme differences include typography, corners, borders, shadows, grids, and restrained decorative textures. Stage geometry, physics and scoring stay the same. Replay records retain the palette used during the attempt even after the interface theme changes.
-
-Run `node tests/themes.cjs` for all 18 variants, text contrast, canvas backgrounds, system changes, persistence, mobile layout, Japanese labels and replay color retention.
+Run `node tests/gameplay-environments.cjs` for legacy preferences, fixed dark mode, six scenes, all 250 layouts, state isolation, mobile sizing and Japanese labels.
 
 ## Compact navigation and controls
 
@@ -67,15 +65,15 @@ Pause/Resume and Restart share a row; Stop is a secondary full-width action. **L
 
 Personal-best score, time, and stars appear in a compact three-column row. Routine save confirmations are hidden in the gameplay panel; storage warnings and failures remain visible. Explicit Settings changes still show their save confirmation inside Settings.
 
-Run `node tests/compact-layout.cjs` for mobile header sizing in every theme/mode, disclosure focus and dismissal, input isolation, control grouping, records and save messages.
+Run `node tests/compact-layout.cjs` for mobile header sizing with environments enabled/disabled, disclosure focus and dismissal, input isolation, control grouping, records and save messages.
 
 ## Artwork preview
 
-Use **SETTINGS → PREVIEW ARTWORK** to inspect and compare the artwork used in live stages. The separate demonstration scene and 25 specimen cards cover the pendulum, multi-link chains, clones, targets, bombs and stage mechanics. Retro themes automatically use **Pixel Arcade**; the other six themes use **Clean Vector**. The preview style selector allows a direct comparison without saving an override.
+Use **SETTINGS → PREVIEW ARTWORK** to inspect and compare the artwork used in live stages. The separate demonstration scene and 24 specimen cards cover the pendulum, multi-link chains, clones, targets, bombs and stage mechanics. The game automatically uses **Shaded Canvas**. The preview style selector allows a direct comparison without saving an override.
 
-Playable stages now use this artwork automatically: Pixel Arcade for the three retro themes and Clean Vector for the other six. The separate preview never runs gameplay physics or records progress. Opening Settings pauses the attempt; Back to Settings returns there, and normal Resume continues the attempt. Reduced-motion preferences disable the demonstration animation. Pixel artwork is drawn at low resolution and scaled with smoothing disabled; vector artwork uses procedural Canvas 2D paths. The shared procedural drawing functions are used by gameplay, tutorial illustrations and the preview.
+Playable stages use Shaded Canvas artwork automatically. The separate preview never runs gameplay physics or records progress. Opening Settings pauses the attempt; Back to Settings returns there, and normal Resume continues the attempt. Reduced-motion preferences disable the demonstration animation. Pixel artwork is drawn at low resolution and scaled with smoothing disabled; vector artwork uses procedural Canvas 2D paths. The shared procedural drawing functions are used by gameplay, tutorial illustrations and the preview.
 
-Verify with `node tests/artwork-preview.cjs` for style mapping and specimen rendering across all 18 theme/mode combinations, mobile sizing, localization and save isolation.
+Verify with `node tests/artwork-preview.cjs` for specimen rendering, automatic shaded artwork, mobile sizing, localization and save isolation.
 
 ## Live artwork and gimmick guide
 
@@ -209,4 +207,4 @@ Verify with `node tests/journey-map.cjs` and `node --test tests/journey-map.test
 
 ### Approved journey-map art
 
-The route now uses the approved visual design: layered SVG terrain, broad winding dotted paths, inset chapter headings, decorative landmarks, round shadowed nodes, dark nameplates, and warm gold selection/star colors. Chapter 1 uses the exact approved desktop and responsive path coordinates. The other five maps use their approved identity palettes and landmark illustrations, with curved routes sized for their existing stage counts. These map palettes are intentionally independent of the selected gameplay theme. Gameplay backgrounds are unchanged. Original artwork lives in `src/assets/journey/`; styling is scoped in `src/journey-map.css`, loaded after theme CSS so it retains its approved colors.
+The route now uses the approved visual design: layered SVG terrain, broad winding dotted paths, inset chapter headings, decorative landmarks, round shadowed nodes, dark nameplates, and warm gold selection/star colors. Chapter 1 uses the exact approved desktop and responsive path coordinates. The other five maps use their approved identity palettes and landmark illustrations, with curved routes sized for their existing stage counts. Map palettes remain chapter-specific within the fixed dark interface. Original artwork lives in `src/assets/journey/`; styling is scoped in `src/journey-map.css`, loaded after theme CSS so it retains its approved colors.

@@ -1,0 +1,25 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});try{
+ const page=await browser.newPage({viewport:{width:1440,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(()=>{requestAnimationFrame=()=>1;cancelAnimationFrame=()=>{};if(!sessionStorage.seeded){localStorage.setItem('pendulum_preferences_v1','{"theme":"paper-workshop","mode":"light","volume":0.3,"muted":true}');sessionStorage.seeded='1';}});
+ await page.route('**/*',r=>{const u=new URL(r.request().url());if(u.hostname!=='game.test')return r.abort();const f=path.join(__dirname,'..',u.pathname==='/'?'index.html':u.pathname);let body=fs.readFileSync(f,'utf8');if(u.pathname==='/src/main.js')body+='\nwindow.envQA=code=>eval(code);';return r.fulfill({body,contentType:f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.svg')?'image/svg+xml':'text/html'});});
+ await page.goto('http://game.test');await page.waitForFunction(()=>window.envQA);await page.click('#btnStartGame');await page.evaluate(()=>envQA("$('stageBriefing').classList.add('hidden');loadStage(1);draw()"));
+ assert.deepEqual(await page.evaluate(()=>({...document.documentElement.dataset})),{theme:'clean-precision',mode:'dark'});
+ assert.equal(await page.locator('#appearanceMode,#themeChoices').count(),0);
+ assert.equal(await page.evaluate(()=>envQA('savedProgress.preferences.volume')),0.3);
+ const before=await page.evaluate(()=>envQA('JSON.stringify({systems,targets,PIVOT,timeElapsed,highScores,stageStars})'));
+ const scenery=await page.locator('#canvas').evaluate(c=>c.toDataURL());
+ await page.click('#btnSettings');assert.equal(await page.evaluate(()=>document.activeElement.id),'environmentBackgrounds');await page.locator('#environmentBackgrounds').uncheck();await page.click('#settingsClose');
+ const plain=await page.locator('#canvas').evaluate(c=>c.toDataURL());assert.notEqual(scenery,plain);
+ assert.equal(await page.evaluate(()=>envQA('JSON.stringify({systems,targets,PIVOT,timeElapsed,highScores,stageStars})')),before);
+ await page.reload();await page.waitForFunction(()=>window.envQA);assert.equal(await page.locator('#environmentBackgrounds').isChecked(),false);
+ await page.emulateMedia({colorScheme:'light'});assert.equal(await page.evaluate(()=>document.documentElement.dataset.mode),'dark');
+ await page.evaluate(()=>envQA("$('titleScreen').classList.add('hidden');$('stageBriefing').classList.add('hidden')"));await page.click('#btnSettings');await page.locator('#environmentBackgrounds').check();await page.click('#settingsClose');
+ const snapshots=new Set();for(const index of [1,41,81,111,166,211]){await page.evaluate(index=>envQA(`loadStage(${index});$('stageBriefing').classList.add('hidden');draw()`),index);snapshots.add(await page.locator('#canvas').evaluate(c=>c.toDataURL()));}assert.equal(snapshots.size,6);
+ await page.evaluate(()=>envQA('for(let i=1;i<=250;i++){loadStage(i);draw()}'));
+ await page.evaluate(()=>envQA("loadStage(7);$('stageBriefing').classList.add('hidden');draw()"));
+ if(process.env.CAPTURE_ENVIRONMENT)await page.screenshot({path:'/workspace/output/pendulum-environment-gameplay.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ await page.click('#btnSettings');await page.evaluate(()=>envQA("setLanguage('ja')"));assert.equal(await page.locator('#environmentLabel').innerText(),'背景の風景');
+ assert.deepEqual(errors,[]);console.log('Fixed theme and environments: old preferences, sound retention, environment persistence, six chapter scenes, 250 layouts, physics isolation, Japanese and mobile passed.');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1});

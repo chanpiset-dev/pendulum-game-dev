@@ -208,3 +208,11 @@ Verify with `node tests/journey-map.cjs` and `node --test tests/journey-map.test
 ### Approved journey-map art
 
 The route now uses the approved visual design: layered SVG terrain, broad winding dotted paths, inset chapter headings, decorative landmarks, round shadowed nodes, dark nameplates, and warm gold selection/star colors. Chapter 1 uses the exact approved desktop and responsive path coordinates. The other five maps use their approved identity palettes and landmark illustrations, with curved routes sized for their existing stage counts. Map palettes remain chapter-specific within the fixed dark interface. Original artwork lives in `src/assets/journey/`; styling is scoped in `src/journey-map.css`, loaded after theme CSS so it retains its approved colors.
+
+## Explorer homecoming
+
+After the final target clears, physics, moving anchors, obstacles, score time, and launch state freeze at the successful pose. All surviving tip bobs visually detach while the rods fade, follow a curved trail, bounce at the shelter, and shrink/fade into the doorway. Shelter windows light up and a flag rises. Chapter palettes tint the shared shelter. The animation completes in about 1.8 seconds within the existing three-second clear presentation; **Skip celebration** advances directly to the clear screen. Awards, elapsed attempt time, stars, and unlock rules are unchanged and applied once.
+
+The sequence is decorative: it adds no exit collision or launch requirement and never changes the saved physics state. Clones retain their colors and enter together with a small stagger. Classic-bob preference remains respected. Reduced motion uses a stationary fade, immediate door opening, and a nonanimated flag reveal. When environment backgrounds are off, the shelter still appears for homecoming. Free Play does not run the sequence. The ordinary next-stage action and updated journey marker remain available after arrival. Replay records the complete Canvas presentation. Retry/Restart/next-stage loading discard the previous presentation snapshot.
+
+Verify with `node tests/homecoming.cjs`, `node --test tests/homecoming.test.mjs`, and `node scripts/verify-solutions.cjs`.

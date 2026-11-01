@@ -16,7 +16,7 @@ const {chromium}=require('playwright');
  // Exercise completion through the real scoring path, then skip only its presentation wait.
  await page.evaluate(()=>testRun("fire();timeElapsed=2;targets.forEach(t=>t.alive=false);update(0);draw()"));
  assert.equal(await page.locator('#skipCelebration').isVisible(),true);
- assert.match(await page.locator('#chamberPower').innerText(),/RESTORED/);
+ assert.match(await page.locator('#chamberPower').innerText(),/Heading home/);
  await page.click('#skipCelebration');await page.evaluate(()=>testRun('update(.016);draw()'));
  assert.equal(await page.evaluate(()=>testRun('gameStatus')),'end');
  assert.equal(await page.evaluate(()=>testRun('bestTimes.stage_1_sub_5')),2);

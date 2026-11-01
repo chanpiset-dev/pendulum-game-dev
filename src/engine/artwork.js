@@ -115,7 +115,7 @@ export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette
 }
 
 // Draw real articulated geometry; lengths, angles and hit radii are supplied by physics.
-export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, palette, color = '#23c878', mood = 'ready' }) {
+export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, palette, color = '#23c878', mood = 'ready', hideTip = false }) {
   ctx.save(); ctx.lineCap = style === 'pixel' ? 'square' : 'round';
   let x = pivot.x, y = pivot.y;
   ctx.beginPath(); ctx.arc(x, y, 7 * OBJECT_SCALE, 0, Math.PI * 2); ctx.fillStyle = palette.rod; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
@@ -124,6 +124,7 @@ export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, p
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = ROD_WIDTH * 2; ctx.stroke();
     if (style === 'shaded') { const length=Math.hypot(nx-x,ny-y)||1, ox=-(ny-y)/length*ROD_WIDTH/2, oy=(nx-x)/length*ROD_WIDTH/2; const g=ctx.createLinearGradient(x-ox,y-oy,x+ox,y+oy); g.addColorStop(0,'#556f85'); g.addColorStop(.35,'#eef8ff'); g.addColorStop(.7,'#a9bfcd'); g.addColorStop(1,'#3a5167'); ctx.strokeStyle=g; } else ctx.strokeStyle = palette.rod; ctx.lineWidth = ROD_WIDTH; ctx.stroke();
     const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : JOINT_RADIUS;
+    if(tip && hideTip){x=nx;y=ny;continue;}
     let fill = tip ? color : palette.rod;
     if (!tip && style === 'shaded') {fill=ctx.createLinearGradient(nx-radius,ny-radius,nx+radius,ny+radius);fill.addColorStop(0,'#e7f4fc');fill.addColorStop(.5,'#97afc1');fill.addColorStop(1,'#3a536b');}
     if (tip && style !== 'pixel') {

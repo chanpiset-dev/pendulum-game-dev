@@ -1,3 +1,4 @@
+import { captureHomecoming } from './engine/homecoming.js';
 import { setEnvironmentsEnabled } from './engine/environments.js';
 import { installJourneyMap } from './journey-map.js';
 import { setExplorerEnabled } from './engine/explorer.js';
@@ -393,6 +394,7 @@ let timeElapsed = 0;
 let timeLimit = 8;
 let lastTime = 0;
 let clearingTimer = 0;
+let homecoming = null;
 let currentStageScore = 0;
 let pulsesLeft = 3;
 let startingPulses = 3;
@@ -525,7 +527,7 @@ function loadStage(stgIdx) {
   currentStageIndex = stgIdx;
   currentStageScore = 0;
   timeElapsed = 0;
-  clearingTimer = 0;
+  clearingTimer = 0; homecoming = null;
   particles = []; shockwaves = []; floaters = []; fireworks = [];
   screenShake = 0; hitStopTimer = 0; timeScale = 1.0; sandboxRespawning = false; currentRunHistory = [];
   clearFlashTimer = 0; comboCount = 0; comboTimer = 0;
@@ -947,6 +949,7 @@ function resolveInterBobCollisions(sdt) {
 function update(rawDt) {
   if (gameStatus === 'end' || gameStatus === 'paused') return;
   if (hitStopTimer > 0) { hitStopTimer -= rawDt; return; }
+  if(gameStatus==='clearing'){clearingTimer+=rawDt;if(clearingTimer>=3)finishHomecoming();return;}
   if (screenShake > 0) screenShake *= 0.88;
 
   const t = I18N[currentLang];
@@ -1500,8 +1503,9 @@ function update(rawDt) {
 
     const left = targets.filter(t => t.alive).length;
     if (left === 0) {
+      homecoming=captureHomecoming(systems,PIVOT,PENDULUM_SCALE,BOB_MIN_R);
       gameStatus = 'clearing'; updateWindSpeed(0, false); playSnd('clear'); timeScale = 0.2; 
-      launchFirework(); scheduleGameTimer(launchFirework, 220); scheduleGameTimer(launchFirework, 450);
+      screenShake=0;
     } else if (remainExact <= 0 && timeLimit <= 90) {
       gameStatus = 'end'; updateWindSpeed(0, false); playSnd('fail');
       showFailureOverlay('time');
@@ -1514,32 +1518,32 @@ function update(rawDt) {
       playSnd('fail');
       showFailureOverlay('blackhole');
     }
-  } else if (gameStatus === 'clearing') {
-    clearingTimer += rawDt;
-    if (clearingTimer >= 3) {
-      gameStatus = 'end'; timeScale = 1.0;
-      const timeBonus = timeLimit > 90 ? 0 : Math.round(remainExact * 100);
-      const finalScore = currentStageScore + timeBonus;
-
-      const { stars, pulseBonus, speedBonus } = calculateStageStars({ startingPulses, pulsesLeft, timeRemaining: remainExact, timeLimit });
-
-      saveData(currentStageIndex, finalScore, currentRunHistory, stars, timeElapsed);
-      const { stage, sub, displayStage } = indexToStageSub(currentStageIndex);
-      const isNextNewStage = (sub === SUBSTAGES_PER_STAGE);
-      const nextBtnText = isNextNewStage 
-        ? (displayStage >= TOTAL_STAGES ? t.allCleared : t.enterStageText(displayStage + 1)) 
-        : t.nextBtnText(displayStage, sub + 1);
-      showOverlay(t.stageClear, `Score: +${finalScore} (Target: ${currentStageScore} + Time: ${timeBonus})`, nextBtnText, true, stars);
-      $('starResult').textContent = `${t.starClear} ✓ · ${t.starPulse} ${pulseBonus ? '✓' : '—'} · ${t.starSpeed} ${speedBonus ? '✓' : '—'}`;
-    }
   }
+}
+
+function finishHomecoming(){
+  gameStatus = 'end'; timeScale = 1.0;
+  const t=I18N[currentLang],remainExact=Math.max(0,timeLimit-timeElapsed);
+  const timeBonus = timeLimit > 90 ? 0 : Math.round(remainExact * 100);
+  const finalScore = currentStageScore + timeBonus;
+
+  const { stars, pulseBonus, speedBonus } = calculateStageStars({ startingPulses, pulsesLeft, timeRemaining: remainExact, timeLimit });
+
+  saveData(currentStageIndex, finalScore, currentRunHistory, stars, timeElapsed);
+  const { stage, sub, displayStage } = indexToStageSub(currentStageIndex);
+  const isNextNewStage = (sub === SUBSTAGES_PER_STAGE);
+  const nextBtnText = isNextNewStage
+    ? (displayStage >= TOTAL_STAGES ? t.allCleared : t.enterStageText(displayStage + 1))
+    : t.nextBtnText(displayStage, sub + 1);
+  showOverlay(t.stageClear, `Score: +${finalScore} (Target: ${currentStageScore} + Time: ${timeBonus})`, nextBtnText, true, stars);
+  $('starResult').textContent = `${t.starClear} ✓ · ${t.starPulse} ${pulseBonus ? '✓' : '—'} · ${t.starSpeed} ${speedBonus ? '✓' : '—'}`;
 }
 
 function draw() {
   refreshChamber();
   drawGameFrame({
     ctx,
-    getState: () => ({ currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R }),
+    getState: () => ({ homecoming, clearingTimer, currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R }),
     computePredictionTrail,
     setClearFlashTimer: value => { clearFlashTimer = value; }
   });
@@ -1657,7 +1661,7 @@ function refreshChamber() {
   $('chamberHud').classList.toggle('hidden',sandbox);
   $('chamberHud').classList.toggle('restored',open);
   $('chamberHud').style.setProperty('--charge',`${open?100:pads.length?restored/pads.length*100:0}%`);
-  $('chamberPower').textContent=open?t.chamberRestored:t.chamberPower(restored,pads.length);
+  $('chamberPower').textContent=open?(clearingTimer>=1.8?t.homeArrived:t.homeReturning):t.chamberPower(restored,pads.length);
   $('skipCelebration').classList.toggle('hidden',gameStatus!=='clearing');
   if($('overlay').classList.contains('active')&&!$('chamberResult').classList.contains('hidden'))$('chamberResult').textContent=chamberDestination();
 }

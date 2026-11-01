@@ -1,9 +1,10 @@
+import { drawShelter } from './homecoming.js';
 import { chapterForStage } from '../data/chapters.js';
 import { JOURNEY_WORLDS } from '../journey-map-art.js';
 let enabled=true;
 export function setEnvironmentsEnabled(value){enabled=value!==false;}
 // Decorative architecture only: never reads or writes simulation bodies.
-export function drawEnvironment(c,w,h,{index,targets=[],status}={}){
+export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,reduced=false}={}){
   if(!enabled||index==='sandbox'||!Number.isInteger(index))return false;
   const stage=Math.ceil(index/5),sub=(index-1)%5+1,ch=chapterForStage(stage),world=JOURNEY_WORLDS[ch.id-1];
   const palettes=[['#74978c','#203f38'],['#67899a','#1b3446'],['#85846b','#343d37'],['#817799','#302d48'],['#6d9790','#193c3d'],['#696f98','#222b45']];
@@ -41,13 +42,7 @@ export function drawEnvironment(c,w,h,{index,targets=[],status}={}){
   }
   // A fixed decoration behind the puzzle, not an exit the player must physically hit.
   const pads=targets.filter(t=>!t.isBomb),charge=pads.length?pads.filter(t=>!t.alive).length/pads.length:0;
-  const open=status==='clearing'||(status==='end'&&targets.length>0&&targets.every(t=>!t.alive));
-  const opening=open?1:0;
-  rect(967,240,170,350,'#273d3b',65);rect(982,255,140,322,'#102d35',55);
-  c.save();c.beginPath();c.roundRect(982,255,140,322,55);c.clip();rect(982,255,140,322,palettes[ch.id-1][0]);
-  for(let i=0;i<4;i++)rect(985+i*40,400+i%2*25,25,190,world.colors[1],3);
-  rect(982-opening*70,255,70,322,'#243c42',0);rect(1052+opening*70,255,70,322,'#243c42',0);c.restore();
-  for(let i=0;i<3;i++)ellipse(1019+i*32,227,8,8,charge>=(i+1)/3?'#f5d581':'#455b57');
+  c.save();c.scale(1280/w,720/h);drawShelter(c,w,h,{chapter:ch.id,charge,age:homeAge,reduced});c.restore();
   rect(90,660,1100,48,'#354d49',12);rect(90,660,1100,9,'#8e9d79',4);for(let i=0;i<14;i++)ellipse(110+i*83,659,18,5,'#64845d');
   // Per-stage light variation, deterministic so replay and screenshots stay stable.
   const light=c.createLinearGradient((stage+sub)%2?0:1280,0,640,720);light.addColorStop(0,(stage+sub)%2?'#f0d6a411':'#a7cbe911');light.addColorStop(1,'#0000');c.fillStyle=light;c.fillRect(0,0,1280,720);

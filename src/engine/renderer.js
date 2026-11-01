@@ -1,3 +1,5 @@
+import { drawHomecoming, drawShelter } from './homecoming.js';
+import { chapterForStage } from '../data/chapters.js';
 import { drawEnvironment } from './environments.js';
 import { placePortalLabels } from './portal-labels.js';
 import { OBJECT_SCALE, RAIL_HIT_RADIUS, SEGMENT_HIT_RADIUS } from '../game-sizes.js';
@@ -168,10 +170,13 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
 
 // Main game frame: trails, HUD, overlays, and the full scene.
 export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearFlashTimer }) {
-  const { currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R } = getState();
+  const { homecoming, clearingTimer, currentStageIndex, W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R } = getState();
   const palette = getCanvasPalette();
   ctx.clearRect(0, 0, W, H);
-  if(!drawEnvironment(ctx,W,H,{index:currentStageIndex,targets,status:gameStatus,time:timeElapsed}))drawThemeBackdrop(ctx,W,H);
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const homeAge=homecoming?clearingTimer:null;
+  const environment=drawEnvironment(ctx,W,H,{index:currentStageIndex,targets,status:gameStatus,homeAge,reduced});
+  if(!environment){drawThemeBackdrop(ctx,W,H);if(homecoming)drawShelter(ctx,W,H,{chapter:chapterForStage(Math.ceil(currentStageIndex/5)).id,charge:1,age:homeAge,reduced});}
   ctx.save();
   if (screenShake > 0.4) { ctx.translate((Math.random() - 0.5) * screenShake * 1.5, (Math.random() - 0.5) * screenShake * 1.5); }
 
@@ -264,7 +269,8 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
     ctx.restore();
   }
 
-  drawGenericScene(ctx, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R, mood:gameStatus === 'clearing' || (gameStatus === 'end' && targets.every(t=>!t.alive)) ? 'happy' : gameStatus === 'playing' ? 'focused' : 'ready' });
+  drawGenericScene(ctx, homecoming?[]:systems, targets, obstacles, blackhole, homecoming?[]:particles, homecoming?[]:shockwaves, homecoming?[]:floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R, mood:gameStatus === 'clearing' || (gameStatus === 'end' && targets.every(t=>!t.alive)) ? 'happy' : gameStatus === 'playing' ? 'focused' : 'ready' });
+  if(homecoming)drawHomecoming(ctx,{snapshot:homecoming,age:clearingTimer,width:W,height:H,systems,pivot:PIVOT,scale:PENDULUM_SCALE,minRadius:BOB_MIN_R,palette,reduced});
   ctx.restore();
 
 }

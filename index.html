@@ -106,13 +106,17 @@
         </div>
       </div>
 
+      <div id="chamberHud" class="chamber-hud hidden"><span class="gateway-icon" aria-hidden="true"><i></i><i></i></span><span><span id="chamberPower"></span><span class="chamber-meter" aria-hidden="true"><i></i></span></span></div>
+      <button id="skipCelebration" class="skip-celebration hidden">Skip celebration</button>
       <!-- Overlay (Stage Clear / Fail) -->
       <div id="overlay" class="overlay">
+        <div class="clear-gateway" aria-hidden="true"><span class="gateway-icon"><i></i><i></i></span></div>
         <h2 id="overlayTitle" class="text-clear">STAGE CLEAR</h2>
         <div class="star-container" id="starContainer">
           <div class="star">★</div><div class="star">★</div><div class="star">★</div>
         </div>
         <p id="starResult" class="star-rules" role="status"></p>
+        <p id="chamberResult" class="chamber-result hidden" role="status"></p>
         <p id="overlayDesc">Score: +150</p>
         <div class="overlay-btns">
           <button id="overlayMapBtn" class="btn-large secondary">STAGES</button>
@@ -217,6 +221,7 @@
   <h2 id="settingsTitle">Settings</h2>
   <section aria-labelledby="appearanceTitle">
     <h3 id="appearanceTitle">Appearance</h3>
+    <label><input type="checkbox" id="explorerBob" checked> <span id="explorerLabel">Explorer bob (turn off for classic bob)</span></label>
     <label for="appearanceMode" id="modeLabel">Mode</label>
     <select id="appearanceMode"><option value="system">System</option><option value="dark">Dark</option><option value="light">Light</option></select>
     <fieldset class="theme-picker"><legend id="themeLabel">Theme</legend><div id="themeChoices"></div></fieldset>

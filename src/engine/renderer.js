@@ -10,7 +10,7 @@ let windMotionPreference;
 let artworkMotionPreference;
 // Render the new artwork at the real simulation coordinates. Never change state.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
-  const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0 } = renderOptions;
+  const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0, mood = 'ready' } = renderOptions;
   const palette = getCanvasPalette(), style = artworkStyleForTheme(palette.theme);
   artworkMotionPreference ||= matchMedia('(prefers-reduced-motion: reduce)');
   const artworkTime = artworkMotionPreference.matches ? 0 : timeElapsed;
@@ -105,7 +105,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
       ctx.beginPath(); chain.trail.forEach((point, i) => i ? ctx.lineTo(point.x, point.y) : ctx.moveTo(point.x, point.y)); ctx.stroke(); ctx.restore();
     }
     ctx.save(); if (laserCooldown > 0 && Math.floor(timeElapsed * 16) % 2 === 0) ctx.globalAlpha = 0.35;
-    drawLivePendulum(ctx, chain, pivot, PENDULUM_SCALE, BOB_MIN_R, { style, palette, color: index ? chain.color.outer : '#23c878' }); ctx.restore();
+    drawLivePendulum(ctx, chain, pivot, PENDULUM_SCALE, BOB_MIN_R, { style, palette, mood, color: index ? chain.color.outer : '#23c878' }); ctx.restore();
   });
   // Render identifiers after bodies so a neighboring portal cannot cover the text.
   const labelCircles=[...targets.filter(t=>t.alive),...obstacles,...boostRings,...switches,
@@ -263,7 +263,7 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
     ctx.restore();
   }
 
-  drawGenericScene(ctx, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R });
+  drawGenericScene(ctx, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R, mood:gameStatus === 'clearing' || (gameStatus === 'end' && targets.every(t=>!t.alive)) ? 'happy' : gameStatus === 'playing' ? 'focused' : 'ready' });
   ctx.restore();
 
 }

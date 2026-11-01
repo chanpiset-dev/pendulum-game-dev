@@ -1132,3 +1132,17 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
 
 /* Failure details and the actual remaining count stay on separate readable lines. */
 #overlayDesc { white-space: pre-line; }
+
+/* Presentation-only chamber gateway; positioned in the existing HUD margin. */
+.chamber-hud{position:absolute;top:12px;right:12px;display:flex;gap:8px;align-items:center;pointer-events:none;padding:7px 10px;border-radius:10px;background:var(--panel,#162b35);color:var(--text,#deebec);border:1px solid #79999a66;font-size:clamp(10px,1.1vw,13px);max-width:65%}
+.gateway-icon{width:22px;height:29px;border:2px solid #aebc9e;border-radius:12px 12px 3px 3px;display:flex;overflow:hidden;flex-shrink:0;background:#d6e8c7}
+.gateway-icon i{display:block;width:50%;height:100%;background:#435d61;transition:transform .65s ease}
+.restored .gateway-icon i:first-child{transform:translateX(-100%)}.restored .gateway-icon i:last-child{transform:translateX(100%)}
+.chamber-hud.restored{border-color:var(--accent,#b9d69c)}.skip-celebration{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:5;font-size:12px;padding:10px 15px;min-height:40px;border-radius:8px;background:#203b44;color:#eef3e3;border:1px solid #a4b8a0;cursor:pointer}
+.chamber-result{font-size:14px;max-width:90%;color:var(--text,#c9dbc7)}
+@media(prefers-reduced-motion:reduce){.gateway-icon i{transition:none}}
+
+.chamber-hud.hidden,.skip-celebration.hidden,.chamber-result.hidden{display:none}
+
+.chamber-meter{display:block;height:3px;background:var(--line,#4b6867);margin-top:5px;border-radius:3px;overflow:hidden}.chamber-meter i{display:block;height:100%;width:var(--charge,0%);background:var(--accent,#b9d69c)}
+.clear-gateway{display:none}.chamber-clear .clear-gateway{display:block;margin-bottom:12px}.clear-gateway .gateway-icon{width:44px;height:56px;border-width:3px;background:linear-gradient(#9bcece,#e2e8b6);box-shadow:0 0 18px #b9d69c33}.chamber-clear .clear-gateway i:first-child{transform:translateX(-100%)}.chamber-clear .clear-gateway i:last-child{transform:translateX(100%)}

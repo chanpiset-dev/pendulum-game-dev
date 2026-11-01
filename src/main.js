@@ -1,3 +1,4 @@
+import { setExplorerEnabled } from './engine/explorer.js';
 import { MECHANIC_FILTERS, getStageMechanics, matchesProgressFilter } from './stage-filters.js';
 import { getFailureFeedback } from './failure-feedback.js';
 import { createMemoryStorage, createVerificationDriver } from './verification.js';
@@ -52,6 +53,7 @@ const progressStore = createProgressStore({ onStatus: showSaveStatus, ...(verifi
 const savedProgress = progressStore.load();
 let currentLang = savedProgress.language;
 setAudioPreferences(savedProgress.preferences);
+setExplorerEnabled(savedProgress.preferences.explorer);
 let visualsReady = false;
 const appearance = createAppearance(savedProgress.preferences, () => {
   if (!visualsReady) return;
@@ -1531,6 +1533,7 @@ function update(rawDt) {
 }
 
 function draw() {
+  refreshChamber();
   drawGameFrame({
     ctx,
     getState: () => ({ W, H, screenShake, clearFlashTimer, activeGhost, gameStatus, currentLang, currentWind, timeElapsed, currentLasers, maxLives, currentLives, currentGravity, systems, targets, obstacles, blackhole, particles, shockwaves, floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, BASE_PIVOT, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R }),
@@ -1637,7 +1640,28 @@ function loop(t) {
   if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') gameAnimId = requestAnimationFrame(loop);
 }
 
+// Gateway feedback is a DOM decoration, never part of collision geometry or replay state.
+function chamberDestination() {
+  const t=I18N[currentLang];
+  if(currentStageIndex >= TOTAL_STAGES*SUBSTAGES_PER_STAGE)return t.expeditionComplete;
+  const next=indexToStageSub(currentStageIndex+1), cfg=STAGE_CONFIGS[next.stage];
+  return t.destination(next.displayStage,next.sub,currentLang==='ja'?cfg.ja.name:cfg.name);
+}
+function refreshChamber() {
+  const sandbox=currentStageIndex==='sandbox', t=I18N[currentLang];
+  const pads=targets.filter(target=>!target.isBomb), restored=pads.filter(target=>!target.alive).length;
+  const open=gameStatus==='clearing'||(gameStatus==='end'&&targets.every(target=>!target.alive));
+  $('chamberHud').classList.toggle('hidden',sandbox);
+  $('chamberHud').classList.toggle('restored',open);
+  $('chamberHud').style.setProperty('--charge',`${open?100:pads.length?restored/pads.length*100:0}%`);
+  $('chamberPower').textContent=open?t.chamberRestored:t.chamberPower(restored,pads.length);
+  $('skipCelebration').classList.toggle('hidden',gameStatus!=='clearing');
+  if($('overlay').classList.contains('active')&&!$('chamberResult').classList.contains('hidden'))$('chamberResult').textContent=chamberDestination();
+}
+$('skipCelebration').addEventListener('click',()=>{if(gameStatus==='clearing')clearingTimer=3;});
+
 function refreshFailureFeedback() {
+  refreshChamber();
   const overlay = $('overlay');
   if (!overlay.classList.contains('active') || !overlay.dataset.failureCause) return;
   const feedback = getFailureFeedback(overlay.dataset.failureCause, Number(overlay.dataset.failureRemaining), currentLang);
@@ -1658,6 +1682,9 @@ function showOverlay(title, desc, btnText, isClear, stars = 0) {
   resetPauseControls();
   const o = $('overlay');
   delete o.dataset.failureCause; delete o.dataset.failureRemaining;
+  o.classList.toggle('chamber-clear',isClear);
+  $('chamberResult').classList.toggle('hidden', !isClear);
+  if (isClear) $('chamberResult').textContent = chamberDestination();
   $('overlayTitle').textContent = title;
   $('overlayTitle').className = isClear ? 'text-clear' : 'text-fail';
   $('overlayDesc').textContent = desc;

@@ -56,7 +56,7 @@ const contrast = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05) / (Math
     await page.waitForFunction(() => document.documentElement.dataset.mode === 'light', null, { polling: 50 });
     await page.locator('#soundVolume').fill('40'); await page.locator('#soundMuted').check();
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('pendulum_preferences_v1')));
-    assert.deepEqual(saved, { volume: 0.4, muted: true, theme: 'paper-workshop', mode: 'system' });
+    assert.deepEqual(saved, { volume: 0.4, muted: true, explorer: true, theme: 'paper-workshop', mode: 'system' });
     await page.reload(); await page.waitForFunction(() => window.testRun, null, { polling: 50 });
     assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'paper-workshop');
     assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'light');

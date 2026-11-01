@@ -76,8 +76,8 @@ export function createProgressStore({ getStorage = () => globalThis.localStorage
     if (rawLanguage !== null && !['en', 'ja'].includes(rawLanguage)) problems.set(PROGRESS_KEYS.language, 'invalid');
     const data = {
       unlocked, language,
-      preferences: { volume: 1, muted: false, theme: DEFAULT_THEME, mode: DEFAULT_MODE, ...readRecord(PROGRESS_KEYS.preferences,
-        key => ['volume', 'muted', 'theme', 'mode'].includes(key),
+      preferences: { volume: 1, muted: false, explorer: true, theme: DEFAULT_THEME, mode: DEFAULT_MODE, ...readRecord(PROGRESS_KEYS.preferences,
+        key => ['volume', 'muted', 'theme', 'mode', 'explorer'].includes(key),
         (value, key) => key === 'volume' ? nonnegative(value) && value <= 1 : key === 'theme' ? isTheme(value) : key === 'mode' ? isMode(value) : typeof value === 'boolean') },
       scores: readRecord(PROGRESS_KEYS.scores, validStageKey, value => Number.isInteger(value) && nonnegative(value)),
       stars: readRecord(PROGRESS_KEYS.stars, validStageKey, value => Number.isInteger(value) && value >= 0 && value <= 3),

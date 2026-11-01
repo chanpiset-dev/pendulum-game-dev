@@ -188,3 +188,11 @@ use prescribed configurations rather than slider maxima. Stage numbers and chapt
 order remain sequential. Empty results offer a reset; jump-to-current and
 furthest-unlocked clear filters only when needed to reveal the destination.
 Filters are session-only UI state and do not modify player saves or gameplay.
+
+## Explorer bob and chamber restoration
+
+The explorer face and scarf follow each live tip bob in every artwork style, including multi-link and clone stages. Expressions reflect setup, launch, target impact, and stage clear. Decorations stay within the visible bob silhouette and never change its contact radius. Turn off **Explorer bob** under Settings → Appearance to restore the classic bob; this preference persists independently of theme and sound.
+
+In stage mode, the HUD shows cleared non-bomb targets charging a decorative gateway. Bombs retain their existing role and completion rules. On clear, the gateway opens and the existing celebration remains skippable with **Skip celebration**. The clear screen reveals the actual next stage/substage; stage 50-5 shows the final completion message. Skipping advances the presentation wait without changing scoring time, stars, or unlocking rules. Free Play has no gateway objective. English and Japanese are supported; reduced-motion mode disables the added gateway transition. Replay remains a recording of the canvas and does not record DOM HUD elements.
+
+Verify with `node tests/explorer-adventure.cjs`, `node --test tests/*.test.mjs`, and `node scripts/verify-solutions.cjs` (browser checks require Playwright and Chromium).

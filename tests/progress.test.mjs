@@ -107,15 +107,22 @@ test('Successful retry clears a genuine save failure', () => {
 
 test('Sound preferences persist and legacy vibration values do not affect recovery', () => {
   const f = fixture({ [keys.preferences]: '{"volume":2,"muted":true,"haptics":"bad"}' });
-  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, theme: 'clean-precision', mode: 'dark' });
+  assert.deepEqual(f.store.load().preferences, { volume: 1, muted: true, explorer: true, theme: 'clean-precision', mode: 'dark' });
   assert.equal(f.store.saveSetting('preferences', { volume: 0.35, muted: false }), true);
-  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, theme: 'clean-precision', mode: 'dark' });
+  assert.deepEqual(f.store.load().preferences, { volume: 0.35, muted: false, explorer: true, theme: 'clean-precision', mode: 'dark' });
   assert.equal(f.statuses.at(-1).kind, 'ok');
 });
 
 test('Appearance preferences recover independently and preserve sound settings', () => {
   const f = fixture({ [keys.preferences]: '{"theme":"unknown","mode":"broken","volume":0.25,"muted":true}' });
-  assert.deepEqual(f.store.load().preferences, { theme: 'clean-precision', mode: 'dark', volume: 0.25, muted: true });
+  assert.deepEqual(f.store.load().preferences, { theme: 'clean-precision', mode: 'dark', volume: 0.25, muted: true, explorer: true });
   f.store.saveSetting('preferences', { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true });
-  assert.deepEqual(f.store.load().preferences, { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true });
+  assert.deepEqual(f.store.load().preferences, { theme: 'paper-workshop', mode: 'system', volume: 0.25, muted: true, explorer: true });
+});
+
+test('Classic bob preference persists and invalid values recover', () => {
+  const f=fixture({[keys.preferences]:'{"explorer":"no"}'});
+  assert.equal(f.store.load().preferences.explorer,true);
+  f.store.saveSetting('preferences',{explorer:false});
+  assert.equal(f.store.load().preferences.explorer,false);
 });

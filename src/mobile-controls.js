@@ -1,3 +1,4 @@
+import { setExplorerEnabled } from './engine/explorer.js';
 import { THEMES } from './themes.js';
 export function installMobileControls({ $, preferences, setAudioPreferences, savePreferences, pauseGame, strings, appearance }) {
   const dialog = $('settingsDialog');
@@ -25,6 +26,8 @@ export function installMobileControls({ $, preferences, setAudioPreferences, sav
     choices.querySelectorAll('[data-theme-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preferences.theme)));
   }
   sync();
+  $('explorerBob').checked = preferences.explorer !== false;
+  $('explorerBob').addEventListener('change', () => { preferences = {...preferences, explorer:$('explorerBob').checked}; setExplorerEnabled(preferences.explorer); appearance.set(preferences.theme,preferences.mode); save(); });
   $('appearanceMode').addEventListener('change', () => {
     preferences = { ...preferences, mode: $('appearanceMode').value };
     appearance.set(preferences.theme, preferences.mode); save();

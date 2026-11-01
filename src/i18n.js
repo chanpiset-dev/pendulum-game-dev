@@ -8,6 +8,7 @@ export const I18N = {
     tutorialBasics: 'HOW TO PLAY', tutorialGimmicks: 'GIMMICK GUIDE', gimmickGuideTitle: 'Gimmick guide', gimmickGuideIntro: 'Learn each object by its image and function. Artwork follows your selected theme.', gimmickBack: 'BACK TO HOW TO PLAY',
     artworkButton: 'PREVIEW ARTWORK', artworkTitle: 'Artwork preview', artworkDescription: 'Explore the artwork used in gameplay. No scores or progress are recorded here.', artworkStyleLabel: 'Style', artworkAuto: 'Match theme', artworkClose: 'BACK TO SETTINGS',
     more: 'MORE ▾', launchSettings: 'Launch settings', personalBests: 'Personal bests', bestScore: 'Best score', bestTime: 'Best time', bestStars: 'Stars', stageRecordsOnly: 'Personal bests are recorded in Stage Mode.',
+    explorerLabel:'Explorer bob (turn off for classic bob)', chamberPower:(n,total)=>`Gateway power · ${n} / ${total}`, chamberRestored:'CHAMBER RESTORED!', skipCelebration:'Skip celebration', destination:(stage,sub,name)=>`Next · ${stage}-${sub} / ${name}`, expeditionComplete:'All chambers restored!',
     appearanceTitle: 'Appearance', modeLabel: 'Mode', themeLabel: 'Theme', modeSystem: 'System', modeDark: 'Dark', modeLight: 'Light',
     groupRetro: 'Retro', groupModern: 'Modern', groupCreative: 'Creative', soundTitle: 'Sound',
     settings: 'SETTINGS', settingsTitle: 'Settings', volume: 'Sound volume', mute: 'Mute sound',
@@ -90,6 +91,7 @@ export const I18N = {
     tutorialBasics: '遊び方', tutorialGimmicks: '仕掛けガイド', gimmickGuideTitle: '仕掛けガイド', gimmickGuideIntro: '画像と機能で仕掛けを確認しましょう。見た目は選択中のテーマに合わせます。', gimmickBack: '遊び方に戻る',
     artworkButton: 'アートワークを確認', artworkTitle: 'アートワークプレビュー', artworkDescription: 'ゲームで使われるアートワークを確認できます。ここではスコアや進行状況は記録されません。', artworkStyleLabel: 'スタイル', artworkAuto: 'テーマに合わせる', artworkClose: '設定に戻る',
     more: 'その他 ▾', launchSettings: '発射設定', personalBests: '自己ベスト', bestScore: '最高スコア', bestTime: '最速タイム', bestStars: '星', stageRecordsOnly: '自己ベストはステージモードで記録されます。',
+    explorerLabel:'探検家の球（オフで従来の球）', chamberPower:(n,total)=>`ゲートのエネルギー · ${n} / ${total}`, chamberRestored:'ゲートが開きました！', skipCelebration:'演出をスキップ', destination:(stage,sub,name)=>`次へ · ${stage}-${sub} / ${name}`, expeditionComplete:'すべてのゲートが開きました！',
     appearanceTitle: '外観', modeLabel: '表示モード', themeLabel: 'テーマ', modeSystem: 'システム', modeDark: 'ダーク', modeLight: 'ライト',
     groupRetro: 'レトロ', groupModern: 'モダン', groupCreative: 'クリエイティブ', soundTitle: 'サウンド',
     settings: '設定', settingsTitle: '設定', volume: '音量', mute: '消音',
@@ -244,7 +246,7 @@ export function createI18nController({
   $('btnArtworkPreview').textContent = t.artworkButton;
   for (const id of ['artworkTitle', 'artworkDescription', 'artworkStyleLabel', 'artworkClose']) $(id).textContent = t[id];
   $('artworkStyle').querySelector('option[value=auto]').textContent = t.artworkAuto;
-  for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle']) $(id).textContent = t[id];
+  for (const id of ['appearanceTitle', 'modeLabel', 'themeLabel', 'soundTitle', 'explorerLabel', 'skipCelebration']) $(id).textContent = t[id];
   for (const [value, key] of [['system', 'modeSystem'], ['dark', 'modeDark'], ['light', 'modeLight']]) $('appearanceMode').querySelector(`option[value="${value}"]`).textContent = t[key];
   document.querySelectorAll('[data-theme-group]').forEach(heading => {
     heading.textContent = t['group' + heading.dataset.themeGroup[0].toUpperCase() + heading.dataset.themeGroup.slice(1)];

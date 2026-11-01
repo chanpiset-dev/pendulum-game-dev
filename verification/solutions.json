@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "engine": "4db484b5025c82a2487437265435c1fdeeb00f0178922f1bbf4dea36e4cf692a",
+  "engine": "a019d8fd263a5fcfd685fffe7f6de3b33e6510fa1be7a8c56a37be457f0fffcd",
   "engineFiles": [
     "src/data/stage-balance.js",
     "src/data/stage-builders/chapter1-basics.js",
@@ -19,7 +19,7 @@
     "src/verification.js"
   ],
   "step": 0.016666666666666666,
-  "generatedAt": "2026-11-01T11:07:15.802Z",
+  "generatedAt": "2026-11-01T11:16:13.112Z",
   "scope": "Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.",
   "results": [
     {
@@ -35,7 +35,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 370,
+        "frames": 418,
         "clearTime": 2.933333333333374
       }
     },
@@ -52,7 +52,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 486,
+        "frames": 534,
         "clearTime": 4.8166666666667135
       }
     },
@@ -69,7 +69,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 492,
+        "frames": 540,
         "clearTime": 4.866666666666711
       }
     },
@@ -86,7 +86,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 494,
+        "frames": 542,
         "clearTime": 4.850000000000045
       }
     },
@@ -103,7 +103,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 626,
+        "frames": 674,
         "clearTime": 6.999999999999923
       }
     },
@@ -120,7 +120,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 371,
+        "frames": 419,
         "clearTime": 2.900000000000039
       }
     },
@@ -137,7 +137,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 490,
+        "frames": 538,
         "clearTime": 4.833333333333379
       }
     },
@@ -154,7 +154,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 493,
+        "frames": 541,
         "clearTime": 4.883333333333376
       }
     },
@@ -171,7 +171,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 493,
+        "frames": 541,
         "clearTime": 4.833333333333379
       }
     },
@@ -188,7 +188,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 499,
+        "frames": 547,
         "clearTime": 4.883333333333376
       }
     },
@@ -205,7 +205,7 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 932,
+        "frames": 980,
         "clearTime": 12.199999999999628
       }
     },
@@ -222,7 +222,7 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 914,
+        "frames": 962,
         "clearTime": 11.849999999999648
       }
     },
@@ -239,7 +239,7 @@
         "angle": 90,
         "velocity": -2,
         "pulses": [],
-        "frames": 450,
+        "frames": 498,
         "clearTime": 4.183333333333416
       }
     },
@@ -256,7 +256,7 @@
         "angle": 90,
         "velocity": -2,
         "pulses": [],
-        "frames": 554,
+        "frames": 602,
         "clearTime": 5.799999999999991
       }
     },
@@ -273,7 +273,7 @@
         "angle": 90,
         "velocity": 4,
         "pulses": [],
-        "frames": 935,
+        "frames": 983,
         "clearTime": 12.099999999999634
       }
     },
@@ -290,7 +290,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 457,
+        "frames": 505,
         "clearTime": 4.383333333333405
       }
     },
@@ -307,7 +307,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 484,
+        "frames": 532,
         "clearTime": 4.733333333333385
       }
     },
@@ -324,7 +324,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 491,
+        "frames": 539,
         "clearTime": 4.766666666666716
       }
     },
@@ -341,7 +341,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 455,
+        "frames": 503,
         "clearTime": 4.233333333333413
       }
     },
@@ -358,7 +358,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 435,
+        "frames": 483,
         "clearTime": 3.8500000000000862
       }
     },
@@ -377,7 +377,7 @@
         "pulses": [
           60
         ],
-        "frames": 684,
+        "frames": 732,
         "clearTime": 8.06666666666653
       }
     },
@@ -394,7 +394,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 375,
+        "frames": 423,
         "clearTime": 2.9166666666667065
       }
     },
@@ -413,7 +413,7 @@
         "pulses": [
           60
         ],
-        "frames": 795,
+        "frames": 843,
         "clearTime": 9.866666666666427
       }
     },
@@ -430,7 +430,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 374,
+        "frames": 422,
         "clearTime": 2.866666666666704
       }
     },
@@ -447,7 +447,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 822,
+        "frames": 870,
         "clearTime": 10.266666666666405
       }
     },
@@ -464,7 +464,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 375,
+        "frames": 423,
         "clearTime": 2.9166666666667065
       }
     },
@@ -481,7 +481,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
+        "frames": 427,
         "clearTime": 2.933333333333374
       }
     },
@@ -498,7 +498,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 380,
+        "frames": 428,
         "clearTime": 2.966666666666709
       }
     },
@@ -515,7 +515,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 490,
+        "frames": 538,
         "clearTime": 4.733333333333385
       }
     },
@@ -532,7 +532,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 361,
+        "frames": 409,
         "clearTime": 2.533333333333354
       }
     },
@@ -549,7 +549,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 295,
+        "frames": 343,
         "clearTime": 1.6333333333333289
       }
     },
@@ -568,7 +568,7 @@
         "pulses": [
           60
         ],
-        "frames": 375,
+        "frames": 423,
         "clearTime": 3.0166666666667115
       }
     },
@@ -587,7 +587,7 @@
         "pulses": [
           60
         ],
-        "frames": 490,
+        "frames": 538,
         "clearTime": 4.783333333333382
       }
     },
@@ -606,7 +606,7 @@
         "pulses": [
           60
         ],
-        "frames": 444,
+        "frames": 492,
         "clearTime": 3.983333333333426
       }
     },
@@ -623,7 +623,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 903,
+        "frames": 951,
         "clearTime": 11.64999999999966
       }
     },
@@ -640,7 +640,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 699,
+        "frames": 747,
         "clearTime": 8.316666666666515
       }
     },
@@ -657,7 +657,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 550,
+        "frames": 598,
         "clearTime": 5.749999999999994
       }
     },
@@ -674,7 +674,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 561,
+        "frames": 609,
         "clearTime": 5.833333333333322
       }
     },
@@ -691,7 +691,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1061,
+        "frames": 1109,
         "clearTime": 14.21666666666618
       }
     },
@@ -710,7 +710,7 @@
         "pulses": [
           60
         ],
-        "frames": 479,
+        "frames": 527,
         "clearTime": 4.433333333333402
       }
     },
@@ -727,7 +727,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 637,
+        "frames": 685,
         "clearTime": 7.233333333333243
       }
     },
@@ -746,7 +746,7 @@
         "pulses": [
           60
         ],
-        "frames": 1043,
+        "frames": 1091,
         "clearTime": 13.999999999999526
       }
     },
@@ -765,7 +765,7 @@
         "pulses": [
           60
         ],
-        "frames": 676,
+        "frames": 724,
         "clearTime": 7.799999999999877
       }
     },
@@ -786,7 +786,7 @@
           150,
           270
         ],
-        "frames": 571,
+        "frames": 619,
         "clearTime": 6.049999999999977
       }
     },
@@ -807,7 +807,7 @@
           150,
           270
         ],
-        "frames": 493,
+        "frames": 541,
         "clearTime": 4.750000000000051
       }
     },
@@ -824,7 +824,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 790,
+        "frames": 838,
         "clearTime": 9.783333333333099
       }
     },
@@ -841,7 +841,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1006,
+        "frames": 1054,
         "clearTime": 13.333333333332897
       }
     },
@@ -860,7 +860,7 @@
         "pulses": [
           60
         ],
-        "frames": 611,
+        "frames": 659,
         "clearTime": 6.683333333333274
       }
     },
@@ -877,7 +877,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 884,
+        "frames": 932,
         "clearTime": 11.316666666666345
       }
     },
@@ -894,7 +894,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 609,
+        "frames": 657,
         "clearTime": 6.58333333333328
       }
     },
@@ -911,7 +911,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1062,
+        "frames": 1110,
         "clearTime": 14.266666666666177
       }
     },
@@ -928,7 +928,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 782,
+        "frames": 830,
         "clearTime": 9.549999999999779
       }
     },
@@ -945,7 +945,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 698,
+        "frames": 746,
         "clearTime": 8.18333333333319
       }
     },
@@ -962,7 +962,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 693,
+        "frames": 741,
         "clearTime": 8.099999999999861
       }
     },
@@ -979,7 +979,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 700,
+        "frames": 748,
         "clearTime": 8.166666666666524
       }
     },
@@ -996,7 +996,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 538,
+        "frames": 586,
         "clearTime": 5.516666666666674
       }
     },
@@ -1013,7 +1013,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 633,
+        "frames": 681,
         "clearTime": 7.099999999999917
       }
     },
@@ -1030,7 +1030,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 410,
+        "frames": 458,
         "clearTime": 3.2833333333333914
       }
     },
@@ -1047,7 +1047,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 329,
+        "frames": 377,
         "clearTime": 1.9999999999999942
       }
     },
@@ -1064,7 +1064,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 346,
+        "frames": 394,
         "clearTime": 2.266666666666674
       }
     },
@@ -1081,7 +1081,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 383,
+        "frames": 431,
         "clearTime": 3.0500000000000465
       }
     },
@@ -1098,7 +1098,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 636,
+        "frames": 684,
         "clearTime": 7.216666666666577
       }
     },
@@ -1117,7 +1117,7 @@
         "pulses": [
           60
         ],
-        "frames": 403,
+        "frames": 451,
         "clearTime": 3.333333333333394
       }
     },
@@ -1136,7 +1136,7 @@
         "pulses": [
           60
         ],
-        "frames": 352,
+        "frames": 400,
         "clearTime": 2.4500000000000166
       }
     },
@@ -1157,7 +1157,7 @@
           150,
           270
         ],
-        "frames": 448,
+        "frames": 496,
         "clearTime": 3.983333333333426
       }
     },
@@ -1176,7 +1176,7 @@
         "pulses": [
           60
         ],
-        "frames": 585,
+        "frames": 633,
         "clearTime": 6.316666666666628
       }
     },
@@ -1195,7 +1195,7 @@
         "pulses": [
           60
         ],
-        "frames": 462,
+        "frames": 510,
         "clearTime": 4.216666666666748
       }
     },
@@ -1212,7 +1212,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 434,
+        "frames": 482,
         "clearTime": 3.8666666666667537
       }
     },
@@ -1231,7 +1231,7 @@
         "pulses": [
           60
         ],
-        "frames": 489,
+        "frames": 537,
         "clearTime": 4.750000000000051
       }
     },
@@ -1252,7 +1252,7 @@
           150,
           270
         ],
-        "frames": 366,
+        "frames": 414,
         "clearTime": 2.5500000000000216
       }
     },
@@ -1269,7 +1269,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 594,
+        "frames": 642,
         "clearTime": 6.46666666666662
       }
     },
@@ -1286,7 +1286,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 541,
+        "frames": 589,
         "clearTime": 5.533333333333339
       }
     },
@@ -1303,7 +1303,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 587,
+        "frames": 635,
         "clearTime": 6.249999999999965
       }
     },
@@ -1320,7 +1320,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 556,
+        "frames": 604,
         "clearTime": 5.733333333333328
       }
     },
@@ -1337,7 +1337,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 564,
+        "frames": 612,
         "clearTime": 5.833333333333322
       }
     },
@@ -1354,7 +1354,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 585,
+        "frames": 633,
         "clearTime": 6.366666666666625
       }
     },
@@ -1371,7 +1371,7 @@
         "angle": -90,
         "velocity": 2,
         "pulses": [],
-        "frames": 705,
+        "frames": 753,
         "clearTime": 8.383333333333178
       }
     },
@@ -1392,7 +1392,7 @@
           150,
           270
         ],
-        "frames": 369,
+        "frames": 417,
         "clearTime": 2.766666666666699
       }
     },
@@ -1413,7 +1413,7 @@
           150,
           270
         ],
-        "frames": 589,
+        "frames": 637,
         "clearTime": 6.366666666666625
       }
     },
@@ -1434,7 +1434,7 @@
           150,
           270
         ],
-        "frames": 286,
+        "frames": 334,
         "clearTime": 1.4499999999999962
       }
     },
@@ -1451,7 +1451,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 403,
+        "frames": 451,
         "clearTime": 3.3833333333333964
       }
     },
@@ -1468,7 +1468,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 396,
+        "frames": 444,
         "clearTime": 3.2166666666667214
       }
     },
@@ -1489,7 +1489,7 @@
           150,
           270
         ],
-        "frames": 979,
+        "frames": 1027,
         "clearTime": 12.949999999999585
       }
     },
@@ -1508,7 +1508,7 @@
         "pulses": [
           60
         ],
-        "frames": 445,
+        "frames": 493,
         "clearTime": 4.000000000000093
       }
     },
@@ -1525,7 +1525,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 845,
+        "frames": 893,
         "clearTime": 10.599999999999719
       }
     },
@@ -1542,7 +1542,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 369,
+        "frames": 417,
         "clearTime": 2.8166666666667015
       }
     },
@@ -1559,7 +1559,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 360,
+        "frames": 408,
         "clearTime": 2.7166666666666965
       }
     },
@@ -1578,7 +1578,7 @@
         "pulses": [
           60
         ],
-        "frames": 580,
+        "frames": 628,
         "clearTime": 6.249999999999965
       }
     },
@@ -1597,7 +1597,7 @@
         "pulses": [
           60
         ],
-        "frames": 961,
+        "frames": 1009,
         "clearTime": 12.483333333332945
       }
     },
@@ -1618,7 +1618,7 @@
           150,
           270
         ],
-        "frames": 586,
+        "frames": 634,
         "clearTime": 6.266666666666631
       }
     },
@@ -1635,7 +1635,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 577,
+        "frames": 625,
         "clearTime": 6.2333333333333
       }
     },
@@ -1654,7 +1654,7 @@
         "pulses": [
           60
         ],
-        "frames": 624,
+        "frames": 672,
         "clearTime": 7.1333333333332485
       }
     },
@@ -1675,7 +1675,7 @@
           150,
           270
         ],
-        "frames": 490,
+        "frames": 538,
         "clearTime": 4.800000000000048
       }
     },
@@ -1692,7 +1692,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1047,
+        "frames": 1095,
         "clearTime": 13.98333333333286
       }
     },
@@ -1711,7 +1711,7 @@
         "pulses": [
           60
         ],
-        "frames": 982,
+        "frames": 1030,
         "clearTime": 12.866666666666257
       }
     },
@@ -1730,7 +1730,7 @@
         "pulses": [
           60
         ],
-        "frames": 382,
+        "frames": 430,
         "clearTime": 2.933333333333374
       }
     },
@@ -1747,7 +1747,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 398,
+        "frames": 446,
         "clearTime": 3.1500000000000514
       }
     },
@@ -1764,7 +1764,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 685,
+        "frames": 733,
         "clearTime": 7.999999999999866
       }
     },
@@ -1781,7 +1781,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 399,
+        "frames": 447,
         "clearTime": 3.100000000000049
       }
     },
@@ -1800,7 +1800,7 @@
         "pulses": [
           60
         ],
-        "frames": 1194,
+        "frames": 1242,
         "clearTime": 16.28333333333273
       }
     },
@@ -1819,7 +1819,7 @@
         "pulses": [
           60
         ],
-        "frames": 862,
+        "frames": 910,
         "clearTime": 10.98333333333303
       }
     },
@@ -1836,7 +1836,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 347,
+        "frames": 395,
         "clearTime": 2.5500000000000216
       }
     },
@@ -1853,7 +1853,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 710,
+        "frames": 758,
         "clearTime": 8.41666666666651
       }
     },
@@ -1870,7 +1870,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1009,
+        "frames": 1057,
         "clearTime": 13.39999999999956
       }
     },
@@ -1887,7 +1887,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 478,
+        "frames": 526,
         "clearTime": 4.466666666666733
       }
     },
@@ -1904,7 +1904,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
+        "frames": 424,
         "clearTime": 2.8833333333333715
       }
     },
@@ -1921,7 +1921,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 474,
+        "frames": 522,
         "clearTime": 4.466666666666733
       }
     },
@@ -1938,7 +1938,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
+        "frames": 427,
         "clearTime": 2.8833333333333715
       }
     },
@@ -1955,7 +1955,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 462,
+        "frames": 510,
         "clearTime": 4.233333333333413
       }
     },
@@ -1974,7 +1974,7 @@
         "pulses": [
           60
         ],
-        "frames": 381,
+        "frames": 429,
         "clearTime": 2.8166666666667015
       }
     },
@@ -1991,7 +1991,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
+        "frames": 424,
         "clearTime": 2.933333333333374
       }
     },
@@ -2008,7 +2008,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 268,
+        "frames": 316,
         "clearTime": 1.0833333333333308
       }
     },
@@ -2025,7 +2025,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 253,
+        "frames": 301,
         "clearTime": 0.9333333333333312
       }
     },
@@ -2044,7 +2044,7 @@
         "pulses": [
           60
         ],
-        "frames": 385,
+        "frames": 433,
         "clearTime": 3.000000000000044
       }
     },
@@ -2061,7 +2061,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 284,
+        "frames": 332,
         "clearTime": 1.2666666666666635
       }
     },
@@ -2078,7 +2078,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 784,
+        "frames": 832,
         "clearTime": 9.683333333333104
       }
     },
@@ -2095,7 +2095,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 966,
+        "frames": 1014,
         "clearTime": 12.733333333332931
       }
     },
@@ -2112,7 +2112,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 385,
+        "frames": 433,
         "clearTime": 3.000000000000044
       }
     },
@@ -2129,7 +2129,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 506,
+        "frames": 554,
         "clearTime": 4.916666666666708
       }
     },
@@ -2150,7 +2150,7 @@
           150,
           270
         ],
-        "frames": 521,
+        "frames": 569,
         "clearTime": 5.2333333333333565
       }
     },
@@ -2167,7 +2167,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 596,
+        "frames": 644,
         "clearTime": 6.549999999999948
       }
     },
@@ -2184,7 +2184,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 264,
+        "frames": 312,
         "clearTime": 1.0833333333333308
       }
     },
@@ -2201,7 +2201,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 252,
+        "frames": 300,
         "clearTime": 0.9666666666666645
       }
     },
@@ -2218,7 +2218,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
+        "frames": 424,
         "clearTime": 2.8500000000000365
       }
     },
@@ -2235,7 +2235,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 488,
+        "frames": 536,
         "clearTime": 4.683333333333388
       }
     },
@@ -2252,7 +2252,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 534,
+        "frames": 582,
         "clearTime": 5.516666666666674
       }
     },
@@ -2269,7 +2269,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 361,
+        "frames": 409,
         "clearTime": 2.6500000000000266
       }
     },
@@ -2288,7 +2288,7 @@
         "pulses": [
           60
         ],
-        "frames": 416,
+        "frames": 464,
         "clearTime": 3.466666666666734
       }
     },
@@ -2305,7 +2305,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 474,
+        "frames": 522,
         "clearTime": 4.450000000000068
       }
     },
@@ -2322,7 +2322,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 296,
+        "frames": 344,
         "clearTime": 1.4333333333333296
       }
     },
@@ -2339,7 +2339,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
+        "frames": 427,
         "clearTime": 2.933333333333374
       }
     },
@@ -2356,7 +2356,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 620,
+        "frames": 668,
         "clearTime": 6.899999999999928
       }
     },
@@ -2377,7 +2377,7 @@
           150,
           270
         ],
-        "frames": 603,
+        "frames": 651,
         "clearTime": 6.633333333333277
       }
     },
@@ -2396,7 +2396,7 @@
         "pulses": [
           60
         ],
-        "frames": 561,
+        "frames": 609,
         "clearTime": 5.899999999999985
       }
     },
@@ -2417,7 +2417,7 @@
           150,
           270
         ],
-        "frames": 494,
+        "frames": 542,
         "clearTime": 4.683333333333388
       }
     },
@@ -2434,7 +2434,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 374,
+        "frames": 422,
         "clearTime": 2.900000000000039
       }
     },
@@ -2451,7 +2451,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 338,
+        "frames": 386,
         "clearTime": 2.300000000000009
       }
     },
@@ -2472,7 +2472,7 @@
           150,
           270
         ],
-        "frames": 384,
+        "frames": 432,
         "clearTime": 3.0833333333333814
       }
     },
@@ -2489,7 +2489,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 320,
+        "frames": 368,
         "clearTime": 2.099999999999999
       }
     },
@@ -2508,7 +2508,7 @@
         "pulses": [
           60
         ],
-        "frames": 660,
+        "frames": 708,
         "clearTime": 7.583333333333223
       }
     },
@@ -2529,7 +2529,7 @@
           150,
           270
         ],
-        "frames": 417,
+        "frames": 465,
         "clearTime": 3.566666666666739
       }
     },
@@ -2546,7 +2546,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 263,
+        "frames": 311,
         "clearTime": 1.0666666666666642
       }
     },
@@ -2567,7 +2567,7 @@
           150,
           270
         ],
-        "frames": 482,
+        "frames": 530,
         "clearTime": 4.566666666666728
       }
     },
@@ -2588,7 +2588,7 @@
           150,
           270
         ],
-        "frames": 649,
+        "frames": 697,
         "clearTime": 7.3999999999999
       }
     },
@@ -2609,7 +2609,7 @@
           150,
           270
         ],
-        "frames": 485,
+        "frames": 533,
         "clearTime": 4.583333333333393
       }
     },
@@ -2628,7 +2628,7 @@
         "pulses": [
           60
         ],
-        "frames": 482,
+        "frames": 530,
         "clearTime": 4.650000000000056
       }
     },
@@ -2649,7 +2649,7 @@
           150,
           270
         ],
-        "frames": 517,
+        "frames": 565,
         "clearTime": 5.183333333333359
       }
     },
@@ -2670,7 +2670,7 @@
           150,
           270
         ],
-        "frames": 713,
+        "frames": 761,
         "clearTime": 8.516666666666504
       }
     },
@@ -2689,7 +2689,7 @@
         "pulses": [
           60
         ],
-        "frames": 807,
+        "frames": 855,
         "clearTime": 9.999999999999753
       }
     },
@@ -2706,7 +2706,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 589,
+        "frames": 637,
         "clearTime": 6.316666666666628
       }
     },
@@ -2723,7 +2723,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 470,
+        "frames": 518,
         "clearTime": 4.450000000000068
       }
     },
@@ -2740,7 +2740,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 377,
+        "frames": 425,
         "clearTime": 2.9166666666667065
       }
     },
@@ -2757,7 +2757,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 735,
+        "frames": 783,
         "clearTime": 8.783333333333156
       }
     },
@@ -2776,7 +2776,7 @@
         "pulses": [
           60
         ],
-        "frames": 602,
+        "frames": 650,
         "clearTime": 6.566666666666614
       }
     },
@@ -2795,7 +2795,7 @@
         "pulses": [
           60
         ],
-        "frames": 397,
+        "frames": 445,
         "clearTime": 3.1500000000000514
       }
     },
@@ -2812,7 +2812,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 376,
+        "frames": 424,
         "clearTime": 2.933333333333374
       }
     },
@@ -2829,7 +2829,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 250,
+        "frames": 298,
         "clearTime": 0.9333333333333312
       }
     },
@@ -2846,7 +2846,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 383,
+        "frames": 431,
         "clearTime": 3.0166666666667115
       }
     },
@@ -2863,7 +2863,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 336,
+        "frames": 384,
         "clearTime": 2.233333333333339
       }
     },
@@ -2882,7 +2882,7 @@
         "pulses": [
           60
         ],
-        "frames": 287,
+        "frames": 335,
         "clearTime": 1.33333333333333
       }
     },
@@ -2903,7 +2903,7 @@
           150,
           270
         ],
-        "frames": 484,
+        "frames": 532,
         "clearTime": 4.683333333333388
       }
     },
@@ -2920,7 +2920,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 250,
+        "frames": 298,
         "clearTime": 0.9333333333333312
       }
     },
@@ -2941,7 +2941,7 @@
           150,
           270
         ],
-        "frames": 715,
+        "frames": 763,
         "clearTime": 8.449999999999841
       }
     },
@@ -2958,7 +2958,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 481,
+        "frames": 529,
         "clearTime": 4.650000000000056
       }
     },
@@ -2977,7 +2977,7 @@
         "pulses": [
           60
         ],
-        "frames": 284,
+        "frames": 332,
         "clearTime": 1.3666666666666631
       }
     },
@@ -2994,7 +2994,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 284,
+        "frames": 332,
         "clearTime": 1.4499999999999962
       }
     },
@@ -3011,7 +3011,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 815,
+        "frames": 863,
         "clearTime": 10.099999999999747
       }
     },
@@ -3028,7 +3028,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 419,
+        "frames": 467,
         "clearTime": 3.5166666666667363
       }
     },
@@ -3045,7 +3045,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 389,
+        "frames": 437,
         "clearTime": 2.966666666666709
       }
     },
@@ -3062,7 +3062,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1105,
+        "frames": 1153,
         "clearTime": 14.849999999999477
       }
     },
@@ -3079,7 +3079,7 @@
         "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 749,
+        "frames": 797,
         "clearTime": 8.99999999999981
       }
     },
@@ -3096,7 +3096,7 @@
         "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1002,
+        "frames": 1050,
         "clearTime": 13.16666666666624
       }
     },
@@ -3113,7 +3113,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 860,
+        "frames": 908,
         "clearTime": 10.716666666666379
       }
     },
@@ -3130,7 +3130,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 932,
+        "frames": 980,
         "clearTime": 12.016666666666305
       }
     },
@@ -3147,7 +3147,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 629,
+        "frames": 677,
         "clearTime": 6.866666666666597
       }
     },
@@ -3164,7 +3164,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 281,
+        "frames": 329,
         "clearTime": 1.3999999999999964
       }
     },
@@ -3181,7 +3181,7 @@
         "angle": 150,
         "velocity": 0,
         "pulses": [],
-        "frames": 540,
+        "frames": 588,
         "clearTime": 5.516666666666674
       }
     },
@@ -3198,7 +3198,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 388,
+        "frames": 436,
         "clearTime": 3.000000000000044
       }
     },
@@ -3215,7 +3215,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 407,
+        "frames": 455,
         "clearTime": 3.266666666666724
       }
     },
@@ -3232,7 +3232,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 431,
+        "frames": 479,
         "clearTime": 3.5166666666667363
       }
     },
@@ -3249,7 +3249,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 279,
+        "frames": 327,
         "clearTime": 1.3666666666666631
       }
     },
@@ -3266,7 +3266,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 382,
+        "frames": 430,
         "clearTime": 2.933333333333374
       }
     },
@@ -3283,7 +3283,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 373,
+        "frames": 421,
         "clearTime": 2.800000000000034
       }
     },
@@ -3300,7 +3300,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 384,
+        "frames": 432,
         "clearTime": 2.933333333333374
       }
     },
@@ -3317,7 +3317,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 381,
+        "frames": 429,
         "clearTime": 2.833333333333369
       }
     },
@@ -3334,7 +3334,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 278,
+        "frames": 326,
         "clearTime": 1.3499999999999965
       }
     },
@@ -3351,7 +3351,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 378,
+        "frames": 426,
         "clearTime": 2.8166666666667015
       }
     },
@@ -3368,7 +3368,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 395,
+        "frames": 443,
         "clearTime": 3.066666666666714
       }
     },
@@ -3385,7 +3385,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 379,
+        "frames": 427,
         "clearTime": 2.700000000000029
       }
     },
@@ -3402,7 +3402,7 @@
         "angle": 90,
         "velocity": 2,
         "pulses": [],
-        "frames": 427,
+        "frames": 475,
         "clearTime": 3.500000000000069
       }
     },
@@ -3419,7 +3419,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 366,
+        "frames": 414,
         "clearTime": 2.7166666666666965
       }
     },
@@ -3436,7 +3436,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 462,
+        "frames": 510,
         "clearTime": 4.266666666666745
       }
     },
@@ -3453,7 +3453,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 373,
+        "frames": 421,
         "clearTime": 2.800000000000034
       }
     },
@@ -3470,7 +3470,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 365,
+        "frames": 413,
         "clearTime": 2.6500000000000266
       }
     },
@@ -3487,7 +3487,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 359,
+        "frames": 407,
         "clearTime": 2.566666666666689
       }
     },
@@ -3508,7 +3508,7 @@
           150,
           270
         ],
-        "frames": 755,
+        "frames": 803,
         "clearTime": 9.199999999999799
       }
     },
@@ -3529,7 +3529,7 @@
           150,
           270
         ],
-        "frames": 1538,
+        "frames": 1586,
         "clearTime": 22.16666666666573
       }
     },
@@ -3548,7 +3548,7 @@
         "pulses": [
           60
         ],
-        "frames": 1667,
+        "frames": 1715,
         "clearTime": 24.366666666665605
       }
     },
@@ -3567,7 +3567,7 @@
         "pulses": [
           60
         ],
-        "frames": 585,
+        "frames": 633,
         "clearTime": 6.333333333333294
       }
     },
@@ -3586,7 +3586,7 @@
         "pulses": [
           60
         ],
-        "frames": 1341,
+        "frames": 1389,
         "clearTime": 18.799999999999255
       }
     },
@@ -3603,7 +3603,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 856,
+        "frames": 904,
         "clearTime": 10.883333333333036
       }
     },
@@ -3620,7 +3620,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 592,
+        "frames": 640,
         "clearTime": 6.499999999999951
       }
     },
@@ -3637,7 +3637,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 896,
+        "frames": 944,
         "clearTime": 11.516666666666334
       }
     },
@@ -3656,7 +3656,7 @@
         "pulses": [
           60
         ],
-        "frames": 700,
+        "frames": 748,
         "clearTime": 8.06666666666653
       }
     },
@@ -3677,7 +3677,7 @@
           150,
           270
         ],
-        "frames": 1363,
+        "frames": 1411,
         "clearTime": 19.04999999999924
       }
     },
@@ -3694,7 +3694,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 515,
+        "frames": 563,
         "clearTime": 5.150000000000028
       }
     },
@@ -3711,7 +3711,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 382,
+        "frames": 430,
         "clearTime": 3.000000000000044
       }
     },
@@ -3728,7 +3728,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 619,
+        "frames": 667,
         "clearTime": 6.899999999999928
       }
     },
@@ -3745,7 +3745,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 291,
+        "frames": 339,
         "clearTime": 1.3666666666666631
       }
     },
@@ -3762,7 +3762,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1457,
+        "frames": 1505,
         "clearTime": 20.76666666666581
       }
     },
@@ -3779,7 +3779,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 548,
+        "frames": 596,
         "clearTime": 5.716666666666662
       }
     },
@@ -3796,7 +3796,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 539,
+        "frames": 587,
         "clearTime": 5.666666666666665
       }
     },
@@ -3813,7 +3813,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 423,
+        "frames": 471,
         "clearTime": 3.6833333333334113
       }
     },
@@ -3830,7 +3830,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 807,
+        "frames": 855,
         "clearTime": 10.033333333333085
       }
     },
@@ -3847,7 +3847,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 395,
+        "frames": 443,
         "clearTime": 3.133333333333384
       }
     },
@@ -3866,7 +3866,7 @@
         "pulses": [
           60
         ],
-        "frames": 404,
+        "frames": 452,
         "clearTime": 3.3500000000000614
       }
     },
@@ -3887,7 +3887,7 @@
           100,
           210
         ],
-        "frames": 394,
+        "frames": 442,
         "clearTime": 3.1500000000000514
       }
     },
@@ -3906,7 +3906,7 @@
         "pulses": [
           60
         ],
-        "frames": 1473,
+        "frames": 1521,
         "clearTime": 21.03333333333246
       }
     },
@@ -3927,7 +3927,7 @@
           100,
           180
         ],
-        "frames": 500,
+        "frames": 548,
         "clearTime": 4.883333333333376
       }
     },
@@ -3946,7 +3946,7 @@
         "pulses": [
           60
         ],
-        "frames": 709,
+        "frames": 757,
         "clearTime": 8.316666666666515
       }
     },
@@ -3963,7 +3963,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 501,
+        "frames": 549,
         "clearTime": 4.966666666666705
       }
     },
@@ -3980,7 +3980,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 770,
+        "frames": 818,
         "clearTime": 9.516666666666447
       }
     },
@@ -3997,7 +3997,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 508,
+        "frames": 556,
         "clearTime": 5.050000000000034
       }
     },
@@ -4014,7 +4014,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 508,
+        "frames": 556,
         "clearTime": 5.050000000000034
       }
     },
@@ -4033,7 +4033,7 @@
         "pulses": [
           60
         ],
-        "frames": 524,
+        "frames": 572,
         "clearTime": 5.183333333333359
       }
     },
@@ -4050,7 +4050,7 @@
         "angle": 30,
         "velocity": 4,
         "pulses": [],
-        "frames": 409,
+        "frames": 457,
         "clearTime": 3.333333333333394
       }
     },
@@ -4069,7 +4069,7 @@
         "pulses": [
           60
         ],
-        "frames": 838,
+        "frames": 886,
         "clearTime": 10.499999999999725
       }
     },
@@ -4086,7 +4086,7 @@
         "angle": 30,
         "velocity": 0,
         "pulses": [],
-        "frames": 265,
+        "frames": 313,
         "clearTime": 0.899999999999998
       }
     },
@@ -4103,7 +4103,7 @@
         "angle": 30,
         "velocity": 0,
         "pulses": [],
-        "frames": 380,
+        "frames": 428,
         "clearTime": 2.766666666666699
       }
     },
@@ -4122,7 +4122,7 @@
         "pulses": [
           60
         ],
-        "frames": 532,
+        "frames": 580,
         "clearTime": 5.200000000000025
       }
     },
@@ -4141,7 +4141,7 @@
         "pulses": [
           60
         ],
-        "frames": 657,
+        "frames": 705,
         "clearTime": 7.51666666666656
       }
     },
@@ -4158,7 +4158,7 @@
         "angle": 120,
         "velocity": 2,
         "pulses": [],
-        "frames": 963,
+        "frames": 1011,
         "clearTime": 12.58333333333294
       }
     },
@@ -4179,7 +4179,7 @@
           150,
           270
         ],
-        "frames": 534,
+        "frames": 582,
         "clearTime": 5.3500000000000165
       }
     },
@@ -4198,7 +4198,7 @@
         "pulses": [
           60
         ],
-        "frames": 769,
+        "frames": 817,
         "clearTime": 9.249999999999796
       }
     },
@@ -4215,7 +4215,7 @@
         "angle": 120,
         "velocity": 2,
         "pulses": [],
-        "frames": 1887,
+        "frames": 1935,
         "clearTime": 27.84999999999874
       }
     },
@@ -4232,7 +4232,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 872,
+        "frames": 920,
         "clearTime": 11.09999999999969
       }
     },
@@ -4249,7 +4249,7 @@
         "angle": -90,
         "velocity": 0,
         "pulses": [],
-        "frames": 763,
+        "frames": 811,
         "clearTime": 9.299999999999793
       }
     },
@@ -4270,7 +4270,7 @@
           150,
           270
         ],
-        "frames": 1124,
+        "frames": 1172,
         "clearTime": 15.166666666666126
       }
     },
@@ -4289,7 +4289,7 @@
         "pulses": [
           60
         ],
-        "frames": 1125,
+        "frames": 1173,
         "clearTime": 15.133333333332795
       }
     },
@@ -4306,7 +4306,7 @@
         "angle": 60,
         "velocity": 0,
         "pulses": [],
-        "frames": 1218,
+        "frames": 1266,
         "clearTime": 16.74999999999937
       }
     },
@@ -4323,7 +4323,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 659,
+        "frames": 707,
         "clearTime": 7.449999999999897
       }
     },
@@ -4340,7 +4340,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 453,
+        "frames": 501,
         "clearTime": 3.950000000000091
       }
     },
@@ -4357,7 +4357,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 820,
+        "frames": 868,
         "clearTime": 9.999999999999753
       }
     },
@@ -4374,7 +4374,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 682,
+        "frames": 730,
         "clearTime": 7.699999999999883
       }
     },
@@ -4391,7 +4391,7 @@
         "angle": -120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1010,
+        "frames": 1058,
         "clearTime": 13.083333333332911
       }
     },
@@ -4412,7 +4412,7 @@
           150,
           270
         ],
-        "frames": 1190,
+        "frames": 1238,
         "clearTime": 16.39999999999939
       }
     },
@@ -4433,7 +4433,7 @@
           150,
           270
         ],
-        "frames": 478,
+        "frames": 526,
         "clearTime": 4.7000000000000535
       }
     },
@@ -4454,7 +4454,7 @@
           150,
           270
         ],
-        "frames": 1712,
+        "frames": 1760,
         "clearTime": 25.133333333332228
       }
     },
@@ -4473,7 +4473,7 @@
         "pulses": [
           60
         ],
-        "frames": 971,
+        "frames": 1019,
         "clearTime": 12.566666666666274
       }
     },
@@ -4490,7 +4490,7 @@
         "angle": 120,
         "velocity": 0,
         "pulses": [],
-        "frames": 1403,
+        "frames": 1451,
         "clearTime": 19.83333333333253
       }
     }

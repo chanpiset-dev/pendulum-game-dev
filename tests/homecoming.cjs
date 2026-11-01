@@ -8,18 +8,24 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
   await page.evaluate(index=>homeQA(`loadStage(${index});$('stageBriefing').classList.add('hidden');fire();targets.forEach(t=>t.alive=false);hitStopTimer=0;update(0);draw();`),index);
   const physical=await page.evaluate(()=>homeQA('JSON.stringify({systems,PIVOT,targets,obstacles,currentRail,timeElapsed,currentStageScore,pulsesLeft})'));
   assert.equal(await page.evaluate(()=>homeQA('homecoming.length>0')),true);
+  assert.match(await page.locator('#chamberPower').innerText(),/RESTORED/);
+  assert.equal(await page.evaluate(()=>homeQA('fireworks.length>0')),true);
   await page.evaluate(()=>homeQA('update(.7);draw()'));
   assert.equal(await page.evaluate(()=>homeQA('JSON.stringify({systems,PIVOT,targets,obstacles,currentRail,timeElapsed,currentStageScore,pulsesLeft})')),physical);
   await page.evaluate(()=>homeQA('pauseGame();update(1)'));assert.equal(await page.evaluate(()=>homeQA('clearingTimer')),.7);
   await page.evaluate(()=>homeQA('togglePause();stopGameLoop();update(1.15);draw()'));
-  assert.equal(await page.locator('#chamberPower').innerText(),'Home, sweet home!');
+  assert.match(await page.locator('#chamberPower').innerText(),/RESTORED/);
+  await page.evaluate(()=>homeQA('update(.3);draw()'));
+  assert.equal(await page.locator('#chamberPower').innerText(),'Heading home…');
+  await page.evaluate(()=>homeQA('update(1.5);draw()'));
+  assert.equal(await page.locator('#chamberPower').innerText(),'Heading home…');
   if(index===1&&process.env.CAPTURE_HOME)await page.screenshot({path:'/workspace/output/pendulum-homecoming-game.png',fullPage:true});
   await page.click('#skipCelebration');await page.evaluate(()=>homeQA('update(.016);draw()'));
   assert.equal(await page.evaluate(()=>homeQA('gameStatus')),'end');
   if(index===1){await page.evaluate(()=>homeQA('openStageSelectModal()'));await page.click('#journeyFind');assert.match(await page.locator('#journeyPlay').innerText(),/1-2/);await page.click('#btnCloseMap');}
   const records=await page.evaluate(()=>homeQA('JSON.stringify({highScores,stageStars,bestTimes,unlockedStageIndex})'));await page.evaluate(()=>homeQA('update(1);draw()'));assert.equal(await page.evaluate(()=>homeQA('JSON.stringify({highScores,stageStars,bestTimes,unlockedStageIndex})')),records);
  }
- await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>homeQA("setEnvironmentsEnabled(false);loadStage(1);$('stageBriefing').classList.add('hidden');fire();targets.forEach(t=>t.alive=false);hitStopTimer=0;update(0);update(2);draw();setLanguage('ja')"));assert.equal(await page.locator('#chamberPower').innerText(),'おかえりなさい！');
+ await page.emulateMedia({reducedMotion:'reduce'});await page.evaluate(()=>homeQA("setEnvironmentsEnabled(false);loadStage(1);$('stageBriefing').classList.add('hidden');fire();targets.forEach(t=>t.alive=false);hitStopTimer=0;update(0);update(3.9);draw();setLanguage('ja')"));assert.equal(await page.locator('#chamberPower').innerText(),'おかえりなさい！');
  await page.setViewportSize({width:390,height:844});await page.evaluate(()=>homeQA('draw()'));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  await page.evaluate(()=>homeQA("loadStage('sandbox');draw()"));assert.equal(await page.evaluate(()=>homeQA('homecoming')),null);
  assert.deepEqual(errors,[]);console.log('Homecoming: frozen successful state, moving anchor, clones, entry/arrival, pause, skip, single awards, final stage, reduced motion, environment-off, Japanese and mobile passed.');

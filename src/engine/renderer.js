@@ -1,4 +1,4 @@
-import { drawHomecoming, drawShelter } from './homecoming.js';
+import { drawHomecoming, drawShelter, HOME_FIREWORK_DELAY } from './homecoming.js';
 import { chapterForStage } from '../data/chapters.js';
 import { drawEnvironment } from './environments.js';
 import { placePortalLabels } from './portal-labels.js';
@@ -174,7 +174,8 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
   const palette = getCanvasPalette();
   ctx.clearRect(0, 0, W, H);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const homeAge=homecoming?clearingTimer:null;
+  const traveling=!!homecoming&&clearingTimer>=HOME_FIREWORK_DELAY;
+  const homeAge=traveling?clearingTimer-HOME_FIREWORK_DELAY:null;
   const environment=drawEnvironment(ctx,W,H,{index:currentStageIndex,targets,status:gameStatus,homeAge,reduced});
   if(!environment){drawThemeBackdrop(ctx,W,H);if(homecoming)drawShelter(ctx,W,H,{chapter:chapterForStage(Math.ceil(currentStageIndex/5)).id,charge:1,age:homeAge,reduced});}
   ctx.save();
@@ -269,8 +270,8 @@ export function drawGameFrame({ ctx, getState, computePredictionTrail, setClearF
     ctx.restore();
   }
 
-  drawGenericScene(ctx, homecoming?[]:systems, targets, obstacles, blackhole, homecoming?[]:particles, homecoming?[]:shockwaves, homecoming?[]:floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R, mood:gameStatus === 'clearing' || (gameStatus === 'end' && targets.every(t=>!t.alive)) ? 'happy' : gameStatus === 'playing' ? 'focused' : 'ready' });
-  if(homecoming)drawHomecoming(ctx,{snapshot:homecoming,age:clearingTimer,width:W,height:H,systems,pivot:PIVOT,scale:PENDULUM_SCALE,minRadius:BOB_MIN_R,palette,reduced});
+  drawGenericScene(ctx, traveling?[]:systems, targets, obstacles, blackhole, traveling?[]:particles, traveling?[]:shockwaves, traveling?[]:floaters, PIVOT, currentRail, currentPortals, currentSwitches, currentBoostRings, currentZones, currentLasers, { currentLang, BASE_PIVOT, PIVOT, timeElapsed, laserCooldown, PENDULUM_SCALE, BOB_MIN_R, BOB_MAX_R, mood:gameStatus === 'clearing' || (gameStatus === 'end' && targets.every(t=>!t.alive)) ? 'happy' : gameStatus === 'playing' ? 'focused' : 'ready' });
+  if(traveling)drawHomecoming(ctx,{snapshot:homecoming,age:homeAge,width:W,height:H,systems,pivot:PIVOT,scale:PENDULUM_SCALE,minRadius:BOB_MIN_R,palette,reduced});
   ctx.restore();
 
 }

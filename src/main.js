@@ -1,4 +1,4 @@
-import { captureHomecoming } from './engine/homecoming.js';
+import { captureHomecoming, HOME_FIREWORK_DELAY, HOME_TOTAL_DURATION } from './engine/homecoming.js';
 import { setEnvironmentsEnabled } from './engine/environments.js';
 import { installJourneyMap } from './journey-map.js';
 import { setExplorerEnabled } from './engine/explorer.js';
@@ -949,7 +949,15 @@ function resolveInterBobCollisions(sdt) {
 function update(rawDt) {
   if (gameStatus === 'end' || gameStatus === 'paused') return;
   if (hitStopTimer > 0) { hitStopTimer -= rawDt; return; }
-  if(gameStatus==='clearing'){clearingTimer+=rawDt;if(clearingTimer>=3)finishHomecoming();return;}
+  if(gameStatus==='clearing'){
+    const previous=clearingTimer;clearingTimer+=rawDt;
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(previous<HOME_FIREWORK_DELAY){
+      if(!reduced)for(const at of [.3,.6])if(previous<at&&clearingTimer>=at)launchFirework();
+      updateParticlesAndFireworks({particles,shockwaves,floaters,fireworks,dt:Math.min(rawDt,HOME_FIREWORK_DELAY-previous),rawDt:Math.min(rawDt,HOME_FIREWORK_DELAY-previous),currentGravity,playSnd:reduced?()=>{}:playSnd,getScreenShake:()=>0,setScreenShake:()=>{}});
+    }
+    if(clearingTimer>=HOME_TOTAL_DURATION)finishHomecoming();return;
+  }
   if (screenShake > 0) screenShake *= 0.88;
 
   const t = I18N[currentLang];
@@ -1506,6 +1514,8 @@ function update(rawDt) {
       homecoming=captureHomecoming(systems,PIVOT,PENDULUM_SCALE,BOB_MIN_R);
       gameStatus = 'clearing'; updateWindSpeed(0, false); playSnd('clear'); timeScale = 0.2; 
       screenShake=0;
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches)launchFirework();
+      else for(let i=0;i<8;i++){const angle=i*Math.PI/4;particles.push({x:PIVOT.x+Math.cos(angle)*35,y:PIVOT.y+Math.sin(angle)*35,vx:0,vy:0,life:.8,decay:1,color:'#e8d99e'});}
     } else if (remainExact <= 0 && timeLimit <= 90) {
       gameStatus = 'end'; updateWindSpeed(0, false); playSnd('fail');
       showFailureOverlay('time');
@@ -1661,11 +1671,11 @@ function refreshChamber() {
   $('chamberHud').classList.toggle('hidden',sandbox);
   $('chamberHud').classList.toggle('restored',open);
   $('chamberHud').style.setProperty('--charge',`${open?100:pads.length?restored/pads.length*100:0}%`);
-  $('chamberPower').textContent=open?(clearingTimer>=1.8?t.homeArrived:t.homeReturning):t.chamberPower(restored,pads.length);
+  $('chamberPower').textContent=open?(clearingTimer<HOME_FIREWORK_DELAY?t.chamberRestored:clearingTimer>=HOME_TOTAL_DURATION?t.homeArrived:t.homeReturning):t.chamberPower(restored,pads.length);
   $('skipCelebration').classList.toggle('hidden',gameStatus!=='clearing');
   if($('overlay').classList.contains('active')&&!$('chamberResult').classList.contains('hidden'))$('chamberResult').textContent=chamberDestination();
 }
-$('skipCelebration').addEventListener('click',()=>{if(gameStatus==='clearing')clearingTimer=3;});
+$('skipCelebration').addEventListener('click',()=>{if(gameStatus==='clearing')clearingTimer=HOME_TOTAL_DURATION;});
 
 function refreshFailureFeedback() {
   refreshChamber();

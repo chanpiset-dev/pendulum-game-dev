@@ -2,6 +2,8 @@ import { drawExplorer } from './explorer.js';
 import { drawLivePendulum } from './artwork.js';
 import { JOURNEY_WORLDS } from '../journey-map-art.js';
 export const HOME_DURATION=1.8;
+export const HOME_FIREWORK_DELAY=2;
+export const HOME_TOTAL_DURATION=HOME_FIREWORK_DELAY+HOME_DURATION;
 export function captureHomecoming(systems,pivot,scale,minRadius){
   const entries=systems.map((chain,index)=>({chain,index})),survivors=entries.filter(({chain})=>chain.alive!==false);
   return (survivors.length?survivors:entries.slice(-1)).map(({chain:s,index})=>{

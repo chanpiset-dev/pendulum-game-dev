@@ -1,3 +1,4 @@
+import { getFailureFeedback } from './failure-feedback.js';
 import { createMemoryStorage, createVerificationDriver } from './verification.js';
 import { migrateLegacyIndex } from './data/stage-migration.js';
 import { DIFFICULTIES, chapterForStage } from './data/chapters.js';
@@ -68,7 +69,7 @@ const i18nController = createI18nController({
   indexToStageSub, STAGE_CONFIGS,
   showStageBriefing, renderStageSelect,
   saveLanguage: lang => progressStore.saveSetting('language', lang),
-  refreshProgress: updatePersonalBest, refreshReplay: () => attemptReplay.refresh()
+  refreshProgress: updatePersonalBest, refreshReplay: () => attemptReplay.refresh(), refreshFailure: refreshFailureFeedback
 });
 const setLanguage = lang => i18nController.setLanguage(lang);
 const applyLanguage = () => i18nController.applyLanguage();
@@ -1215,7 +1216,7 @@ function update(rawDt) {
                   gameStatus = 'end';
                   timeScale = 1.0;
                   playSnd('fail');
-                  showOverlay(t.laserTrip, t.laserTripDesc, t.btnRetry, false, 0);
+                  showFailureOverlay('laser');
                 }
               }
               break;
@@ -1497,7 +1498,7 @@ function update(rawDt) {
       launchFirework(); scheduleGameTimer(launchFirework, 220); scheduleGameTimer(launchFirework, 450);
     } else if (remainExact <= 0 && timeLimit <= 90) {
       gameStatus = 'end'; updateWindSpeed(0, false); playSnd('fail');
-      showOverlay(t.timeUp, t.timeUpDesc, t.btnRetry, false, 0);
+      showFailureOverlay('time');
     }
   } else if (gameStatus === 'blackhole_death') {
     clearingTimer += rawDt;
@@ -1505,7 +1506,7 @@ function update(rawDt) {
       gameStatus = 'end';
       timeScale = 1.0;
       playSnd('fail');
-      showOverlay(t.singularity, t.singularityDesc, t.btnRetry, false, 0);
+      showFailureOverlay('blackhole');
     }
   } else if (gameStatus === 'clearing') {
     clearingTimer += rawDt;
@@ -1635,9 +1636,27 @@ function loop(t) {
   if (gameStatus === 'playing' || gameStatus === 'clearing' || gameStatus === 'blackhole_death') gameAnimId = requestAnimationFrame(loop);
 }
 
+function refreshFailureFeedback() {
+  const overlay = $('overlay');
+  if (!overlay.classList.contains('active') || !overlay.dataset.failureCause) return;
+  const feedback = getFailureFeedback(overlay.dataset.failureCause, Number(overlay.dataset.failureRemaining), currentLang);
+  $('overlayTitle').textContent = feedback.title;
+  $('overlayDesc').textContent = feedback.description;
+  $('overlayBtn').textContent = I18N[currentLang].btnRetry;
+}
+
+function showFailureOverlay(cause) {
+  const remaining = targets.filter(target => target.alive).length;
+  const feedback = getFailureFeedback(cause, remaining, currentLang);
+  showOverlay(feedback.title, feedback.description, I18N[currentLang].btnRetry, false, 0);
+  $('overlay').dataset.failureCause = cause;
+  $('overlay').dataset.failureRemaining = String(remaining);
+}
+
 function showOverlay(title, desc, btnText, isClear, stars = 0) {
   resetPauseControls();
   const o = $('overlay');
+  delete o.dataset.failureCause; delete o.dataset.failureRemaining;
   $('overlayTitle').textContent = title;
   $('overlayTitle').className = isClear ? 'text-clear' : 'text-fail';
   $('overlayDesc').textContent = desc;

@@ -1129,3 +1129,6 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
     overflow-y: auto;
   }
 }
+
+/* Failure details and the actual remaining count stay on separate readable lines. */
+#overlayDesc { white-space: pre-line; }

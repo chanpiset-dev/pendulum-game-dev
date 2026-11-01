@@ -51,12 +51,12 @@ export const I18N = {
     modalTitle: "Stage Select (50 Stages × 5 Substages)",
     stageClear: "STAGE CLEAR",
     allClearAlert: "🎉 All 50 Stages & Substages Conquered!\nTOTAL SCORE: ",
-    timeUp: "TIME UP",
-    timeUpDesc: "Adjust your initial parameters and retry!",
-    singularity: "SINGULARITY COLLAPSE",
-    singularityDesc: "The Black Hole swallowed your pendulums!",
-    laserTrip: "LASER TRIPPED",
-    laserTripDesc: "You ran out of energy shield lives!",
+    timeUp: "Time ran out.",
+    remainingTargets: n => `${n} target${n === 1 ? '' : 's'} remaining.`,
+    singularity: "BLACK-HOLE CAPTURE",
+    singularityDesc: "Your last active bob entered the black-hole core.",
+    laserTrip: "No shield lives left.",
+    laserTripDesc: "The bob touched a laser and used the last shield life.",
     nextStage: "NEXT STAGE",
     allCleared: "ALL CLEARED",
     nextBtnText: (stg, sub) => `NEXT (${stg}-${sub})`,
@@ -128,12 +128,12 @@ export const I18N = {
     modalTitle: "ステージセレクト (全50ステージ × 各5エリア)",
     stageClear: "ステージ突破！",
     allClearAlert: "🎉 全50ステージ完全制覇達成！\nトータルスコア: ",
-    timeUp: "タイムアップ",
-    timeUpDesc: "初期設定（角度・速度）を見直して再挑戦しよう！",
-    singularity: "特異点に呑み込まれた！",
-    singularityDesc: "ブラックホールの重力に振り子が捕まってしまった！",
-    laserTrip: "迎撃レーザー被弾！",
-    laserTripDesc: "エネルギーシールドの残機が尽きてしまった！",
+    timeUp: "時間切れです。",
+    remainingTargets: n => `残りターゲットは${n}個です。`,
+    singularity: "ブラックホール",
+    singularityDesc: "最後に残った球がブラックホールに入りました。",
+    laserTrip: "シールドライフがなくなりました。",
+    laserTripDesc: "球がレーザーに触れ、最後のシールドライフを失いました。",
     nextStage: "次のステージへ",
     allCleared: "完全制覇おめでとう！",
     nextBtnText: (stg, sub) => `次へ (${stg}-${sub})`,
@@ -157,7 +157,7 @@ export const I18N = {
 
 export function createI18nController({
   $, getCurrentLang, setCurrentLang, getCurrentStageIndex, getPulsesLeft,
-  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage, refreshProgress, refreshReplay
+  indexToStageSub, STAGE_CONFIGS, showStageBriefing, renderStageSelect, saveLanguage, refreshProgress, refreshReplay, refreshFailure
 }) {
   function setLanguage(lang) {
   setCurrentLang(lang === 'ja' ? 'ja' : 'en');
@@ -191,6 +191,7 @@ export function createI18nController({
   for (const [id,key] of [['btnReroll','randomTitle'],['btnShare','shareTitle'],['btnHeaderLang','languageTitle']]) $(id).title = t[key];
   if ($('saveStatus').dataset.kind === 'error') $('saveStatus').textContent = t.saveError;
   refreshReplay?.();
+  refreshFailure?.();
 
   $('titleSubtitle').textContent = t.titleSubtitle;
   $('btnStartGame').textContent = t.startBtn;

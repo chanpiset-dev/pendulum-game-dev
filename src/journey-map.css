@@ -1,0 +1,46 @@
+/* Approved expedition artwork has its own palette, independent of the gameplay theme. */
+.journey-view-switch,.journey-chapters{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.journey-view-switch [aria-pressed=true],.journey-chapters [aria-pressed=true]{background:#efd18c!important;color:#293b3b!important;border-color:#efd18c!important}
+#journeyContent[hidden],#stageGrid[hidden],#stageFilterEmpty[hidden],.stage-filter-bar[hidden]{display:none}
+#journeyContent{font:15px system-ui,sans-serif;color:#edf1df;--world-bg:#203f38;--world-terrain:#3e6053;--world-ink:#aebc8d;--world-gold:#efd08a}
+#journeyContent .journey-chapters button{font:12px system-ui,sans-serif;border:1px solid #587378;background:#213c44;color:#e6efdf;border-radius:10px;padding:10px 13px;min-height:44px}
+.journey-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px}
+.journey-landscape{position:relative;aspect-ratio:var(--map-ratio,1.12);min-width:0;background:linear-gradient(var(--world-bg),var(--world-terrain));border:1px solid #547269;border-radius:21px;overflow:hidden;isolation:isolate}
+#journeyContent[data-chapter='1'] .journey-landscape{background:radial-gradient(ellipse at 55% 35%,#456655,#2a4845 55%,#1d353f)}
+.journey-landscape:before{content:'';position:absolute;inset:0;background-image:var(--map-art);background-size:100% 100%;pointer-events:none;z-index:-1}
+.journey-route{position:absolute;inset:0}.journey-route svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.journey-path-bed{fill:none;stroke:var(--world-bg);stroke-width:22;stroke-linecap:round}
+.journey-path-dots{fill:none;stroke:var(--world-ink);stroke-width:8;stroke-linecap:round;stroke-dasharray:1 16}
+.journey-maphead{position:absolute;top:18px;left:20px;z-index:2;pointer-events:none;max-width:75%}
+#journeyRange{font:10px/1.5 system-ui,sans-serif;letter-spacing:2px;color:var(--world-gold);margin:0 0 6px}
+#journeyTitle{font:700 20px/1.25 system-ui,sans-serif;color:#edf1df;margin:0}
+#journeyContent .journey-node{position:absolute;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:5px;width:115px;height:auto;min-height:0;padding:0;border:0;background:none;color:#edf1df;font:15px system-ui,sans-serif;cursor:pointer;box-shadow:none;z-index:1}
+#journeyContent .journey-node:hover{filter:brightness(1.15)}
+.journey-disc{width:49px;height:49px;display:grid;place-items:center;border:3px solid var(--world-ink);border-radius:50%;background:var(--world-terrain);box-shadow:0 5px 0 #182f32,0 9px 16px #10282c66;font-size:18px;font-weight:800;color:#edf1df}
+.journey-node.locked .journey-disc{background:#344a4e;border-color:#687a79;color:#a1adab}
+.journey-node.available .journey-disc{background:#b29956;border-color:#f3d488}
+.journey-node[aria-pressed=true] .journey-disc{outline:3px solid #f9e8b4;outline-offset:5px}
+.journey-node[aria-current=step] .journey-node-title{text-decoration:underline;text-underline-offset:3px}
+.journey-node-title{font-size:11px;line-height:1.3;max-width:120px;background:#182e34bd;padding:3px 7px;border-radius:5px;text-align:center;overflow-wrap:anywhere}
+.journey-node.locked .journey-node-title{color:#a7b7b7}
+.journey-node-stars{color:var(--world-gold);font-size:12px;letter-spacing:1px;min-height:16px}
+.journey-explorer{position:absolute;top:-39px;left:40px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 32% 25%,#e2ffbb,#58ba78 45%,#185b4b 90%);border:2px solid #c0dd9e;box-shadow:0 0 20px #b1d79444;pointer-events:none}
+.journey-explorer:before{content:'• •';position:absolute;left:6px;top:3px;color:#13392f;font:15px system-ui;letter-spacing:1px}
+.journey-explorer:after{content:'';position:absolute;left:7px;bottom:4px;width:18px;height:5px;background:#f0c27c;border-radius:0 0 9px 9px}
+.journey-landmark{position:absolute;pointer-events:none;color:#c7d7ad;text-align:center;font-size:11px;letter-spacing:1px;max-width:20%;line-height:1.5}.journey-landmark b{display:block;font-size:38px;color:var(--world-ink);font-weight:400;margin-bottom:5px}
+#journeyLegend{position:absolute;bottom:17px;left:20px;right:20px;font:11px/1.8 system-ui,sans-serif;color:#bdcfc0;margin:0;pointer-events:none;white-space:pre-line}
+#journeyContent .journey-picker{align-self:start;min-width:0;border:1px solid #3b5961;background:#182f39;color:#edf1df;border-radius:18px;padding:23px;box-shadow:none}
+#journeyStageTitle{font:700 23px/1.3 system-ui,sans-serif;color:#edf1df;margin:10px 0;overflow-wrap:anywhere}
+#journeyStageDescription,#journeyHint{font:13px/1.6 system-ui,sans-serif;color:#a9bfc4}
+#journeySubs{display:grid;gap:8px;margin:20px 0}
+#journeyContent .journey-sub{display:flex;justify-content:space-between;align-items:center;gap:5px;text-align:left;padding:12px;border:1px solid #587378;background:#213c44;color:#e6efdf;border-radius:11px;cursor:pointer;font:15px system-ui,sans-serif;min-height:44px}
+#journeyContent .journey-sub[aria-pressed=true]{background:#efd18c;color:#293b3b;border-color:#efd18c}
+.journey-sub small{font-size:11px}.journey-sub span{font-size:13px;white-space:nowrap;color:#e8cf85}.journey-sub[aria-pressed=true] span{color:#66552b}
+#journeyHint{min-height:42px;font-size:12px}
+#journeyContent #journeyPlay{width:100%;font:750 15px system-ui,sans-serif;min-height:44px;background:#edcc80;color:#263a38;border:1px solid #edcc80;border-radius:12px;padding:12px 19px;box-shadow:0 4px 0 #917e4d;cursor:pointer;letter-spacing:0}
+#journeyPlay:disabled{opacity:.45;cursor:default}#journeySummary{font:12px/1.6 system-ui,sans-serif;color:#9bb2b7;margin:18px 0}
+#journeyContent button:focus-visible{outline:3px solid #f5d881;outline-offset:3px}
+@media(min-width:1001px){#mapModal .modal-window{width:94%;max-width:1250px}}
+@media(max-width:1000px){.journey-layout{grid-template-columns:1fr}.journey-picker{padding:18px}#journeySubs{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}#journeyContent .journey-sub{flex-direction:column;padding:10px 4px;gap:8px;font-size:12px}.journey-sub small{font-size:9px}}
+@media(max-width:600px){#journeyContent .journey-chapters button{font-size:11px}.journey-view-switch button{min-height:44px}#journeyContent .journey-node{width:100px}.journey-node-title{font-size:10px;max-width:98px}.journey-disc{width:39px;height:39px;font-size:15px}.journey-explorer{left:34px;top:-36px;width:31px;height:31px}.journey-node-stars{font-size:10px}#journeyLegend{font-size:10px;bottom:13px;left:12px;right:12px}.journey-maphead{top:12px;left:12px}#journeyTitle{font-size:18px}.journey-landmark{display:none}#journeyContent .journey-picker{padding:18px}}
+@media(forced-colors:active){.journey-disc{border-color:ButtonText}.journey-node[aria-pressed=true] .journey-disc{outline-color:Highlight}.journey-node-title{color:ButtonText;background:Canvas}}

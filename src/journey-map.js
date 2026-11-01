@@ -1,3 +1,4 @@
+import { JOURNEY_WORLDS, journeyComposition } from './journey-map-art.js';
 import { CHAPTERS } from './data/chapters.js';
 import { STAGE_CONFIGS, indexToStageSub, stageSubToKey } from './data/stage-configs.js';
 
@@ -49,27 +50,35 @@ export function installJourneyMap({ $, getState, launch, showGrid }) {
       button.type = 'button'; button.setAttribute('aria-pressed', String(c.id === chapter));
       button.onclick = () => { select((c.start - 1) * 5 + 1); $('journeyTitle').focus({preventScroll:true}); }; return button;
     }));
-    $('journeyTitle').textContent = `${ch.icon} ${landmarks[chapter - 1][ja ? 1 : 0]}`;
-    $('journeyRange').textContent = t.journeyRange(ch.start, ch.end);
+    $('journeyTitle').textContent = landmarks[chapter - 1][ja ? 1 : 0];
+    $('journeyRange').textContent = `${ja?'チャプター':'CHAPTER'} ${ch.id} · ${t.journeyRange(ch.start, ch.end).toUpperCase()}`;
     $('journeyLegend').textContent = t.journeyLegend;
     $('journeyRoute').setAttribute('aria-label', t.journeyMap);
     $('journeyRoute').replaceChildren();
-    const columns = mobile.matches ? 2 : 3, count = ch.end - ch.start + 1, rows = Math.ceil(count / columns);
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', `0 0 ${columns * 100} ${rows * 145}`);
-    svg.setAttribute('preserveAspectRatio', 'none'); svg.setAttribute('aria-hidden', 'true');
-    const points = [];
+    const count=ch.end-ch.start+1, composition=journeyComposition(count,mobile.matches), world=JOURNEY_WORLDS[chapter-1];
+    $('journeyContent').dataset.chapter=chapter;
+    for(const [i,name]of ['bg','terrain','ink','gold'].entries())$('journeyContent').style.setProperty(`--world-${name}`,world.colors[i]);
+    const landscape=$('journeyRoute').parentElement;
+    landscape.style.setProperty('--map-art',`url("${new URL(`./assets/journey/chapter-${chapter}.svg`,import.meta.url)}")`);
+    landscape.style.setProperty('--map-ratio',mobile.matches?`1 / ${Math.max(2.2,count*.2)}`:`1 / ${Math.max(1/1.12,count*.1)}`);
+    $('journeyLandmarks').replaceChildren(...world.landmarks.map(([icon,en,jp,x,y])=>{
+      const item=node('span','journey-landmark');item.style.left=x+'%';item.style.top=y+'%';item.append(node('b','',icon),node('span','',ja?jp:en));return item;
+    }));
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 800 720');svg.setAttribute('preserveAspectRatio','none');svg.setAttribute('aria-hidden','true');
+    for(const className of ['journey-path-bed','journey-path-dots']){
+      const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',composition.path);path.setAttribute('class',className);svg.append(path);
+    }
     const records = [];
     for (let stage = ch.start; stage <= ch.end; stage++) {
-      const offset = stage - ch.start, row = Math.floor(offset / columns), col = row % 2 ? columns - 1 - offset % columns : offset % columns;
-      points.push(`${col * 100 + 50},${row * 145 + 38}`);
+      const [x,y]=composition.points[stage-ch.start];
       const substages = Array.from({length:5}, (_, i) => journeyRecord((stage - 1) * 5 + i + 1, state));
       records.push(...substages);
       const locked = substages.every(r => r.locked), cleared = substages.every(r => r.cleared);
       const total = substages.reduce((sum, r) => sum + r.stars, 0), cfg = STAGE_CONFIGS[stage];
       const button = node('button', `journey-node ${locked ? 'locked' : cleared ? 'cleared' : 'available'}`);
       button.type = 'button'; button.dataset.journeyStage = stage;
-      button.style.gridRow = row + 1; button.style.gridColumn = col + 1;
+      button.style.left=x+'%';button.style.top=y+'%';
       button.setAttribute('aria-pressed', String(Math.ceil(selected / 5) === stage));
       if (state.current !== 'sandbox' && Math.ceil(state.current / 5) === stage) button.setAttribute('aria-current', 'step');
       const title = `${stage} · ${ja ? cfg.ja.name : cfg.name}`;
@@ -81,9 +90,7 @@ export function installJourneyMap({ $, getState, launch, showGrid }) {
       button.onclick = () => { select(substages.find(r => !r.locked && !r.cleared)?.index || substages[0].index); $('journeyStageTitle').focus({preventScroll:!mobile.matches}); };
       $('journeyRoute').append(button);
     }
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-    path.setAttribute('points', points.join(' ')); svg.append(path); $('journeyRoute').prepend(svg);
-    $('journeyRoute').style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
+    $('journeyRoute').prepend(svg);
     $('journeySummary').textContent = t.journeySummary(records.filter(r => r.cleared).length, records.length, records.reduce((sum,r)=>sum+r.stars,0), records.length * 3);
     const picked = journeyRecord(selected, state), cfg = STAGE_CONFIGS[picked.stage];
     $('journeyStageTitle').textContent = `${picked.stage} · ${ja ? cfg.ja.name : cfg.name}`;

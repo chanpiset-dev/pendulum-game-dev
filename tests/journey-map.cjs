@@ -2,9 +2,14 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 (async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});try{
  const page=await browser.newPage({viewport:{width:1280,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.addInitScript(()=>{requestAnimationFrame=()=>1;cancelAnimationFrame=()=>{};if(!sessionStorage.seeded){localStorage.setItem('pendulum_sub_unlocked_v7','18');localStorage.setItem('pendulum_stage_scores_v7',JSON.stringify(Object.fromEntries(Array.from({length:17},(_,i)=>[`stage_${Math.floor(i/5)+1}_sub_${i%5+1}`,0]))));localStorage.setItem('pendulum_stage_stars_v7','{"stage_1_sub_1":2}');sessionStorage.seeded='1';}});
- await page.route('**/*',route=>{const u=new URL(route.request().url());if(u.hostname!=='game.test')return route.abort();const f=path.join(__dirname,'..',u.pathname==='/'?'index.html':u.pathname);let body=fs.readFileSync(f,'utf8');if(u.pathname==='/src/main.js')body+='\nwindow.mapQA=code=>eval(code);';return route.fulfill({body,contentType:f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':'text/html'});});
+ await page.route('**/*',route=>{const u=new URL(route.request().url());if(u.hostname!=='game.test')return route.abort();const f=path.join(__dirname,'..',u.pathname==='/'?'index.html':u.pathname);let body=fs.readFileSync(f,'utf8');if(u.pathname==='/src/main.js')body+='\nwindow.mapQA=code=>eval(code);';return route.fulfill({body,contentType:f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.svg')?'image/svg+xml':'text/html'});});
  await page.goto('http://game.test');await page.waitForFunction(()=>window.mapQA);await page.click('#btnStartGame');await page.evaluate(()=>mapQA("$('stageBriefing').classList.add('hidden');openStageSelectModal()"));
  const saved=await page.evaluate(()=>JSON.stringify(localStorage)),physics=await page.evaluate(()=>mapQA('JSON.stringify({systems,targets,PIVOT,currentStageIndex,gameStatus,timeElapsed})'));
+ const artwork=await page.evaluate(async()=>{
+   const results=[];for(let chapter=1;chapter<=6;chapter++){const image=new Image();image.src=`/src/assets/journey/chapter-${chapter}.svg`;await image.decode();results.push(image.naturalWidth>0);}return results;
+ });assert.deepEqual(artwork,[true,true,true,true,true,true]);
+ const approvedColors=await page.locator('.journey-disc').first().evaluate(el=>({border:getComputedStyle(el).borderTopColor,bg:getComputedStyle(el).backgroundColor}));
+ assert.equal(approvedColors.border,'rgb(174, 188, 141)');assert.equal(approvedColors.bg,'rgb(62, 96, 83)');
  assert.equal(await page.locator('#journeyContent').isVisible(),true);assert.equal(await page.locator('[data-journey-stage]').count(),8);
  assert.equal(await page.locator('[data-journey-stage="4"] .journey-explorer').count(),1);
  assert.equal(await page.locator('#journeySubs button').count(),5);

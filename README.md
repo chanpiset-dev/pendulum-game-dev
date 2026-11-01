@@ -203,6 +203,10 @@ Verify with `node tests/explorer-adventure.cjs`, `node --test tests/*.test.mjs`,
 
 The explorer marks the earliest unlocked, uncleared substage; it stays in place while you browse. **Find explorer** selects it. Underlined stage names indicate the current stage, and the selection ring indicates the stage being inspected. Completed campaigns keep the explorer at the last stage. Chapter titles and landmark names support English and Japanese.
 
-**Stage grid** retains the progress, mechanic, and chapter filters. Switching views preserves those session-only filters. Current/furthest jump controls select the relevant chapter and stage in map view and keep their original scroll-and-focus behavior in grid view. Browsing the map never writes progress, changes an attempt, or affects replay. The route uses native buttons, keyboard focus, and a two-column mobile layout. The existing grid remains available in every theme.
+**Stage grid** retains the progress, mechanic, and chapter filters. Switching views preserves those session-only filters. Current/furthest jump controls select the relevant chapter and stage in map view and keep their original scroll-and-focus behavior in grid view. Browsing the map never writes progress, changes an attempt, or affects replay. The route uses native buttons, keyboard focus, and a tall winding mobile layout. The existing grid remains available in every theme.
 
 Verify with `node tests/journey-map.cjs` and `node --test tests/journey-map.test.mjs` (browser checks require Playwright and Chromium).
+
+### Approved journey-map art
+
+The route now uses the approved visual design: layered SVG terrain, broad winding dotted paths, inset chapter headings, decorative landmarks, round shadowed nodes, dark nameplates, and warm gold selection/star colors. Chapter 1 uses the exact approved desktop and responsive path coordinates. The other five maps use their approved identity palettes and landmark illustrations, with curved routes sized for their existing stage counts. These map palettes are intentionally independent of the selected gameplay theme. Gameplay backgrounds are unchanged. Original artwork lives in `src/assets/journey/`; styling is scoped in `src/journey-map.css`, loaded after theme CSS so it retains its approved colors.

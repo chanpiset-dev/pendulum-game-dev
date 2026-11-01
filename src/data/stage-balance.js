@@ -1,3 +1,4 @@
+import { applyStageSpacing } from './stage-spacing.js';
 // Targeted balance adjustments to fresh authored data, before visual/contact scaling.
 // IDs here follow the sequential chapter numbering.
 export function balanceStage(data, stage, sub, pivot) {
@@ -49,6 +50,7 @@ export function balanceStage(data, stage, sub, pivot) {
     ];
   }
   applyApprovedSpacing(data, stage, sub, pivot);
+  applyStageSpacing(data, stage, sub, pivot);
   return data;
 }
 

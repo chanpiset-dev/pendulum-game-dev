@@ -7,7 +7,7 @@ const arg=(name,fallback)=>process.argv.find(s=>s.startsWith(`--${name}=`))?.spl
  const indices=requested==='all'?Array.from({length:250},(_,i)=>i+1):requested.split(',').map(Number),budget=Number(arg('budget','150'));
  if(indices.some(n=>!Number.isInteger(n)||n<1||n>250)||!Number.isInteger(budget)||budget<1)throw new Error('Invalid search arguments');
  const {STAGE_CONFIGS}=await import('../src/data/stage-configs.js');
- const files=['src/main.js','src/physics.js','src/game-sizes.js','src/data/stage-balance.js','src/data/stage-configs.js','src/data/stage-index.js','src/engine/collisions.js','src/verification.js',...fs.readdirSync(path.join(root,'src/data/stage-builders')).map(n=>'src/data/stage-builders/'+n)];
+ const files=['src/main.js','src/physics.js','src/game-sizes.js','src/data/stage-balance.js','src/data/stage-spacing.js','src/data/stage-configs.js','src/data/stage-index.js','src/engine/collisions.js','src/verification.js',...fs.readdirSync(path.join(root,'src/data/stage-builders')).map(n=>'src/data/stage-builders/'+n)];
  const fingerprint=crypto.createHash('sha256');for(const file of files.sort())fingerprint.update(file).update(fs.readFileSync(path.join(root,file)));
  const engine=fingerprint.digest('hex');
  const output=path.join(root,'verification/solutions.json');

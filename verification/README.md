@@ -83,3 +83,14 @@ player-guided 44-2 settings above are preserved as a seed, but are not the curre
 verified solution. The new 44-2 candidate uses −95°, angular velocity −1.0, and
 pulses at frames 36, 100 and 180; its clear time is 10.73 game seconds. Both seeds
 remain in seeds.json, with the current candidate first.
+
+
+## Full spacing review revision
+
+The subsequent full spacing review changes 193 layouts while retaining counts,
+contact sizes and difficulty settings. Current 44-2 settings supersede the historical
+candidates above: 59° angle, velocity 4.1, pulses at frames 30, 100 and 210. Current
+44-4 uses −60°, velocity 2, pulses at frames 60, 100 and 180. These and the revised
+14-1 candidate are retained at the front of seeds.json. The complete current report
+is regenerated and independently replayed, and includes src/data/stage-spacing.js
+in its simulation fingerprint.

@@ -151,9 +151,9 @@ The three retro themes retain Pixel Arcade. Artwork Review also offers the
 original Clean Vector style for comparison. The shared gallery and gimmick guide
 show 24 entries; Reflector remains an arrangement of bumpers, not a separate object.
 
-The approved spacing proposals change only substages 33-5, 48-5 and 50-5, retaining
-object counts, contact radii and the 800 × 600 arena. These are authored corrections,
-not a global spreading algorithm. Portal/field animation respects reduced-motion
+The initial approved spacing proposals covered substages 33-5, 48-5 and 50-5, retaining
+object counts, contact radii and the 800 × 600 arena. The subsequent full review is documented below; both passes use checked-in
+positions, not a runtime spreading algorithm. Portal/field animation respects reduced-motion
 preferences. Gameplay, tutorial, Home animation and artwork specimens share the
 same drawing entry points; rendering does not modify the physics or player saves.
 
@@ -163,3 +163,13 @@ and mode selections remain respected. The Artwork Review scene uses one carriage
 pivot shared by the real articulated drawing. Each successful target hit now grows
 the bob radius by 2.25px (half the previous 4.5px); the initial 21px and maximum
 54px radii are unchanged. Fixed-frame solutions are refreshed for this model.
+
+
+## Full spacing review
+
+The full 250-substage audit adds deterministic local spacing corrections to 193
+substages; 57 layouts remain unchanged. Object counts, radii, target HP and motion
+parameters are preserved. The review covers artwork rims/fuses/springs, full pad
+patrol paths and beam/body intersections. Portal labels relocate outside neighboring
+artwork. See [the exact affected substages and audit rules](docs/stage-spacing-review.md).
+Run `node scripts/audit-stage-spacing.mjs` to check the corrected layouts.

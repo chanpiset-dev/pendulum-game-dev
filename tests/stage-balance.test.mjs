@@ -8,10 +8,11 @@ const get=(s,u)=>generateStageData((LEGACY_STAGE_IDS[s]-1)*5+u,{x:400,y:300});
 const hp=d=>d.targets.filter(t=>!t.isBomb).reduce((n,t)=>n+(t.hp||1),0);
 test('Flagged stationary passages fit the fully grown bob with clearance',()=>{
  for(const [s,u] of [[4,3],[4,4],[11,4],[11,5],[16,5],[38,2],[46,4]]){
+  // Spacing coordinates are rounded to 0.001px; allow two-coordinate roundoff.
   const {obstacles}=get(s,u);
   for(let a=0;a<obstacles.length;a++)for(let b=a+1;b<obstacles.length;b++){
    const x=obstacles[a],y=obstacles[b];
-   assert.ok(Math.hypot(x.x-y.x,x.y-y.y)-x.r-y.r>=2*BOB_MAX_RADIUS+4,`${s}-${u}`);
+   assert.ok(Math.hypot(x.x-y.x,x.y-y.y)-x.r-y.r>=2*BOB_MAX_RADIUS+4-0.002,`${s}-${u}`);
   }
  }
 });

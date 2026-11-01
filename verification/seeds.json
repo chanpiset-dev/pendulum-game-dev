@@ -1,5 +1,33 @@
 [
   {
+    "index": 66,
+    "angle": -61,
+    "velocity": -3.9,
+    "pulses": [
+      60
+    ]
+  },
+  {
+    "index": 217,
+    "angle": 59,
+    "velocity": 4.1,
+    "pulses": [
+      30,
+      100,
+      210
+    ]
+  },
+  {
+    "index": 219,
+    "angle": -60,
+    "velocity": 2,
+    "pulses": [
+      60,
+      100,
+      180
+    ]
+  },
+  {
     "index": 217,
     "angle": -95,
     "velocity": -1,

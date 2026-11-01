@@ -1,3 +1,4 @@
+import { placePortalLabels } from './portal-labels.js';
 import { OBJECT_SCALE, RAIL_HIT_RADIUS, SEGMENT_HIT_RADIUS } from '../game-sizes.js';
 import { windFlowOffset } from './wind-flow.js';
 import { getCanvasPalette, drawThemeBackdrop } from '../themes.js';
@@ -62,7 +63,7 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
   }
   for (const port of portals) {
     sprite(port.targetId ? 'portal-in' : 'portal-out', port.x, port.y, (port.r || 24) * 1.55 * 0.85 * 48 / 34, artworkTime);
-    ctx.fillStyle = palette.text; ctx.font = 'bold 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(currentLang === 'ja' ? (port.label || (port.targetId ? 'IN' : 'OUT')).replace(/IN/g, '入口').replace(/OUT/g, '出口') : port.label || (port.targetId ? 'IN' : 'OUT'), port.x, port.y + (port.r || 24) * 1.7 + 14);
+
   }
   for (const ring of boostRings) { ctx.save(); ctx.translate(ring.x, ring.y); ctx.rotate(ring.angle || 0); sprite('boost', 0, 0, ring.r * 48 / 34); ctx.restore(); }
   for (const laser of lasers) if (!laser.disabled) segment(laser, false, true);
@@ -106,6 +107,18 @@ export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackh
     ctx.save(); if (laserCooldown > 0 && Math.floor(timeElapsed * 16) % 2 === 0) ctx.globalAlpha = 0.35;
     drawLivePendulum(ctx, chain, pivot, PENDULUM_SCALE, BOB_MIN_R, { style, palette, color: index ? chain.color.outer : '#23c878' }); ctx.restore();
   });
+  // Render identifiers after bodies so a neighboring portal cannot cover the text.
+  const labelCircles=[...targets.filter(t=>t.alive),...obstacles,...boostRings,...switches,
+    ...portals.map(p=>({...p,r:p.r*1.25,source:p}))];
+  const labelBeams=[...lasers.filter(l=>!l.disabled),...switches.filter(sw=>sw.gate&&!sw.active).map(sw=>sw.gate)];
+  const portalLabels=placePortalLabels(ctx,portals,labelCircles,labelBeams,output.canvas.width,output.canvas.height,currentLang==='ja');
+  ctx.save();ctx.font='bold 11px system-ui';ctx.textAlign='center';
+  for(const label of portalLabels){
+    if(label.candidate){const dx=label.x-label.portal.x,dy=label.y-6-label.portal.y,len=Math.hypot(dx,dy)||1,start=(label.portal.r||24)*1.2;ctx.globalAlpha=.5;line(label.portal.x+dx/len*start,label.portal.y+dy/len*start,label.x,label.y-6,palette.muted,1);ctx.globalAlpha=1;}
+    ctx.fillStyle=palette.canvas;ctx.fillRect(label.box.x,label.box.y,label.box.w,label.box.h);
+    ctx.fillStyle=palette.text;ctx.fillText(label.text,label.x,label.y);
+  }
+  ctx.restore();
   // FX Layers
   shockwaves.forEach(sw => {
     ctx.save(); ctx.beginPath(); ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);

@@ -173,3 +173,18 @@ parameters are preserved. The review covers artwork rims/fuses/springs, full pad
 patrol paths and beam/body intersections. Portal labels relocate outside neighboring
 artwork. See [the exact affected substages and audit rules](docs/stage-spacing-review.md).
 Run `node scripts/audit-stage-spacing.mjs` to check the corrected layouts.
+
+
+## Stage Select filters
+
+Stage Select combines All / Uncleared / Missing stars with chapter and mechanic
+filters. Counts reflect the selected chapter and mechanic. Uncleared excludes
+locked substages; Missing stars includes playable clear records with fewer than
+three stars, including legacy records without a star entry. Scores, best times or
+stars each provide evidence of a clear. Locked stages remain disabled in All.
+
+Mechanic tags come from the generated substage data; chain and clone categories
+use prescribed configurations rather than slider maxima. Stage numbers and chapter
+order remain sequential. Empty results offer a reset; jump-to-current and
+furthest-unlocked clear filters only when needed to reveal the destination.
+Filters are session-only UI state and do not modify player saves or gameplay.

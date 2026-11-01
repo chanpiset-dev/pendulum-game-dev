@@ -1,7 +1,8 @@
+import { MECHANIC_FILTERS, getStageMechanics, matchesProgressFilter } from './stage-filters.js';
 import { getFailureFeedback } from './failure-feedback.js';
 import { createMemoryStorage, createVerificationDriver } from './verification.js';
 import { migrateLegacyIndex } from './data/stage-migration.js';
-import { DIFFICULTIES, chapterForStage } from './data/chapters.js';
+import { CHAPTERS, DIFFICULTIES, chapterForStage } from './data/chapters.js';
 import { OBJECT_SCALE, BOB_MIN_RADIUS, BOB_MAX_RADIUS, BOB_GROWTH, BOB_SHRINK, JOINT_RADIUS, SEGMENT_HIT_RADIUS, RAIL_HIT_RADIUS } from './game-sizes.js';
 import { drawLivePendulum, artworkStyleForTheme } from './engine/artwork.js';
 import { installGimmickGuide } from './gimmick-guide.js';
@@ -1744,10 +1745,24 @@ $('btnShare').addEventListener('click', copyShareUrl);
 $('btnSandbox').addEventListener('click', () => loadStage(currentStageIndex === 'sandbox' ? unlockedStageIndex : 'sandbox'));
 $('btnReroll').addEventListener('click', () => { if (currentStageIndex === 'sandbox') loadStage('sandbox'); });
 
+const stageFilters = {status:'all',mechanic:'all',chapter:'all'};
+function resetStageFilters(){Object.assign(stageFilters,{status:'all',mechanic:'all',chapter:'all'});renderStageSelect();}
+
 function renderStageSelect() {
   const grid = $('stageGrid'); 
   grid.innerHTML = '';
   const isJa = (currentLang === 'ja');
+  const t=I18N[currentLang],counts={all:0,uncleared:0,missing:0};
+  let matching=0,lastChapter=null;
+  $('stageProgressFilters').setAttribute('aria-label',t.filterGroup);
+  $('stageMechanicLabel').textContent=t.filterMechanic;$('stageChapterLabel').textContent=t.filterChapter;
+  $('resetStageFilters').textContent=t.filterReset;$('clearStageFilters').textContent=t.filterShowAll;
+  $('stageFilterEmptyText').textContent=t.filterEmpty;
+  const mechanics=MECHANIC_FILTERS.map(([id,en,ja])=>{const option=document.createElement('option');option.value=id;option.textContent=isJa?ja:en;return option;});
+  $('stageMechanicFilter').replaceChildren(...mechanics);$('stageMechanicFilter').value=stageFilters.mechanic;
+  const allChapters=document.createElement('option');allChapters.value='all';allChapters.textContent=t.filterChaptersAll;
+  const chapters=CHAPTERS.map(c=>{const option=document.createElement('option');option.value=String(c.id);option.textContent=`${isJa?c.ja:c.name} (${c.start}–${c.end})`;return option;});
+  $('stageChapterFilter').replaceChildren(allChapters,...chapters);$('stageChapterFilter').value=stageFilters.chapter;
 
   for (let displayStage = 1; displayStage <= TOTAL_STAGES; displayStage++) {
     const actualStage = STAGE_ORDER[displayStage - 1] || displayStage;
@@ -1755,7 +1770,19 @@ function renderStageSelect() {
     const localized = (isJa && cfg.ja) ? cfg.ja : cfg;
 
     const chapter = chapterForStage(displayStage);
-    if (displayStage === chapter.start) {
+    if(stageFilters.chapter!=='all'&&String(chapter.id)!==stageFilters.chapter)continue;
+    const visibleSubs=[];
+    for(let sub=1;sub<=SUBSTAGES_PER_STAGE;sub++){
+      const index=stageSubToIndex(displayStage,sub),key=stageSubToKey(actualStage,sub);
+      if(stageFilters.mechanic!=='all'&&!getStageMechanics(index).includes(stageFilters.mechanic))continue;
+      const record={locked:index>unlockedStageIndex,score:highScores[key],time:bestTimes[key],stars:stageStars[key]||0};
+      for(const status of Object.keys(counts))if(matchesProgressFilter(status,record))counts[status]++;
+      if(matchesProgressFilter(stageFilters.status,record))visibleSubs.push(sub);
+    }
+    if(!visibleSubs.length)continue;
+    matching+=visibleSubs.length;
+    if (chapter.id !== lastChapter) {
+      lastChapter=chapter.id;
       const heading = document.createElement('h3');
       heading.className = 'chapter-heading';
       heading.textContent = `${chapter.icon} ${isJa ? 'チャプター' : 'Chapter'} ${chapter.id}: ${isJa ? chapter.ja : chapter.name} · ${chapter.start}–${chapter.end}`;
@@ -1775,7 +1802,7 @@ function renderStageSelect() {
     grid.appendChild(card);
 
     const subGrid = card.querySelector(`#stageGridSection_${displayStage}`);
-    for (let sub = 1; sub <= SUBSTAGES_PER_STAGE; sub++) {
+    for (const sub of visibleSubs) {
       const stgIdx = stageSubToIndex(displayStage, sub);
       const isLocked = stgIdx > unlockedStageIndex;
       const isCurrent = (stgIdx === currentStageIndex);
@@ -1788,11 +1815,12 @@ function renderStageSelect() {
       btn.id = `stageButton_${stgIdx}`;
       if (isCurrent) btn.setAttribute('aria-current', 'step');
       btn.className = `stage-btn ${isLocked ? 'locked' : ''} ${isCurrent ? 'current' : ''}`;
-      const best = highScores[stageKey] ? `${highScores[stageKey]}pts` : (isLocked ? '' : I18N[currentLang].clearBest);
+      const hasClear = highScores[stageKey] !== undefined || bestTimes[stageKey] !== undefined || (stageStars[stageKey] || 0) > 0;
+      const best = highScores[stageKey] !== undefined ? `${highScores[stageKey]}pts` : (isLocked ? '' : hasClear ? t.clearBest : t.filterUncleared);
       let starsHtml = '';
       if (!isLocked) {
         const st = stageStars[stageKey] || 0;
-        if (st > 0) starsHtml = `<span class="mini-stars">${'★'.repeat(st)}${'☆'.repeat(3 - st)}</span>`;
+        if (hasClear) starsHtml = `<span class="mini-stars">${'★'.repeat(st)}${'☆'.repeat(3 - st)}</span>`;
       }
       const bestTime = bestTimes[stageKey];
       const timeText = bestTime === undefined ? `${I18N[currentLang].timeLabel}: —` : `${I18N[currentLang].fastestLabel}: ${bestTime.toFixed(2)}${isJa ? '秒' : 's'}`;
@@ -1811,10 +1839,20 @@ function renderStageSelect() {
       subGrid.appendChild(btn);
     }
   }
+  for(const [id,status,key]of [['filterAll','all','filterAll'],['filterUncleared','uncleared','filterUncleared'],['filterMissing','missing','filterMissing']]){
+    $(id).textContent=`${t[key]} (${counts[status]})`;$(id).setAttribute('aria-pressed',String(stageFilters.status===status));
+  }
+  $('stageFilterCount').textContent=t.filterCount(matching);$('stageFilterEmpty').hidden=matching>0;
 }
+
+document.querySelectorAll('[data-progress-filter]').forEach(button=>button.addEventListener('click',()=>{stageFilters.status=button.dataset.progressFilter;renderStageSelect();}));
+$('stageMechanicFilter').addEventListener('change',()=>{stageFilters.mechanic=$('stageMechanicFilter').value;renderStageSelect();});
+$('stageChapterFilter').addEventListener('change',()=>{stageFilters.chapter=$('stageChapterFilter').value;renderStageSelect();});
+$('resetStageFilters').addEventListener('click',resetStageFilters);$('clearStageFilters').addEventListener('click',resetStageFilters);
 
 function openStageSelectModal() { renderStageSelect(); $('mapModal').classList.add('active'); }
 function jumpToStage(idx) {
+  if (!$(`stageButton_${idx}`)) resetStageFilters();
   const button = $(`stageButton_${idx}`);
   if (button) {
     button.scrollIntoView({ block: 'center', behavior: 'instant' });

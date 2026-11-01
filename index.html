@@ -179,6 +179,23 @@
         <span id="bestTimesNote">Best times are recorded for new clears.</span>
       </div>
       <details class="star-rules"><summary id="starRulesTitle">How stars work</summary><p id="starRulesMap"></p></details>
+      <div class="stage-filter-bar">
+        <div id="stageProgressFilters" class="stage-progress-filters" role="group" aria-label="Progress filters">
+          <button type="button" class="btn-nav" id="filterAll" data-progress-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="btn-nav" id="filterUncleared" data-progress-filter="uncleared" aria-pressed="false">Uncleared</button>
+          <button type="button" class="btn-nav" id="filterMissing" data-progress-filter="missing" aria-pressed="false">Missing stars</button>
+        </div>
+        <div class="stage-filter-selects">
+          <label><span id="stageMechanicLabel">Mechanic</span><select id="stageMechanicFilter"></select></label>
+          <label><span id="stageChapterLabel">Chapter</span><select id="stageChapterFilter"></select></label>
+          <button type="button" class="btn-nav" id="resetStageFilters">Reset filters</button>
+        </div>
+        <p id="stageFilterCount" role="status" aria-live="polite"></p>
+      </div>
+      <div id="stageFilterEmpty" class="stage-filter-empty" hidden>
+        <p id="stageFilterEmptyText"></p>
+        <button type="button" class="btn-nav" id="clearStageFilters">Show all substages</button>
+      </div>
       <div class="stage-sections" id="stageGrid"></div>
     </div>
   </div>

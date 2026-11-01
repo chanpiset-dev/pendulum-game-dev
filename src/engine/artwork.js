@@ -100,11 +100,10 @@ function paint(ctx, kind, p, time, pixel, hits = 4) {
     for (let i = 0; i < 4; i++) { const x = -25 + i * 17, y = Math.sin(i * 4) * 16; if (kind === 'resin') path([[x, -27], [x, y]], color, 2); disk(x, y, 3 + i % 2, color, color, 1); }
     return;
   }
-  if (kind === 'reflector') { for (const [x,y] of [[-24,22],[-4,2],[16,-18]]) disk(x,y,10,blue); arrow(-32,-25,21,23,cyan); arrow(-7,-5,30,-2,amber); }
 }
 export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette, time = 0, hits = 4 }) {
   ctx.save();
-  if (style === 'shaded') { ctx.translate(x,y); ctx.scale(radius/48,radius/48); paintShaded(ctx,kind,palette,time,hits); ctx.restore(); return; }
+  if (style === 'shaded') { ctx.translate(x,y); ctx.scale(radius/48,radius/48); paintShaded(ctx,kind,time,hits); ctx.restore(); return; }
   if (kind === 'portal-in' || kind === 'portal-out') kind = 'portal';
   if (style === 'pixel') {
     pixelCanvas ||= document.createElement('canvas'); pixelCanvas.width = 64; pixelCanvas.height = 64;

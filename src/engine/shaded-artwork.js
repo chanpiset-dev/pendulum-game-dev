@@ -169,16 +169,6 @@ function pad(c, x, y, r, color, t) {
   disk(c, x, y, r, "#10283d");
   sphere(c, x, y, r - 3, color, t);
 }
-function shadow(c, x, y, w = 47) {
-  const g = c.createRadialGradient(x, y, 1, x, y, w);
-  g.addColorStop(0, "#0007");
-  g.addColorStop(1, "#0000");
-  c.save();
-  c.translate(x, y);
-  c.scale(1, 0.22);
-  disk(c, 0, 0, w, g);
-  c.restore();
-}
 
 function portal(c, p, t) {
   let col = p.targetId
@@ -228,10 +218,10 @@ function portal(c, p, t) {
   c.globalAlpha = 1;
   c.restore();
   c.save();
-  if (true) {
-    c.shadowColor = col[1];
-    c.shadowBlur = 12;
-  }
+
+  c.shadowColor = col[1];
+  c.shadowBlur = 12;
+
   ring(c, 0, 0, r, col);
   c.shadowBlur = 0;
   c.beginPath();
@@ -241,125 +231,47 @@ function portal(c, p, t) {
   c.stroke();
   c.restore();
   c.restore();
-  c.fillStyle = "#d7e9fb";
-  c.font = "bold 10px system-ui";
-  c.textAlign = "center";
-  void 0;
 }
-function blackHole(c, x, y, r, variant, t, glow = true) {
+function blackHole(c, x, y, r, t) {
   c.save();
   c.translate(x, y);
-  const hues = [
-    ["#fff1b6", "#ffae51", "#b9482a"],
-    ["#f3d7ff", "#b27af5", "#6336a8"],
-    ["#fff6e5", "#edcf9b", "#916e45"],
-    ["#deffff", "#68d5ff", "#437cd1"],
-  ][variant];
+  const hues = ["#f3d7ff", "#b27af5", "#6336a8"];
   const aura = c.createRadialGradient(0, 0, r * 0.65, 0, 0, r * 2.2);
   aura.addColorStop(0, hues[1] + "45");
   aura.addColorStop(0.5, hues[2] + "15");
   aura.addColorStop(1, "#0000");
-  if (glow) disk(c, 0, 0, r * 2.2, aura);
-  function orbitalBand(front) {
-    c.save();
-    c.rotate(variant === 3 ? -0.28 : -0.17);
-    c.scale(1, variant === 3 ? 0.42 : 0.3);
-    for (let k = 0; k < 7; k++) {
-      let rr = r * (1.2 + k * 0.09);
-      c.beginPath();
-      c.arc(0, 0, rr, front ? 0 : Math.PI, front ? Math.PI : TAU);
-      c.lineWidth = r * (0.035 + (6 - k) * 0.008);
-      c.strokeStyle = k < 2 ? hues[0] + "c0" : hues[1] + (k < 5 ? "99" : "44");
-      if (glow) {
-        c.shadowColor = hues[1];
-        c.shadowBlur = 5;
-      }
-      c.stroke();
+  disk(c, 0, 0, r * 2.2, aura);
+
+  for (let k = 0; k < 4; k++) {
+    let pts = [];
+    for (let j = 0; j < 75; j++) {
+      let u = j / 74,
+        rr = r * (1.05 + u * 0.85),
+        a = (k * TAU) / 4 + u * 4.5 + t * 0.25;
+      pts.push([Math.cos(a) * rr, Math.sin(a) * rr * 0.88]);
     }
-    c.restore();
+    path(c, pts, hues[1] + "77", r * 0.045);
   }
-  if (variant === 0 || variant === 3) {
-    orbitalBand(false);
-    c.save();
-    c.scale(1, 0.95);
-    c.beginPath();
-    c.arc(0, 0, r * 1.17, Math.PI, TAU);
-    c.lineWidth = r * 0.12;
-    c.strokeStyle = hues[1] + "88";
-    if (glow) {
-      c.shadowBlur = r * 0.2;
-      c.shadowColor = hues[1];
-    }
-    c.stroke();
-    c.restore();
+  for (let k = 0; k < 30; k++) {
+    let u = (k / 30 - t * 0.045 + 10) % 1,
+      rr = r * (1.06 + u * 0.8),
+      a = k * 2.399 + u * 4 + t * 0.2;
+    disk(c, Math.cos(a) * rr, Math.sin(a) * rr * 0.88, r * 0.014, hues[0]);
   }
-  if (variant === 1) {
-    for (let k = 0; k < 4; k++) {
-      let pts = [];
-      for (let j = 0; j < 75; j++) {
-        let u = j / 74,
-          rr = r * (1.05 + u * 0.85),
-          a = (k * TAU) / 4 + u * 4.5 + t * 0.25;
-        pts.push([Math.cos(a) * rr, Math.sin(a) * rr * 0.88]);
-      }
-      path(c, pts, hues[1] + "77", r * 0.045);
-    }
-    for (let k = 0; k < 30; k++) {
-      let u = (k / 30 - t * 0.045 + 10) % 1,
-        rr = r * (1.06 + u * 0.8),
-        a = k * 2.399 + u * 4 + t * 0.2;
-      disk(c, Math.cos(a) * rr, Math.sin(a) * rr * 0.88, r * 0.014, hues[0]);
-    }
-  }
-  if (variant === 2) {
-    for (let k = 0; k < 44; k++) {
-      let a = (k * TAU) / 44,
-        inner = r * 1.05,
-        outer = r * (1.15 + 0.14 * Math.sin(k * 2.7 + t * 0.45));
-      path(
-        c,
-        [
-          [Math.cos(a) * inner, Math.sin(a) * inner],
-          [Math.cos(a) * outer, Math.sin(a) * outer],
-        ],
-        hues[1] + "44",
-        r * 0.035,
-      );
-    }
-  }
+
   // A black disk covers every rear layer so the center stays truly dark.
   disk(c, 0, 0, r, "#010207");
   c.beginPath();
   c.arc(0, 0, r * 1.025, 0, TAU);
-  c.lineWidth = r * (variant === 2 ? 0.055 : 0.035);
+  c.lineWidth = r * 0.035;
   c.strokeStyle = hues[0];
-  if (glow) {
-    c.shadowBlur = r * 0.17;
-    c.shadowColor = hues[1];
-  }
+
+  c.shadowBlur = r * 0.17;
+  c.shadowColor = hues[1];
+
   c.stroke();
   c.shadowBlur = 0;
-  if (variant === 0 || variant === 3) {
-    orbitalBand(true);
-    disk(c, 0, 0, r * 0.84, "#010207");
-    for (let k = 0; k < 13; k++) {
-      let a = (k * TAU) / 13 + t * 0.5;
-      c.save();
-      c.rotate(-0.17);
-      let px = Math.cos(a) * r * 1.59,
-        py = Math.sin(a) * r * 0.45;
-      if (py > 0 && Math.hypot(px, py) > r * 1.03)
-        disk(c, px, py, r * 0.018, hues[0]);
-      c.restore();
-    }
-  }
-  if (variant === 2) {
-    c.beginPath();
-    c.arc(0, 0, r * 1.06, -2.7, -1.6);
-    c.lineWidth = r * 0.07;
-    c.strokeStyle = "#fff9e9";
-    c.stroke();
-  }
+
   c.restore();
 }
 
@@ -378,12 +290,11 @@ function targetRing(c, r, a, b, color, width) {
   c.lineCap = "round";
   c.stroke();
 }
-function enamelTarget(c, x, y, r, design, hp = 1, impact = 0) {
+function enamelTarget(c, x, y, r, hp = 1) {
   c.save();
   c.translate(x, y);
-  c.scale(1 + impact * 0.07, 1 - impact * 0.12);
-  let outer = r + (design === 2 ? 8 : 5);
-  disk(c, 2, 7 + impact * 4, outer, "#020b16");
+  let outer = r + 5;
+  disk(c, 2, 7, outer, "#020b16");
   disk(c, 0, 3, outer, grad(c, -r, -r, r, r, enamelMetal), "#183044");
   disk(
     c,
@@ -396,101 +307,37 @@ function enamelTarget(c, x, y, r, design, hp = 1, impact = 0) {
       -r,
       r,
       r,
-      design === 1
-        ? [
-            [0, "#ec6671"],
-            [0.5, "#c73445"],
-            [1, "#7b2337"],
-          ]
-        : [
-            [0, "#ffb3a8"],
-            [0.3, "#eb4e5c"],
-            [1, "#901b36"],
-          ],
+      [
+        [0, "#ffb3a8"],
+        [0.3, "#eb4e5c"],
+        [1, "#901b36"],
+      ],
     ),
     "#f0909544",
   );
-  if (design === 0 || design === 2) {
-    for (let i = 4; i >= 1; i--) {
-      let rr = (r * i) / 5,
-        col =
-          i % 2 === 0
-            ? [
-                [0, "#fffdf4"],
-                [1, "#bdcbd5"],
-              ]
-            : [
-                [0, "#ff777e"],
-                [1, "#b6213f"],
-              ];
-      disk(c, 0, 0, rr, grad(c, -rr, -rr, rr, rr, col), "#ffffff22");
-    }
-    if (design === 0) {
-      c.save();
-      c.beginPath();
-      c.arc(0, 0, r - 2, 0, TAU);
-      c.clip();
-      ellipse(c, -r * 0.18, -r * 0.65, r * 0.8, r * 0.17, "#ffffff20");
-      c.restore();
-    }
+
+  for (let i = 4; i >= 1; i--) {
+    let rr = (r * i) / 5,
+      col =
+        i % 2 === 0
+          ? [
+              [0, "#fffdf4"],
+              [1, "#bdcbd5"],
+            ]
+          : [
+              [0, "#ff777e"],
+              [1, "#b6213f"],
+            ];
+    disk(c, 0, 0, rr, grad(c, -rr, -rr, rr, rr, col), "#ffffff22");
   }
-  if (design === 1) {
-    targetRing(c, r * 0.78, 0, TAU, "#efe8df", r * 0.12);
-    disk(
-      c,
-      0,
-      0,
-      r * 0.43,
-      grad(c, -r * 0.4, -r * 0.4, r * 0.4, r * 0.4, [
-        [0, "#fff9e8"],
-        [1, "#bec6cd"],
-      ]),
-    );
-    disk(c, 0, 0, r * 0.18, "#c53747");
-    for (let i = 0; i < 18; i++) {
-      let a = (i * TAU) / 18;
-      disk(
-        c,
-        Math.cos(a) * r * 0.94,
-        Math.sin(a) * r * 0.94,
-        r * 0.018,
-        "#63203988",
-      );
-    }
-  }
-  if (design === 2) {
-    for (let i = 0; i < 4; i++) {
-      let a = Math.PI / 4 + (i * Math.PI) / 2,
-        px = Math.cos(a) * (r + 3),
-        py = Math.sin(a) * (r + 3);
-      disk(c, px, py, 3.2, "#c4d5df", "#314b60");
-      path(
-        c,
-        [
-          [px - 1.5, py],
-          [px + 1.5, py],
-        ],
-        "#3f586a",
-        1,
-      );
-    }
-    targetRing(c, r * 0.94, 0, TAU, "#76243a", 2);
-  }
-  if (design === 3) {
-    c.save();
-    c.shadowColor = "#8ce8ff";
-    c.shadowBlur = 5;
-    targetRing(c, r + 1, 0, TAU, "#81ccdf", 1.8);
-    targetRing(c, r * 0.66, 0, TAU, "#fff3ec", r * 0.1);
-    disk(c, 0, 0, r * 0.26, "#ffebe1");
-    c.restore();
-    c.save();
-    c.beginPath();
-    c.arc(0, 0, r, 0, TAU);
-    c.clip();
-    ellipse(c, -r * 0.17, -r * 0.49, r * 0.64, r * 0.29, "#ffffff24");
-    c.restore();
-  }
+
+  c.save();
+  c.beginPath();
+  c.arc(0, 0, r - 2, 0, TAU);
+  c.clip();
+  ellipse(c, -r * 0.18, -r * 0.65, r * 0.8, r * 0.17, "#ffffff20");
+  c.restore();
+
   const segments = Math.max(0, hp - 1);
   const armorStep = TAU / Math.max(2, segments);
   for (let i = 0; i < segments; i++) {
@@ -513,7 +360,7 @@ function enamelTarget(c, x, y, r, design, hp = 1, impact = 0) {
   c.restore();
 }
 
-export function paintShaded(c, kind, palette, t = 0, hits = 3, exit = false) {
+export function paintShaded(c, kind, t = 0, hits = 3) {
   c.save();
   c.scale(0.48, 0.48);
   const id = kind;
@@ -527,7 +374,6 @@ export function paintShaded(c, kind, palette, t = 0, hits = 3, exit = false) {
       0,
       0,
       kind === "armored" ? 56 : 60,
-      0,
       kind === "armored" ? Math.max(2, hits) : 1,
     );
     c.restore();
@@ -549,7 +395,7 @@ export function paintShaded(c, kind, palette, t = 0, hits = 3, exit = false) {
     return;
   }
   if (kind === "blackhole") {
-    blackHole(c, 0, 0, 53.125, 1, t, true);
+    blackHole(c, 0, 0, 53.125, t);
     c.restore();
     return;
   }
@@ -603,40 +449,6 @@ export function paintShaded(c, kind, palette, t = 0, hits = 3, exit = false) {
         t,
       );
     }
-  } else if (id === "target" || id === "armored") {
-    let r = 61;
-    disk(c, 3, 7, r + 5, "#030a15");
-    disk(c, 0, 0, r + 3, grad(c, -60, -60, 60, 60, metalStops));
-    for (let i = 5; i >= 1; i--) {
-      let radius = i * 11;
-      disk(
-        c,
-        0,
-        0,
-        radius,
-        grad(
-          c,
-          -radius,
-          -radius,
-          radius,
-          radius,
-          i % 2
-            ? [
-                [0, "#ff9b97"],
-                [0.3, "#f04754"],
-                [1, "#8a172f"],
-              ]
-            : [
-                [0, "#fffef6"],
-                [1, "#bbc8d1"],
-              ],
-        ),
-        "#ffffff35",
-      );
-    }
-    if (id === "armored")
-      for (let i = 0; i < 4; i++)
-        ring(c, 0, 0, 76, blue, (i * TAU) / 4 + 0.1, ((i + 1) * TAU) / 4 - 0.1);
   } else if (id === "bomb") {
     sphere(c, 0, 18, 53, ["#9aafbe", "#354758", "#0c1422"], t);
     metal(c, -13, -42, 26, 17, 4);
@@ -964,38 +776,24 @@ export function paintShaded(c, kind, palette, t = 0, hits = 3, exit = false) {
       );
       arrow(c, 76, pts.at(-1)[1], 25, 0, "#64e3f1");
     }
-  } else if (id === "blackhole" || id === "repulsor") {
-    let push = id === "repulsor",
-      col = push
-        ? ["#b7ffff", "#25cbe9", "#146b9b"]
-        : ["#ecd0ff", "#ab69f0", "#3a246b"];
+  } else if (id === "repulsor") {
+    const col = ["#b7ffff", "#25cbe9", "#146b9b"];
     c.save();
     c.shadowColor = col[1];
     c.shadowBlur = 22;
     ring(c, 0, 0, 55, col);
     c.shadowBlur = 0;
-    if (push) sphere(c, 0, 0, 42, ["#d8ffff", "#32b4d2", "#113653"], t);
-    else {
-      disk(c, 0, 0, 48, "#02020c");
-      for (let k = 0; k < 3; k++) {
-        let pts = [];
-        for (let i = 0; i < 50; i++) {
-          let a = (k * TAU) / 3 + i * 0.12 + t * 0.15,
-            r = 8 + i * 0.8;
-          pts.push([Math.cos(a) * r, Math.sin(a) * r]);
-        }
-        path(c, pts, col[1], 2);
-      }
-    }
+    sphere(c, 0, 0, 42, ["#d8ffff", "#32b4d2", "#113653"], t);
+
     c.restore();
     for (let i = 0; i < 4; i++) {
       let a = (i * TAU) / 4;
       arrow(
         c,
-        Math.cos(a) * (push ? 72 : 97),
-        Math.sin(a) * (push ? 72 : 97),
-        Math.cos(a) * (push ? 24 : -24),
-        Math.sin(a) * (push ? 24 : -24),
+        Math.cos(a) * 72,
+        Math.sin(a) * 72,
+        Math.cos(a) * 24,
+        Math.sin(a) * 24,
         col[1],
       );
     }

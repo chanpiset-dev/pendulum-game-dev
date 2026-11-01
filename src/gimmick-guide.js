@@ -25,7 +25,6 @@ export const GIMMICK_FUNCTIONS = {
   slime: ['The cyan rectangular area slows motion while the tip is inside it.', '水色の四角い領域に先端が入ると動きが遅くなります。'],
   resin: ['Amber sticky areas strongly damp the swing while the tip is inside. Build speed before entering.', '黄色い粘着領域に先端が入ると動きが減衰します。入る前に速度をつけましょう。'],
   moving: ['A circular guard patrols its marked route. Adjust your launch angle to pass its patrol.', '丸い障害物が表示された進路を巡回します。巡回を避けられる発射角度を探しましょう。'],
-  reflector: ['Angled arrangements of circular bumpers redirect the swing. Follow the visible round contact surfaces.', '丸いバンパーの斜め配置で進路を変えます。丸い接触面を見て狙いましょう。'],
 };
 export function installGimmickGuide({ $, language, pauseDemo, resumeDemo }) {
   function render() {

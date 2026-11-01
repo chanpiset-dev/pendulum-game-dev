@@ -1,0 +1,10 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});try{const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(()=>{requestAnimationFrame=()=>1;cancelAnimationFrame=()=>{};});
+ await page.route('**/*',r=>{const u=new URL(r.request().url());if(u.hostname!=='game.test')return r.abort();const f=path.join(__dirname,'..',u.pathname==='/'?'index.html':u.pathname);let body=fs.readFileSync(f,'utf8');if(u.pathname==='/src/main.js')body+='\nwindow.soundQA=code=>eval(code);';if(u.pathname==='/src/audio.js')body=body.replace('export function playSnd(type,combo=0){','export function playSnd(type,combo=0){window.soundEvents??=[];window.soundEvents.push(type);');return r.fulfill({body,contentType:f.endsWith('.js')?'text/javascript':f.endsWith('.css')?'text/css':f.endsWith('.svg')?'image/svg+xml':'text/html'});});
+ await page.goto('http://game.test');await page.waitForFunction(()=>window.soundQA);await page.click('#btnStartGame');
+ await page.evaluate(()=>soundQA("loadStage(1);$('stageBriefing').classList.add('hidden');fire();stopGameLoop();targets.forEach(t=>t.alive=false);hitStopTimer=0;update(0);update(2.05);update(1.1);update(.5);draw()"));
+ const events=await page.evaluate(()=>window.soundEvents);for(const cue of ['confirm','launch','clear','home_travel','home_land','home_arrive'])assert.ok(events.includes(cue),cue);
+ await page.evaluate(async()=>{const a=await import('/src/audio.js');for(const cue of a.SOUND_EFFECTS)a.playSnd(cue);a.setAudioPreferences({muted:true});a.playSnd('bomb');a.suspendAudio();a.playSnd('menu');});
+ assert.deepEqual(errors,[]);console.log('Sound effects: real Web Audio recipes, menu/launch/clear/homecoming integration, mute and suspend passed.');
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1});

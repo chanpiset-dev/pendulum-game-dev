@@ -149,7 +149,7 @@ const { chromium } = require('playwright');
       setup();
       run('loadStage(31);fire();targets.forEach(t=>t.alive=false);update(.016)');
       check(run("gameStatus === 'clearing'"), 'Completion enters clearing');
-      run('update(3.1);draw()');
+      run('update(HOME_TOTAL_DURATION+.1);draw()');
       check(el('overlay').classList.contains('active'), 'Completion renders result overlay');
       setup();
       run('fire();update(.02)');

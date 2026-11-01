@@ -834,6 +834,7 @@ function fire() {
   }
 
   timeElapsed = 0; currentStageScore = 0; clearingTimer = 0; currentRunHistory = []; gameStatus = 'playing'; lastTime = performance.now();
+  playSnd('launch');
   $('btnFire').style.display = 'none'; 
   $('btnStop').style.display = 'block'; 
   $('btnPause').style.display = 'block';
@@ -956,6 +957,7 @@ function update(rawDt) {
       if(!reduced)for(const at of [.3,.6])if(previous<at&&clearingTimer>=at)launchFirework();
       updateParticlesAndFireworks({particles,shockwaves,floaters,fireworks,dt:Math.min(rawDt,HOME_FIREWORK_DELAY-previous),rawDt:Math.min(rawDt,HOME_FIREWORK_DELAY-previous),currentGravity,playSnd:reduced?()=>{}:playSnd,getScreenShake:()=>0,setScreenShake:()=>{}});
     }
+    for(const [at,sound]of [[HOME_FIREWORK_DELAY,'home_travel'],[HOME_FIREWORK_DELAY+1.1,'home_land'],[HOME_FIREWORK_DELAY+1.5,'home_arrive']])if(previous<at&&clearingTimer>=at)playSnd(sound);
     if(clearingTimer>=HOME_TOTAL_DURATION)finishHomecoming();return;
   }
   if (screenShake > 0) screenShake *= 0.88;
@@ -1357,7 +1359,7 @@ function update(rawDt) {
 
                   const stageWon = (gameStatus === 'clearing') || targets.every(t => !t.alive);
                   if (!stageWon && k === chain.N - 1 && bDist < (b.coreRadius + effectiveTipR)) {
-                    chain.alive = false; playSnd('bomb'); screenShake = 18;
+                    chain.alive = false; playSnd('blackhole'); screenShake = 18;
                     shockwaves.push({ x: b.x, y: b.y, r: 12, maxR: 170, life: 1, color: '#a855f7' });
                     if (systems.every(ch => !ch.alive) && gameStatus !== 'blackhole_death') {
                       gameStatus = 'blackhole_death'; clearingTimer = 0; updateWindSpeed(0, false);
@@ -1376,7 +1378,7 @@ function update(rawDt) {
               t.artworkHitTime = timeElapsed;
               if (t.hp && t.hp > 1 && !t.isBomb) {
                 t.hp--;
-                playSnd('shield_hit');
+                playSnd(t.hp===1?'armor_break':'shield_hit');
                 screenShake = 5;
                 shockwaves.push({ x: t.x, y: t.y, r: t.r, maxR: t.r + 35, life: 0.8, color: '#38bdf8' });
                 floaters.push({ x: t.x, y: t.y, text: I18N[currentLang].shieldCrack, life: 0.8 });
@@ -2001,3 +2003,10 @@ if (verificationMode) {
   });
   window.verificationAPI = driver;
 }
+
+// Menu sounds require a real user gesture; never resume audio from a paused attempt.
+document.addEventListener('click',event=>{
+  const button=event.target.closest('button');if(!button||button.disabled||gameStatus==='paused'||document.querySelector('#replayDialog[open]'))return;
+  const confirm=button.matches('#journeyPlay,#overlayBtn,#btnDismissBriefing,#btnStartGame');
+  if(confirm||button.matches('.btn-nav,.journey-node,.journey-sub,.stage-btn,.modal-close')){unlockAudio();playSnd(confirm?'confirm':'menu');}
+},true);

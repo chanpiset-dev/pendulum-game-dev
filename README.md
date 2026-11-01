@@ -216,3 +216,11 @@ After the final target clears, physics, moving anchors, obstacles, score time, a
 The sequence is decorative: it adds no exit collision or launch requirement and never changes the saved physics state. Clones retain their colors and enter together with a small stagger. Classic-bob preference remains respected. Reduced motion uses a few stationary fading sparks during the interval, followed by a stationary bob fade, immediate door opening, and a nonanimated flag reveal. When environment backgrounds are off, the shelter still appears for homecoming. Free Play does not run the sequence. The ordinary next-stage action and updated journey marker remain available after arrival. Replay records the complete Canvas presentation. Retry/Restart/next-stage loading discard the previous presentation snapshot.
 
 Verify with `node tests/homecoming.cjs`, `node --test tests/homecoming.test.mjs`, and `node scripts/verify-solutions.cjs`.
+
+## Expedition sound effects
+
+Procedural Web Audio provides warm mechanical target/armor impacts, launch whooshes, spring rebounds, paired portal entry/exit tones, switch clicks and gate slides, boost/pulse/laser feedback, low black-hole capture suction, restrained fireworks, and quiet menu/confirmation cues. Clear and home arrival share a three-note musical identity; home travel and landing have separate cues. No music, chapter ambience, or external audio assets are added.
+
+Short attack envelopes, slight impact pitch variation, per-effect cooldowns, a maximum of 18 transient voices, and a master compressor keep crowded stages comfortable. Every cue goes through the existing master volume/mute. Muting or pausing cancels active and scheduled transient tails; sound effects never resume a suspended context themselves. Only explicit gesture-driven controls unlock audio, and unsupported audio does not block play. Existing movement-wind audio is retained. Silent replay remains unchanged.
+
+Verify with `node --test tests/audio.test.mjs` and `node tests/sound-effects.cjs`.

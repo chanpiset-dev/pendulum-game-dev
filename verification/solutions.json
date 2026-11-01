@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "engine": "a019d8fd263a5fcfd685fffe7f6de3b33e6510fa1be7a8c56a37be457f0fffcd",
+  "engine": "be1b1e4fa06aff5be65459fef9dacf5c6130fe5599ad542a8bd216a78460feed",
   "engineFiles": [
     "src/data/stage-balance.js",
     "src/data/stage-builders/chapter1-basics.js",
@@ -19,7 +19,7 @@
     "src/verification.js"
   ],
   "step": 0.016666666666666666,
-  "generatedAt": "2026-11-01T11:16:13.112Z",
+  "generatedAt": "2026-11-01T12:11:28.825Z",
   "scope": "Bounded search; unresolved means no repeatable clear found within the search budget, not impossible.",
   "results": [
     {

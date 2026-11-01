@@ -196,3 +196,13 @@ The explorer face and scarf follow each live tip bob in every artwork style, inc
 In stage mode, the HUD shows cleared non-bomb targets charging a decorative gateway. Bombs retain their existing role and completion rules. On clear, the gateway opens and the existing celebration remains skippable with **Skip celebration**. The clear screen reveals the actual next stage/substage; stage 50-5 shows the final completion message. Skipping advances the presentation wait without changing scoring time, stars, or unlocking rules. Free Play has no gateway objective. English and Japanese are supported; reduced-motion mode disables the added gateway transition. Replay remains a recording of the canvas and does not record DOM HUD elements.
 
 Verify with `node tests/explorer-adventure.cjs`, `node --test tests/*.test.mjs`, and `node scripts/verify-solutions.cjs` (browser checks require Playwright and Chromium).
+
+## Journey map
+
+**STAGES** now opens a chapter journey route by default. All six existing chapters and all 250 substages retain their numbering. Choose a stage node, then one of its five substages and **PLAY** to load the chamber briefing. Locked nodes can be inspected; their locked substages cannot be launched. Map stars sum all five substages (maximum 15), while the picker shows each substage's three stars. Legacy score/time-only clears still count as completed.
+
+The explorer marks the earliest unlocked, uncleared substage; it stays in place while you browse. **Find explorer** selects it. Underlined stage names indicate the current stage, and the selection ring indicates the stage being inspected. Completed campaigns keep the explorer at the last stage. Chapter titles and landmark names support English and Japanese.
+
+**Stage grid** retains the progress, mechanic, and chapter filters. Switching views preserves those session-only filters. Current/furthest jump controls select the relevant chapter and stage in map view and keep their original scroll-and-focus behavior in grid view. Browsing the map never writes progress, changes an attempt, or affects replay. The route uses native buttons, keyboard focus, and a two-column mobile layout. The existing grid remains available in every theme.
+
+Verify with `node tests/journey-map.cjs` and `node --test tests/journey-map.test.mjs` (browser checks require Playwright and Chromium).

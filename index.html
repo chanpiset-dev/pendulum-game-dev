@@ -183,6 +183,14 @@
         <span id="bestTimesNote">Best times are recorded for new clears.</span>
       </div>
       <details class="star-rules"><summary id="starRulesTitle">How stars work</summary><p id="starRulesMap"></p></details>
+      <div class="journey-view-switch" role="group"><button type="button" id="journeyMapButton" class="btn-nav" aria-pressed="true">Journey map</button><button type="button" id="journeyGridButton" class="btn-nav" aria-pressed="false">Stage grid</button><button type="button" id="journeyFind" class="btn-nav">Find explorer</button></div>
+      <section id="journeyContent">
+        <nav id="journeyChapters" class="journey-chapters"></nav>
+        <h3 id="journeyTitle" tabindex="-1"></h3><p id="journeyRange"></p>
+        <div class="journey-layout"><div class="journey-landscape"><div id="journeyRoute" class="journey-route"></div><p id="journeyLegend"></p></div>
+        <section class="journey-picker"><h3 id="journeyStageTitle" tabindex="-1"></h3><p id="journeyStageDescription"></p><div id="journeySubs"></div><p id="journeyHint"></p><button type="button" id="journeyPlay" class="btn-large primary">PLAY</button></section></div>
+        <p id="journeySummary" role="status"></p>
+      </section>
       <div class="stage-filter-bar">
         <div id="stageProgressFilters" class="stage-progress-filters" role="group" aria-label="Progress filters">
           <button type="button" class="btn-nav" id="filterAll" data-progress-filter="all" aria-pressed="true">All</button>

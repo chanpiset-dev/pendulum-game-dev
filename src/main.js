@@ -1,3 +1,4 @@
+import { installJourneyMap } from './journey-map.js';
 import { setExplorerEnabled } from './engine/explorer.js';
 import { MECHANIC_FILTERS, getStageMechanics, matchesProgressFilter } from './stage-filters.js';
 import { getFailureFeedback } from './failure-feedback.js';
@@ -1772,6 +1773,7 @@ $('btnShare').addEventListener('click', copyShareUrl);
 $('btnSandbox').addEventListener('click', () => loadStage(currentStageIndex === 'sandbox' ? unlockedStageIndex : 'sandbox'));
 $('btnReroll').addEventListener('click', () => { if (currentStageIndex === 'sandbox') loadStage('sandbox'); });
 
+let journeyMap = null;
 const stageFilters = {status:'all',mechanic:'all',chapter:'all'};
 function resetStageFilters(){Object.assign(stageFilters,{status:'all',mechanic:'all',chapter:'all'});renderStageSelect();}
 
@@ -1870,6 +1872,8 @@ function renderStageSelect() {
     $(id).textContent=`${t[key]} (${counts[status]})`;$(id).setAttribute('aria-pressed',String(stageFilters.status===status));
   }
   $('stageFilterCount').textContent=t.filterCount(matching);$('stageFilterEmpty').hidden=matching>0;
+  $('stageFilterEmpty').dataset.matching=matching;
+  journeyMap?.render();
 }
 
 document.querySelectorAll('[data-progress-filter]').forEach(button=>button.addEventListener('click',()=>{stageFilters.status=button.dataset.progressFilter;renderStageSelect();}));
@@ -1877,8 +1881,9 @@ $('stageMechanicFilter').addEventListener('change',()=>{stageFilters.mechanic=$(
 $('stageChapterFilter').addEventListener('change',()=>{stageFilters.chapter=$('stageChapterFilter').value;renderStageSelect();});
 $('resetStageFilters').addEventListener('click',resetStageFilters);$('clearStageFilters').addEventListener('click',resetStageFilters);
 
-function openStageSelectModal() { renderStageSelect(); $('mapModal').classList.add('active'); }
+function openStageSelectModal() { renderStageSelect(); journeyMap?.open(); $('mapModal').classList.add('active'); }
 function jumpToStage(idx) {
+  if(journeyMap?.jump(idx))return;
   if (!$(`stageButton_${idx}`)) resetStageFilters();
   const button = $(`stageButton_${idx}`);
   if (button) {
@@ -1945,6 +1950,10 @@ installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,
   savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,
   strings: () => I18N[currentLang] });
+journeyMap = installJourneyMap({ $, getState: () => ({current:currentStageIndex, unlocked:unlockedStageIndex, scores:highScores, times:bestTimes, stars:stageStars, language:currentLang, strings:I18N[currentLang]}),
+  showGrid: renderStageSelect,
+  launch(index) { closeStageSelectModal(); loadStage(index); const info=indexToStageSub(index);showStageBriefing(info.stage,info.sub,info.displayStage); $('btnDismissBriefing').focus({preventScroll:true}); }
+});
 updateTotalScoreDisplay();
 setLanguage(currentLang);
 loadStage(unlockedStageIndex);

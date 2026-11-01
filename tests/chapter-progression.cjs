@@ -33,7 +33,7 @@ const fs=require('node:fs');const path=require('node:path');const {chromium}=req
    loadStage(1);unlockedStageIndex=250;renderStageSelect();return true;
   })()`));assert.ok(checks);
   await page.addStyleTag({content:'* { transition: none !important; animation: none !important; }'});
-  await page.evaluate(()=>window.testRun("$('titleScreen').classList.add('hidden');$('stageBriefing').classList.add('hidden');openStageSelectModal()"));
+  await page.evaluate(()=>window.testRun("$('titleScreen').classList.add('hidden');$('stageBriefing').classList.add('hidden');openStageSelectModal();$('journeyGridButton').click()"));
   assert.equal(await page.locator('.chapter-heading').count(),6);
   assert.equal(await page.locator('.stage-section-card').count(),50);
   assert.equal(await page.locator('.stage-btn').count(),250);

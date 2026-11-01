@@ -28,7 +28,7 @@ const fs=require('node:fs');const path=require('node:path');const {chromium}=req
   await page.evaluate(()=>window.testRun("setLanguage('en')"));
   assert.match(await page.locator('#replayDescription').innerText(),/STAGE 1-1.*FIRST SWING/);
   assert.equal(await page.locator('#replayClose').innerText(),'CLOSE');
-  await page.evaluate(()=>window.testRun("$('replayDialog').close();setLanguage('ja');loadStage(1);bestTimes.stage_1_sub_1=4.25;renderStageSelect();openStageSelectModal()"));
+  await page.evaluate(()=>window.testRun("$('replayDialog').close();setLanguage('ja');loadStage(1);bestTimes.stage_1_sub_1=4.25;renderStageSelect();openStageSelectModal();$('journeyGridButton').click()"));
   assert.equal(await page.locator('#bestTimesNote').innerText(),'クリア毎に最速タイムを更新');
   assert.equal(await page.locator('#btnJumpFurthest').innerText(),'解放済みの最終ステージへ');
   assert.match(await page.locator('#stageButton_1').innerText(),/最速: 4.25秒/);

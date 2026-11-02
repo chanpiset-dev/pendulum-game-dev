@@ -1,3 +1,4 @@
+import { FANTASY_EXPLORER_ID, drawFantasyExplorer } from './fantasy-explorer.js';
 import { drawExplorer } from '../engine/explorer.js';
 import { resolveCharacterAnimation } from './character-animation.js';
 
@@ -5,6 +6,7 @@ import { resolveCharacterAnimation } from './character-animation.js';
 // renderer with identical coordinates, radius, pixel mode and expression.
 const skins = new Map();
 let activeSkin = 'legacy';
+skins.set(FANTASY_EXPLORER_ID, drawFantasyExplorer);
 export function registerCharacterSkin(id, renderer) {
   if (!id || id === 'legacy' || typeof renderer !== 'function') throw new TypeError('A non-legacy skin ID and render function are required');
   skins.set(id, renderer);
@@ -18,7 +20,12 @@ export function drawCharacter(ctx, attachment, options = {}) {
   const renderer = skins.get(activeSkin);
   if (renderer) {
     // Skin callbacks receive a read-only transform and must not mutate physics.
-    renderer(ctx, attachment, { ...options, animation, radius });
+    ctx.save();
+    let drawn;
+    try { drawn = renderer(ctx, attachment, { ...options, animation, radius }); }
+    finally { ctx.restore(); }
+    if (drawn !== false) return;
+    drawExplorer(ctx, attachment.x, attachment.y, radius, { pixel: options.pixel === true, mood: animation.expression });
   } else {
     drawExplorer(ctx, attachment.x, attachment.y, radius, {
       pixel: options.pixel === true, mood: animation.expression

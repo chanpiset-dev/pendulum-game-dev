@@ -1964,7 +1964,7 @@ installGimmickGuide({ $, language: () => currentLang,
     unlockAudio(); tutLastTime = performance.now(); tutAnimId = requestAnimationFrame(loopTutorial);
   }
 });
-installArtworkPreview({ $, language: () => currentLang });
+installArtworkPreview({ $, language: () => currentLang, storage: verificationMode ? verificationStorage : undefined });
 installExplorerSkinSettings({ $, storage: verificationMode ? verificationStorage : undefined });
 installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,

@@ -13,7 +13,7 @@ const root=path.resolve(__dirname,'..');
     return route.fulfill({body:fs.readFileSync(file),contentType:file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.svg')?'image/svg+xml':'text/html'});
    });
    await page.goto('http://game.test');
-   await page.waitForFunction(()=>document.querySelector('#fantasyGimmicksGameplay')!==null);
+   await page.waitForFunction(()=>document.querySelector('#gimmickArtworkSkin')!==null);
    assert.equal(await page.locator('#fantasyGimmicksGameplay').isChecked(),false);
    await page.evaluate(()=>document.querySelector('#settingsDialog').showModal());
    await page.locator('#btnArtworkPreview').click();
@@ -30,6 +30,6 @@ const root=path.resolve(__dirname,'..');
    assert.deepEqual(errors,[],name+' runtime errors');
    await context.close();
   }
-  console.log('M7 graphics QA desktop/mobile comparison, preview mode, temporary gameplay toggle and reload reset passed.');
+  console.log('M7 graphics QA desktop/mobile comparison, preview mode, persistent gameplay selector and reload restoration passed.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

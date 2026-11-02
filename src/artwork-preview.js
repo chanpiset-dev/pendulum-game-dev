@@ -1,17 +1,12 @@
 import { ARTWORK_ITEMS, artworkStyleForTheme, drawArtwork, drawLivePendulum } from './engine/artwork.js';
 import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
 import { installFantasyGimmickSkins } from './graphics/fantasy-gimmicks.js';
+import { installGimmickSkinSettings } from './graphics/gimmick-skin-settings.js';
 import { getGimmickSkin, visualIdForGimmick, registerGimmickSkin, unregisterGimmickSkin } from './graphics/gimmick-registry.js';
-export function installArtworkPreview({ $, language }) {
+export function installArtworkPreview({ $, language, storage }) {
+  installGimmickSkinSettings({ $, storage });
   const dialog = $('artworkDialog'), canvas = $('artworkStage'), ctx = canvas.getContext('2d');
   let animation = null, started = 0;
-  const gameplayToggle = $('fantasyGimmicksGameplay');
-  let undoGameplay = null;
-  function setGameplayFantasy(on) {
-    if (undoGameplay) { undoGameplay(); undoGameplay = null; }
-    if (on) undoGameplay = installFantasyGimmickSkins();
-  }
-  gameplayToggle?.addEventListener('change', () => setGameplayFantasy(gameplayToggle.checked));
   // Preview overlays the registry only during synchronous drawing; live gameplay
   // returns to the exact prior registry immediately after each specimen.
   function withPreviewSkin(kind, fantasy, draw) {

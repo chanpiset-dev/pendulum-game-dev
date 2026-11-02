@@ -26,7 +26,11 @@ const root=path.resolve(__dirname,'..');
    await page.locator('#gimmickArtworkSkin').selectOption('fantasy');
    assert.equal(await page.locator('#gimmickArtworkSkin').inputValue(),'fantasy');
    await page.reload();await page.waitForFunction(()=>document.querySelector('#gimmickArtworkSkin')!==null);
-   assert.equal(await page.locator('#gimmickArtworkSkin').inputValue(),'legacy','persistent selection');
+   assert.equal(await page.locator('#gimmickArtworkSkin').inputValue(),'fantasy','persistent selection');
+   assert.equal(await page.evaluate(()=>localStorage.getItem('pendulum.gimmick.skin.v1')),'fantasy');
+   await page.evaluate(()=>document.querySelector('#settingsDialog').showModal());
+   await page.selectOption('#gimmickArtworkSkin','legacy');
+   assert.equal(await page.evaluate(()=>localStorage.getItem('pendulum.gimmick.skin.v1')),'legacy');
    assert.deepEqual(errors,[],name+' runtime errors');
    await context.close();
   }

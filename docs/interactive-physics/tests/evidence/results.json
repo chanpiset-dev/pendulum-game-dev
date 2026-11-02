@@ -1,0 +1,346 @@
+{
+  "errors": [],
+  "requests": [],
+  "simulation": {
+    "issues": [],
+    "events": [
+      {
+        "id": "original-0",
+        "kind": "cover",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-1",
+        "kind": "objects",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-1",
+        "kind": "vectors",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-2",
+        "kind": "coordinates",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-3",
+        "kind": "forces",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-2",
+        "kind": "energy",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-oscillation",
+        "kind": "oscillation",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-3",
+        "kind": "damping",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-4",
+        "kind": "coupled",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-4",
+        "kind": "multi",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-5",
+        "kind": "matrix",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-6",
+        "kind": "sensitivity",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-sensitivity-plot",
+        "kind": "sensitivity-plot",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-5",
+        "kind": "rk4",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-7",
+        "kind": "integration",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-6",
+        "kind": "gravity",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-7",
+        "kind": "pivot",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-8",
+        "kind": "orbit",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-wind-plot",
+        "kind": "wind-plot",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-9",
+        "kind": "wind",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-8",
+        "kind": "pulse",
+        "events": 1,
+        "alive": true,
+        "last": "Example pulse applied at 1.5 s"
+      },
+      {
+        "id": "added-10",
+        "kind": "boost",
+        "events": 8,
+        "alive": true,
+        "last": "Ring: ±3.2 rad/s added"
+      },
+      {
+        "id": "original-9",
+        "kind": "circles",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-10",
+        "kind": "segment",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-11",
+        "kind": "sampling",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-12",
+        "kind": "bumper",
+        "events": 321,
+        "alive": true,
+        "last": "Contact: ω tip × -0.8"
+      },
+      {
+        "id": "added-13",
+        "kind": "rail-contact",
+        "events": 4,
+        "alive": true,
+        "last": "Rail: all angular speeds × −0.8"
+      },
+      {
+        "id": "added-14",
+        "kind": "clone-contact",
+        "events": 51,
+        "alive": true,
+        "last": "Tip overlap: source clone exchange"
+      },
+      {
+        "id": "added-15",
+        "kind": "armor",
+        "events": 3,
+        "alive": true,
+        "last": "Target cleared; radius grew"
+      },
+      {
+        "id": "original-11",
+        "kind": "bomb",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-16",
+        "kind": "switch",
+        "events": 377,
+        "alive": true,
+        "last": "Closed gate: ω tip × −0.8"
+      },
+      {
+        "id": "added-17",
+        "kind": "laser",
+        "events": 3,
+        "alive": false,
+        "last": "Laser contact: 0 lives"
+      },
+      {
+        "id": "original-12",
+        "kind": "fields",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-18",
+        "kind": "field-motion",
+        "events": 1,
+        "alive": false,
+        "last": "Core contact: chain ended"
+      },
+      {
+        "id": "original-13",
+        "kind": "portal",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-19",
+        "kind": "portal-motion",
+        "events": 5,
+        "alive": true,
+        "last": "Portal: angles and speeds reassigned"
+      },
+      {
+        "id": "added-20",
+        "kind": "zone",
+        "events": 0,
+        "alive": true,
+        "last": "Tip inside: both damping rules active"
+      },
+      {
+        "id": "added-21",
+        "kind": "clocks",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "original-14",
+        "kind": "pipeline",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-22",
+        "kind": "visual-physics",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-23",
+        "kind": "verification",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      },
+      {
+        "id": "added-24",
+        "kind": "experiment",
+        "events": 0,
+        "alive": true,
+        "last": ""
+      }
+    ]
+  },
+  "desktop": {
+    "pages": 48,
+    "sections": [
+      "The Physics BehindPendulum Game",
+      "Contents",
+      "1  Start with the objects you\nsee",
+      "2  A short mathematical toolkit",
+      "3  Coordinates:\nwhy the game uses sine for horizontal position",
+      "4  One link: gravity, torque\nand energy",
+      "5  Small swings, large\nswings and damping",
+      "6  Two or more\nlinks: why they influence each other",
+      "7  Where the coupled\nequations come from",
+      "8  Launch settings, clones\nand sensitivity",
+      "9  How the computer advances\ntime",
+      "10  Gravity: normal,\nlow, heavy, inverted and zero",
+      "11  Moving pivots and rails",
+      "12  Wind: a\nhorizontal acceleration, not a fluid simulation",
+      "13  Pulses and boost\nrings add angular velocity",
+      "14  Detecting contact",
+      "15  Bumpers, springs,\nabsorbers, rails and clones",
+      "16  Targets, armor, bombs,\nswitches and lasers",
+      "17  Black holes and repulsor\nfields",
+      "18  Portals: rebuilding a\nchain near an exit",
+      "19  Slime, resin and timing\neffects",
+      "20  One frame in the\nrelease: an implementation map",
+      "21  What\nis visual, what changes physics, and what affects score",
+      "22  Reading the\n250-stage verification correctly",
+      "23  Experiments a beginner can\ntry",
+      "A  Symbols and useful release\nconstants",
+      "B  Source map and\nnumerical-figure provenance",
+      "C  Glossary"
+    ],
+    "mathCount": 211,
+    "mathErrors": [],
+    "overflow": []
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "pages": 48,
+    "mathErrors": [],
+    "overflows": []
+  }
+}

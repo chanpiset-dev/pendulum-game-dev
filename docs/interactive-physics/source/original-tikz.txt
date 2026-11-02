@@ -1,0 +1,73 @@
+\begin{tikzpicture}[scale=1.1]
+\draw[ink,line width=4pt](-2,0)--(2,0);\coordinate(P)at(0,0);\coordinate(A)at(1.25,-1.9);\coordinate(B)at(-.3,-3.35);\draw[rod](P)--(A)--(B);\node[mass]at(A){};\node[mass,fill=teal!70,minimum size=14mm]at(B){};\draw[ghost](P)--(0,-3.8);\draw[arr,teal](B)--++(1.5,-.5)node[right]{motion};\draw[arr,warm](B)--++(0,-1.1)node[below]{gravity};\node[above=4mm]at(P){fixed or moving pivot};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\coordinate(P)at(0,0);\coordinate(A)at(1.6,-1.6);\coordinate(B)at(.7,-3.2);
+\draw[rod](-.7,0)--(.7,0);\draw[rod](P)--(A)--(B);\node[mass]at(A){1};\node[mass]at(B){2};
+\node[left=5mm]at(P){pivot};\node[right=4mm]at(A){intermediate mass};\node[right=4mm]at(B){tip bob};\node[above right]at(.6,-.6){link 1};\node[left]at(1.1,-2.3){link 2};
+\draw[ghost](4.3,-.2)circle(1.1);\fill[ink](4.3,-.2)circle(2pt);\draw[rod](4.3,-.2)--(5.1,-.95);\node[mass]at(5.1,-.95){};\node[align=center]at(4.3,-2.1){One link: its end follows a circle.};\node[align=center]at(4.3,-3){More links: the tip need not\\follow one circle about the pivot.};
+\end{tikzpicture}
+
+\begin{tikzpicture}[scale=1.05]
+\coordinate(P)at(0,0);\coordinate(B)at(2,-2.4);\draw[arr](P)--(3.5,0)node[right]{\(+x\)};\draw[arr](P)--(0,-3.8)node[below]{\(+y\), down};\draw[rod](P)--(B);\node[mass]at(B){};\draw[ghost](B)--(0,-2.4);\draw[ghost](B)--(2,0);\draw[arr,teal](0,-.85)arc[start angle=-90,end angle=-50,radius=.85];\node[teal]at(.5,-1.1){\(\theta\)};\node[above]at(1,0){\(\ell\sin\theta\)};\node[right]at(2,-1.1){\(\ell\cos\theta\)};\node[left]at(.5,-2){\(\ell\)};
+\node[align=left,anchor=west]at(4,-.7){\(\theta=0\): down\\\(\theta=90^\circ\): right\\\(\theta=-90^\circ\): left\\\(\theta=180^\circ\): up};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\coordinate(P)at(0,0);\coordinate(B)at(2,-2.5);\draw[ghost](P)--(0,-4);\draw[rod](P)--(B);\node[mass]at(B){};\draw[arr,warm](B)--++(0,-1.5)node[right]{\(mg\)};\draw[arr,ink](B)--++(-.85,1.06)node[above left]{constraint};\draw[arr,teal](B)--++(-1.15,-.92)node[below left]{tangential gravity};\draw[ghost](B)--++(1.2,.96);\node[align=left]at(5,-1.4){Torque = turning effect\\Force farther from pivot\\has greater leverage.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\coordinate(P)at(0,0);\coordinate(A)at(1.6,-1.8);\coordinate(B)at(.1,-3.5);\draw[rod](P)--(A)--(B);\node[mass]at(A){\(m_1\)};\node[mass]at(B){\(m_2\)};\draw[ghost](P)--(0,-2.2);\draw[ghost](A)--++(0,-2);\draw[arr,teal](0,-.8)arc(-90:-48:.8);\node[teal]at(.5,-.8){\(\theta_1\)};\draw[arr,warm](1.6,-2.5)arc(-90:-132:.7);\node[warm]at(1.12,-2.55){\(\theta_2\)};\node[align=left,anchor=west]at(3,-1){Link 1 carries both masses.\\Link 2 carries the end mass.\\Both angles are measured\\from downward vertical.};
+\end{tikzpicture}
+
+\begin{tikzpicture}[node distance=9mm]
+\node[draw,rounded corners,fill=teal!8] (s){Current state};\node[draw,right=of s](k){Four derivative estimates};\node[draw,right=of k](w){Weighted average};\node[draw,right=of w](n){Next state};\draw[arr](s)--(k);\draw[arr](k)--(w);\draw[arr](w)--(n);
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\foreach \x/\lab/\dir in {0/Normal/-1,3/Inverted/1,6/Zero/0}{\draw[rod](\x,0)--++(.65,-1.1);\node[mass]at(\x+.65,-1.1){};\node[above]at(\x+.3,.2){\lab};}
+\draw[arr,warm](.65,-1.1)--(.65,-2.3)node[below]{\(g>0\)};\draw[arr,warm](3.65,-1.1)--(3.65,.1);\node[below]at(3.65,-2.3){\(g<0\)};\node[below,align=center]at(6.5,-1.5){No gravity arrow\\\(g=0\)};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\draw[ink,line width=3pt](-2,0)--(2,0);\draw[fill=teal!15](-.35,-.2)rectangle(.35,.2);\draw[rod](0,-.2)--(.8,-1.8);\node[mass]at(.8,-1.8){};\draw[arr,teal](.2,.7)--(1.7,.7)node[right]{pivot acceleration \(a_x\)};\draw[arr,warm](.8,-1.8)--(-.5,-1.8)node[left]{effective inertial term};\node[align=left]at(5,-.6){A horizontal rail prescribes\\the pivot position.\\The solver receives its acceleration.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\draw[rod](0,0)--(1,-1.3)--(2.1,-2);\node[mass]at(2.1,-2){};\draw[arr,teal](1.6,-2.8)arc(-140:-15:.9);\node[below]at(1.3,-3.1){last-link angular speed increases};\node[draw,rounded corners,align=left]at(5.1,-1.1){before: \(\omega_N=1.2\)\\after pulse: \(\omega_N=3.7\) rad/s};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\draw[fill=teal!12,thick](0,0)circle(1);\fill(0,0)circle(2pt);\draw[fill=red!12,thick](1.65,0)circle(.8);\fill(1.65,0)circle(2pt);\draw[<->](0,1.2)--(1.65,1.2)node[midway,above]{center distance \(d\)};\draw[arr](0,0)--(-.7,-.7)node[left]{\(r_b\)};\draw[arr](1.65,0)--(2.35,-.35)node[right]{\(r_o\)};\node[below]at(.8,-1.4){Contact if \(d<r_b+r_o\).};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\draw[line width=3pt,red!70!black](0,0)--(5,0);\node[below]at(0,0){\(A\)};\node[below]at(5,0){\(B\)};\node[mass]at(3,.9){\(P\)};\draw[ghost](3,.9)--(3,0);\fill(3,0)circle(2pt);\node[below]at(3,0){\(C\)};\draw[ghost](5,0)--(6,0);\node[mass]at(6,.8){};\draw[ghost](6,.8)--(5,0);\node[above]at(6,1.4){beyond endpoint};
+\end{tikzpicture}
+
+\begin{tikzpicture}[scale=.95]
+\draw[dashed,warm,thick](0,0)circle(1.8);\node[circle,draw=warm,fill=orange!20,minimum size=10mm]at(0,0){B};\node[target]at(1.1,.65){T};\node[target]at(-1,-.7){T};\node[target]at(2.5,.1){T};\draw[arr,warm](0,0)--(0,1.8)node[midway,left]{145 px};\node[align=left,anchor=west]at(3,-.5){Inside: target centers cleared.\\Outside: not cleared by this blast.\\Other bombs are not recursively detonated.};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\foreach \x/\name in {0/Attractor,4.5/Repulsor}{\draw[dashed,teal](\x,0)circle(1.4);\node[circle,draw,fill=teal!20,minimum size=10mm]at(\x,0){};\node[above]at(\x,1.7){\name};}
+\foreach \a in {0,90,180,270}{\draw[arr,warm]({1.25*cos(\a)},{1.25*sin(\a)})--({.6*cos(\a)},{.6*sin(\a)});\draw[arr,teal]({4.5+.6*cos(\a)},{.6*sin(\a)})--({4.5+1.25*cos(\a)},{1.25*sin(\a)});}
+\node[below,align=center]at(0,-1.7){inward angular kick\\dangerous tip core};\node[below,align=center]at(4.5,-1.7){outward angular kick\\bouncing core};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\coordinate(P)at(0,0);\coordinate(E)at(3,-2);\coordinate(J)at(.8,-2.25);\draw[ghost](P)--(E)node[midway,above]{\(d\)};\draw[rod](P)--(J)--(E);\node[mass]at(J){};\node[mass]at(E){};\draw[teal,line width=2pt](E)circle(.55);\node[above]at(P){pivot};\node[right=8mm]at(E){desired exit};\node[left]at(.35,-1){\(\ell_1\)};\node[below]at(1.9,-2.3){\(\ell_2\)};\node[align=left]at(6,-.6){Two links form a triangle.\\The cosine rule gives its angles.};
+\end{tikzpicture}
+
+\begin{tikzpicture}[node distance=5mm,every node/.style={font=\small,align=center},box/.style={draw,rounded corners,text width=11cm,minimum height=8mm,fill=teal!5}]
+\node[box](a){Frame time: stop if ended/paused; handle hit-stop; compute scaled time};
+\node[box,below=of a](b){Update inversion and gate countdowns; begin four substeps};
+\node[box,below=of b](c){Compute wind, pivot position/acceleration and moving-bumper positions};
+\node[box,below=of c](d){For each live chain: zone damping, then coupled RK4 integration};
+\node[box,below=of d](e){Last substep only: sample tip and handle portals, boosts, switches,\\lasers, gates, rails, fields, targets and bumpers};
+\node[box,below=of e](f){Each substep: handle inter-bob collisions; advance playing game time};
+\node[box,below=of f](g){Update effects, timer and win/loss transitions; draw; capture replay frame};
+\foreach \u/\v in {a/b,b/c,c/d,d/e,e/f,f/g}{\draw[arr](\u)--(\v);}
+\end{tikzpicture}

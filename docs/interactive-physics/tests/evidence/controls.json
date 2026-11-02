@@ -1,0 +1,184 @@
+{
+  "results": {
+    "failures": []
+  },
+  "branches": [
+    {
+      "kind": "multi",
+      "value": "2",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "multi",
+      "value": "3",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "multi",
+      "value": "4",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "multi",
+      "value": "5",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "integration",
+      "param": "Step h",
+      "value": "0.01",
+      "finite": true
+    },
+    {
+      "kind": "integration",
+      "param": "Step h",
+      "value": "0.08",
+      "finite": true
+    },
+    {
+      "kind": "gravity",
+      "value": "fixed",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "gravity",
+      "value": "flip",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "bumper",
+      "value": "-0.8",
+      "events": 321,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "bumper",
+      "value": "-1.45",
+      "events": 37,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "bumper",
+      "value": "-0.05",
+      "events": 460,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "field-motion",
+      "value": "attract",
+      "events": 1,
+      "alive": false,
+      "finite": true
+    },
+    {
+      "kind": "field-motion",
+      "value": "repel",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "zone",
+      "value": "0.8",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "zone",
+      "value": "2",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "clocks",
+      "value": "normal",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "clocks",
+      "value": "stop",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "clocks",
+      "value": "slow",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "clocks",
+      "value": "pause",
+      "events": 0,
+      "alive": true,
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Angle °",
+      "value": "-175",
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Angle °",
+      "value": "175",
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Gravity",
+      "value": "-15",
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Gravity",
+      "value": "15",
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Drag",
+      "value": "0",
+      "finite": true
+    },
+    {
+      "kind": "experiment",
+      "param": "Drag",
+      "value": "1",
+      "finite": true
+    }
+  ],
+  "mobile": {
+    "issues": [],
+    "pages": 48,
+    "scrollWidth": 390
+  },
+  "errors": [],
+  "actualHTTP": true,
+  "reducedMotion": true,
+  "pauseResumeReset": true,
+  "offscreenPaused": true
+}

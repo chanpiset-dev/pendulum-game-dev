@@ -1,0 +1,15 @@
+/* Isolated adaptations of src/main.js and src/engine/collisions.js.
+   Coordinates for event geometry are game pixels (120 px/model metre). */
+(function(root){
+ const scale=120;
+ function points(c,p={x:400,y:300}){let x=p.x,y=p.y;return c.L.map((L,i)=>({x:x+=scale*L*Math.sin(c.state[i]),y:y+=scale*L*Math.cos(c.state[i])}));}
+ function energy(c,g=9.8){let vx=0,vy=0,y=0,K=0,U=0;for(let i=0;i<c.N;i++){vx+=c.L[i]*Math.cos(c.state[i])*c.state[c.N+i];vy-=c.L[i]*Math.sin(c.state[i])*c.state[c.N+i];y+=c.L[i]*Math.cos(c.state[i]);K+=.5*c.m[i]*(vx*vx+vy*vy);U+=c.m[i]*g*(c.L.slice(0,i+1).reduce((a,b)=>a+b,0)-y);}return {K,U,E:K+U};}
+ function make(N=2,angle=1.05,velocity=0){return {N,L:Array(N).fill(2.5/N),m:Array(N).fill(1),state:[...Array(N).fill(angle),...Array(N).fill(velocity)],alive:true,currentR:21,interCooldown:3,portalCooldown:0,boostCooldown:0,railCooldown:0};}
+ function pulse(c,amount=2.5){const i=2*c.N-1;c.state[i]+=(c.state[i]>=0?1:-1)*amount;}
+ function bumper(c,q=-.8){c.state[2*c.N-1]*=q;c.currentR=Math.max(21,c.currentR-4.5);}
+ function segment(P,A,B){const dx=B.x-A.x,dy=B.y-A.y,u=Math.max(0,Math.min(1,((P.x-A.x)*dx+(P.y-A.y)*dy)/(dx*dx+dy*dy||1)));const C={x:A.x+u*dx,y:A.y+u*dy};return {...C,d:Math.hypot(P.x-C.x,P.y-C.y),u};}
+ function portal(c,dest,pivot={x:400,y:300}){const dx=dest.x-pivot.x,dy=dest.y-pivot.y;const alpha=Math.atan2(dx,dy);const d=Math.min(Math.hypot(dx,dy),c.L.reduce((a,b)=>a+b,0)*scale*.985);const clamp=x=>Math.max(-1,Math.min(1,x));if(c.N===2){const a=c.L[0]*scale,b=c.L[1]*scale;const beta=Math.acos(clamp((a*a+d*d-b*b)/(2*a*d))),gamma=Math.acos(clamp((a*a+b*b-d*d)/(2*a*b))),side=dest.x>=pivot.x?-1:1;c.state[0]=alpha+side*beta;c.state[1]=c.state[0]-side*(Math.PI-gamma);}else for(let k=0;k<c.N;k++)c.state[k]=alpha+(k-(c.N-1)/2)*.16;const speed=Math.max(.5,Math.abs(c.state[2*c.N-1])*.4),sign=dest.x>=400?1:-1;for(let k=0;k<c.N;k++)c.state[c.N+k]=sign*speed*(.65+.35*k/(c.N-1||1));c.portalCooldown=.65;}
+ function field(c,b,h,pivot={x:400,y:300}){const ps=points(c,pivot);ps.forEach((p,k)=>{const dx=p.x-b.x,dy=p.y-b.y,d=Math.hypot(dx,dy);if(d>=b.pullRadius||d<=1)return;const dot=dx/d*Math.cos(c.state[k])-dy/d*Math.sin(c.state[k]);if(b.isRepulsor){const ratio=Math.max(.08,(d-b.coreRadius)/(b.pullRadius-b.coreRadius));c.state[c.N+k]+=.07*dot*1.8*Math.abs(b.pullStrength)/(ratio*ratio)*h;if(d<b.coreRadius+c.currentR)c.state[c.N+k]*=-.85;}else{c.state[c.N+k]+=-.15*dot*(1-d/b.pullRadius)*b.pullStrength*h;if(k===c.N-1&&d<b.coreRadius+c.currentR)c.alive=false;}});}
+ function clones(a,b,h,pivot={x:400,y:300}){for(const c of [a,b])if(c.interCooldown>0)c.interCooldown-=h;if(!a.alive||!b.alive||a.interCooldown>0||b.interCooldown>0)return false;const p=points(a,pivot).at(-1),q=points(b,pivot).at(-1),d=Math.hypot(p.x-q.x,p.y-q.y);if(d>=a.currentR+b.currentR||d<=.001)return false;const i=2*a.N-1,j=2*b.N-1,wa=a.state[i],wb=b.state[j];a.state[i]=-.85*wa+.3*wb;b.state[j]=-.85*wb+.3*wa;a.interCooldown=b.interCooldown=.06;return true;}
+ root.GameRules={points,energy,make,pulse,bumper,segment,portal,field,clones};
+})(globalThis);

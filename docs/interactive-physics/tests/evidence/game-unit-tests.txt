@@ -1,0 +1,16 @@
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/input-coordinates.test.mjs (57.214434ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/object-sizes.test.mjs (79.022889ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/progress.test.mjs (67.42893ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/scoring.test.mjs (44.77642ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/stage-balance.test.mjs (78.181962ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/stage-mechanics.test.mjs (68.908505ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/stage-migration.test.mjs (72.052ms)
+✔ /workspace/work/pendulum-game-dev-dev-game-improvements/tests/wind-flow.test.mjs (48.877019ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 530.685458

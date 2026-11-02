@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Physics Behind Pendulum Game — Interactive Textbook</title>
+<link rel="stylesheet" href="vendor/katex/katex.min.css"><link rel="stylesheet" href="style.css">
+<script defer src="vendor/katex/katex.min.js"></script><script defer src="assets/model-data.js"></script>
+<script defer src="js/physics/solver.js"></script><script defer src="js/physics/rules.js"></script>
+<script defer src="js/diagrams/diagrams.js"></script><script defer src="js/main.js"></script></head>
+<body><nav class="reader-tools" aria-label="Book controls"><a href="#contents">Contents</a><button id="motion-toggle" type="button">Pause all</button><button id="print-book" type="button">Print</button><span id="reading-status" role="status"></span></nav>
+<main id="book" aria-label="Interactive physics textbook"><article id="manuscript"><div class="titlepage"><div class="cover-heading"><h1>The Physics Behind<br/>Pendulum Game</h1><p class="subtitle">A beginner-friendly guide to the actual simulation</p><p>Technical explanation of the v0.1.0 implementation</p><p>31 October 2026</p></div>
+<div class="center">
+<div class="diagram" data-diagram-id="original-0" data-kind="cover"></div>
+</div>
+<div class="idea">
+<p><strong class="box-title">What you will learn</strong> Why the bob swings; how several
+links influence each other; how launch settings, gravity, wind and
+moving anchors change motion; how the computer advances time; and how
+targets, bombs, bumpers, portals, lasers and other gimmicks interact
+with the simulation.</p>
+</div>
+<p><strong>Source baseline:</strong> release tag <code>v0.1.0</code>,
+commit <code>6335b08</code>. This document describes that code, not an
+idealized replacement. Mathematics is introduced gradually; the
+derivation and source map provide a deeper reference.</p>
+</div>
+<h1 id="start-with-the-objects-you-see">1  Start with the objects you
+see</h1>
+<p>A pendulum is a mass that can swing around a support. In a simple
+classroom example, a weight hangs from a string. In this game, straight
+links join several masses. The final mass is called the <em>tip
+bob</em>. The support at the beginning of the chain is the
+<em>pivot</em> or anchor.</p>
+<p>The links constrain where the masses can move. A bob cannot travel
+freely in a straight line while its link remains attached: its motion
+must also satisfy the link length. Two or more links create a much
+richer set of possible positions.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-1" data-kind="objects"></div>
+<figcaption>Figure 1: The support, links and masses. The code models massless
+rigid links and point masses for the equations of motion. Visible bob
+radii are used separately for contact tests.</figcaption>
+</figure>
+<h2 id="the-models-assumptions">1.1  The model’s assumptions</h2>
+<p>The main simulation uses the following simplifications:</p>
+<ul>
+<li><p>Motion is two-dimensional: all movement stays in the screen’s
+plane.</p></li>
+<li><p>Links have fixed lengths and no modeled mass. They can push or
+pull like rigid rods; they are not slack strings.</p></li>
+<li><p>Mass is concentrated at each joint. Standard gameplay initializes
+every mass to the same value, <span class="math inline">\(m_i=1\)</span>
+in model units.</p></li>
+<li><p>Joints do not have angle stops. Links can rotate through full
+turns and can pass through each other; rod–rod contact is not
+solved.</p></li>
+<li><p>Ordinary stage chains have a total length of <span class="math inline">\(2.5\)</span> model length units, divided evenly
+across the chosen number of links.</p></li>
+</ul>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>The artwork shows thick rods and round, growing bobs. The dynamics do
+not treat them as spinning solid rods or spheres. In particular, making
+the visible bob larger does <em>not</em> change its mass or the mass
+matrix.</p>
+</div>
+<h1 id="a-short-mathematical-toolkit">2  A short mathematical toolkit</h1>
+<h2 id="position-velocity-and-acceleration">2.1  Position, velocity and
+acceleration</h2>
+<p><strong>Position</strong> tells us where an object is.
+<strong>Velocity</strong> tells us how fast its position changes and in
+which direction. <strong>Acceleration</strong> tells us how its velocity
+changes. Acceleration can turn motion as well as speed it up or slow it
+down.</p>
+<p>For a horizontal coordinate <span class="math inline">\(x\)</span>,
+the notation <span class="math display">\[v_x=\frac{\mathrm{d}x}{\mathrm{d}t}=\dot x,\qquad
+a_x=\frac{\mathrm{d}v_x}{\mathrm{d}t}=\ddot x\]</span> means “change of
+<span class="math inline">\(x\)</span> per second” and “change of <span class="math inline">\(v_x\)</span> per second.” A dot means a time
+derivative; it is not multiplication. You can read these expressions as
+definitions even without studying calculus.</p>
+<p>An angle has similar quantities: <span class="math inline">\(\theta\)</span> is angle, <span class="math inline">\(\omega=\dot\theta\)</span> is angular velocity,
+and <span class="math inline">\(\alpha=\dot\omega\)</span> is angular
+acceleration. A negative angular velocity means rotation in the
+negative-angle direction, not negative speed. The speed magnitude is
+nonnegative.</p>
+<h2 id="degrees-and-radians">2.2  Degrees and radians</h2>
+<p>The angle slider uses degrees. The solver uses radians: <span class="math display">\[\theta_{\mathrm{rad}}=\theta_{\mathrm{deg}}\frac{\pi}{180},\qquad
+180^\circ=\pi\ \mathrm{rad}.\]</span> A radian measures arc length
+divided by radius. A complete turn is <span class="math inline">\(2\pi\)</span> radians. The
+initial-angular-velocity slider is used directly as radians per model
+second; it is not converted from degrees per second.</p>
+<h2 id="vectors-sine-and-cosine">2.3  Vectors, sine and cosine</h2>
+<p>A two-dimensional vector is an ordered pair, such as <span class="math inline">\(\boldsymbol{v}=(v_x,v_y)\)</span>. Its length is
+<span class="math inline">\(\lVert\boldsymbol{v}\rVert=\sqrt{v_x^2+v_y^2}\)</span>.
+Sine and cosine resolve a link into horizontal and vertical pieces. A
+dot product, <span class="math inline">\(\boldsymbol{a}\cdot\boldsymbol{b}=a_xb_x+a_yb_y\)</span>,
+measures how much one direction lines up with another.</p>
+<div class="idea">
+<p><strong class="box-title">Useful units</strong> Lengths in the solver are model metres,
+time is measured in seconds, <span class="math inline">\(\omega\)</span>
+is in rad/s, and acceleration is in model m/s<span class="math inline">\(^2\)</span>. These are consistent modeling
+conventions, not a claim that the screen shows a literal full-size
+laboratory apparatus. Pixels are converted separately.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-1" data-kind="vectors"></div><figcaption>Figure A1 (added): Position, velocity and acceleration on a constrained circular path. The velocity arrow is tangent; acceleration includes both tangential and centripetal components.</figcaption></figure><h1 id="coordinates-why-the-game-uses-sine-for-horizontal-position">3  Coordinates:
+why the game uses sine for horizontal position</h1>
+<p>The screen’s <span class="math inline">\(x\)</span>-axis points right
+and its <span class="math inline">\(y\)</span>-axis points down. The
+angle <span class="math inline">\(\theta=0\)</span> means a link hangs
+vertically downward. Positive angles lean right from that downward
+direction.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-2" data-kind="coordinates"></div>
+<figcaption>Figure 2: The screen convention. The vertical component is positive
+downward, unlike many textbook diagrams.</figcaption>
+</figure>
+<p>For one link of length <span class="math inline">\(\ell\)</span> and
+pivot <span class="math inline">\((x_p,y_p)\)</span>, <span class="math display" id="equation-1">\[x=x_p+\ell\sin\theta,\qquad
+y=y_p+\ell\cos\theta.\tag{1}\]</span> For mass
+<span class="math inline">\(k\)</span> on a chain, add the displacement
+of every link before it: <span class="math display" id="equation-2">\[x_k=x_p+\sum_{i=1}^{k}\ell_i\sin\theta_i,\qquad
+y_k=y_p+\sum_{i=1}^{k}\ell_i\cos\theta_i.
+\tag{2}\]</span> <strong>Every <span class="math inline">\(\theta_i\)</span> is an absolute angle from
+vertical.</strong> Link 2’s stored angle is not an angle relative to
+link 1. This distinction matters when interpreting the state array and
+portal calculations.</p>
+<p>The standard canvas is <span class="math inline">\(800\times600\)</span> pixels with base pivot <span class="math inline">\((400,300)\)</span>. The factor <span class="math inline">\(s=120\)</span> pixels per model metre converts
+every length in equations (1)–(2) to drawing coordinates. Thus <span class="math inline">\(2.5\)</span> model metres gives a maximum
+straight-chain reach of <span class="math inline">\(300\)</span> pixels.
+Browser resizing scales the picture; it does not normally enlarge the
+stage’s physics world.</p>
+<h1 id="one-link-gravity-torque-and-energy">4  One link: gravity, torque
+and energy</h1>
+<h2 id="gravity-pulls-down-but-the-link-changes-the-direction-of-motion">4.1  Gravity
+pulls down, but the link changes the direction of motion</h2>
+<p>Gravity exerts a downward force <span class="math inline">\(mg\)</span>. The link supplies a constraint force
+along its length. Only the part of gravity tangent to the circular path
+changes the angle directly. Its magnitude is <span class="math inline">\(mg\sin\theta\)</span>, directed toward the bottom
+when <span class="math inline">\(g&gt;0\)</span>.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-3" data-kind="forces"></div>
+<figcaption>Figure 3: A force diagram for a single mass on a rigid link.
+Tension/constraint force is not a separate integrated state in this
+game.</figcaption>
+</figure>
+<p><strong>Torque</strong> means the turning effect of a force about the
+pivot. For gravity, the torque is <span class="math inline">\(-mg\ell\sin\theta\)</span>. The resistance to
+angular acceleration is the moment of inertia <span class="math inline">\(m\ell^2\)</span>. Dividing gives <span class="math display" id="equation-3">\[\ddot\theta=-\frac{g}{\ell}\sin\theta.\tag{3}\]</span>
+Mass cancels in this one-link idealization. A positive displacement
+accelerates back toward zero. At the lowest point, gravity’s tangential
+component is zero, but velocity may be largest, so the bob passes
+through rather than stopping.</p>
+<h2 id="energy-explains-release-height">4.2  Energy explains release
+height</h2>
+<p>Kinetic energy is energy of motion; gravitational potential energy is
+energy associated with height. Relative to the bottom position, <span class="math display">\[K=\tfrac12 m\ell^2\omega^2,\qquad
+U=mg\ell(1-\cos\theta).\]</span> Without damping, a moving pivot, or
+gameplay events, <span class="math inline">\(K+U\)</span> stays constant
+in the exact mathematical model. Potential energy becomes kinetic energy
+during descent, then becomes potential energy again during ascent.</p>
+<p>For release from rest at <span class="math inline">\(\theta_0\)</span>, energy conservation gives
+bottom speed <span class="math display">\[v_{\rm
+bottom}=\sqrt{2g\ell(1-\cos\theta_0)}.\]</span> For <span class="math inline">\(\ell=2.5\)</span>, <span class="math inline">\(g=9.8\)</span>, and <span class="math inline">\(\theta_0=60^\circ\)</span>, this is approximately
+<span class="math inline">\(4.95\)</span> model m/s. This calculation is
+a teaching example for one link, not an exact prediction for the game’s
+two-link launch.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>Energy is not generally conserved in a stage. Pulses, boosters and
+moving anchors can add energy. Damping and several collision rules
+remove it. Portals deliberately rewrite the state.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-2" data-kind="energy"></div><figcaption>Figure A2 (added): Live one-link energy exchange, relative to the bottom. Gravity 9.8, length 2.5, mass 1, no damping. Kinetic and potential energy are computed from the numerical state.</figcaption></figure><h1 id="small-swings-large-swings-and-damping">5  Small swings, large
+swings and damping</h1>
+<p>For small angles measured in radians, <span class="math inline">\(\sin\theta\approx\theta\)</span>. Equation (3)
+then predicts a nearly sinusoidal swing with period <span class="math display">\[T_0=2\pi\sqrt{\ell/g}.\]</span> The period is the
+time for a full back-and-forth cycle. For <span class="math inline">\(\ell=2.5\)</span> and <span class="math inline">\(g=9.8\)</span>, <span class="math inline">\(T_0\approx3.17\)</span> s. Large swings do not
+obey the small-angle approximation: their period becomes longer, and
+near an upward unstable position the timing becomes especially
+sensitive.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-oscillation" data-kind="oscillation"></div>
+<figcaption>Figure 4: Numerical one-link experiments using the game’s
+<code>rk4</code> solver, with damping set to zero. Angles are normalized
+by their own release angles so timing differences are visible. The
+60-degree trajectory lags the small-angle formula.</figcaption>
+</figure>
+<p>The actual solver adds velocity-proportional angular drag. For a
+single link at a fixed pivot and with no wind, <span class="math display">\[\ddot\theta=-\frac{g}{\ell}\sin\theta-c\dot\theta,
+\qquad c=0.04\ \mathrm{s}^{-1}\text{ normally}.\]</span> Drag opposes
+the sign of motion. Near the small-angle regime, the amplitude envelope
+decays approximately like <span class="math inline">\(e^{-ct/2}\)</span>. The energy loss is <span class="math display">\[\frac{\mathrm{d}E}{\mathrm{d}t}=-cm\ell^2\omega^2\leq0.\]</span>
+This sign check is useful: damping alone should not increase mechanical
+energy. For a multi-link chain, the damping is applied as a particular
+set of generalized torques, explained next; one cannot simply assume
+every angular acceleration independently receives <span class="math inline">\(-c\omega_i\)</span>.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-3" data-kind="damping"></div><figcaption>Figure A3 (added): A nonlinear undamped swing compared with angular drag c = 0.35 s⁻¹. Both begin at 60 degrees with zero speed. The amplitude decrease comes from the solver, not an imposed envelope.</figcaption></figure><h1 id="two-or-more-links-why-they-influence-each-other">6  Two or more
+links: why they influence each other</h1>
+<p>Moving link 1 moves every mass below it. Moving the last link affects
+only its own final mass directly. Consequently, the angular
+accelerations are coupled: the solver must find them together.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-4" data-kind="coupled"></div>
+<figcaption>Figure 5: Absolute angles and downstream loading in a two-link
+pendulum.</figcaption>
+</figure>
+<h2 id="a-matrix-is-a-compact-set-of-simultaneous-equations">6.1  A matrix is
+a compact set of simultaneous equations</h2>
+<p>For two unknown accelerations, the equations have the form <span class="math display">\[M_{11}\alpha_1+M_{12}\alpha_2=B_1,\qquad
+M_{21}\alpha_1+M_{22}\alpha_2=B_2.\]</span> The matrix <span class="math inline">\(M\)</span> collects the coefficients and the
+vector <span class="math inline">\(B\)</span> collects the driving
+terms: <span class="math display">\[\underbrace{\begin{pmatrix}M_{11}&amp;M_{12}\\M_{21}&amp;M_{22}\end{pmatrix}}_{\text{mass
+matrix}}
+\underbrace{\begin{pmatrix}\alpha_1\\\alpha_2\end{pmatrix}}_{\text{unknown
+accelerations}}
+=\underbrace{\begin{pmatrix}B_1\\B_2\end{pmatrix}}_{\text{gravity,
+coupling, forcing, drag}}.\]</span> The mass matrix is not just a table
+of masses. It includes masses, link lengths and the current angles. The
+off-diagonal entries say that accelerating one angle is dynamically
+connected to accelerating another.</p>
+<h2 id="the-exact-equations-used-by-the-code">6.2  The exact equations used
+by the code</h2>
+<p>Number links and masses from <span class="math inline">\(1\)</span>
+to <span class="math inline">\(N\)</span>, and define downstream mass
+<span class="math display">\[\mu_{ij}=\sum_{k=\max(i,j)}^N m_k.\]</span>
+The matrix entries are <span class="math display" id="equation-4">\[M_{ij}=\mu_{ij}\ell_i\ell_j\cos(\theta_i-\theta_j).\tag{4}\]</span>
+At each derivative evaluation, the code solves <span class="math inline">\(M\boldsymbol{\alpha}=\boldsymbol{B}\)</span>, with
+<span class="math display" id="equation-5">\[\begin{aligned}
+B_i={}&amp;-\sum_{j=1}^N\mu_{ij}\ell_i\ell_j\sin(\theta_i-\theta_j)\omega_j^2\nonumber\\
+&amp;-\mu_{ii}(g-a_y)\ell_i\sin\theta_i
+-\mu_{ii}(a_x-a_w)\ell_i\cos\theta_i
+-c\mu_{ii}\ell_i^2\omega_i.
+\end{aligned}\tag{5}\]</span> Here <span class="math inline">\(a_x,a_y\)</span> are the pivot’s horizontal and
+downward accelerations, and <span class="math inline">\(a_w\)</span> is
+the wind’s horizontal acceleration. All accelerations in this formula
+are in model units, not pixels per second squared.</p>
+<p>Read the four contributions in order:</p>
+<ol>
+<li><p><strong>Velocity coupling:</strong> other links’ angular
+velocities affect this link’s acceleration through the changing
+geometry.</p></li>
+<li><p><strong>Effective gravity:</strong> gravity is measured relative
+to the accelerating anchor.</p></li>
+<li><p><strong>Horizontal forcing:</strong> pivot acceleration and wind
+contribute with opposite signs.</p></li>
+<li><p><strong>Damping torque:</strong> this is proportional to <span class="math inline">\(\mu_{ii}\ell_i^2\omega_i\)</span>.</p></li>
+</ol>
+<p>The angles change <span class="math inline">\(M\)</span> and <span class="math inline">\(B\)</span>, so the answer must be recomputed
+continuously. There is no single fixed table of accelerations for a
+stage.</p>
+<h2 id="a-worked-two-link-calculation">6.3  A worked two-link
+calculation</h2>
+<p>With <span class="math inline">\(\ell_1=\ell_2=1.25\)</span>, <span class="math inline">\(m_1=m_2=1\)</span>, <span class="math inline">\(\theta_1=30^\circ\)</span>, <span class="math inline">\(\theta_2=-20^\circ\)</span>, zero starting
+velocity, a fixed anchor and no damping, <span class="math display">\[M\approx\begin{pmatrix}3.125&amp;1.0044\\1.0044&amp;1.5625\end{pmatrix},\quad
+B\approx\begin{pmatrix}-12.2500\\4.1897\end{pmatrix}.\]</span> Solving
+gives <span class="math inline">\(\alpha_1\approx-6.0269\)</span> and
+<span class="math inline">\(\alpha_2\approx6.5554\)</span> rad/s<span class="math inline">\(^2\)</span>. The second acceleration is not just
+<span class="math inline">\(-g\sin\theta_2/\ell_2\)</span>: the moving
+first link changes the answer.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-4" data-kind="multi"></div><figcaption>Figure A4 (added): Two through five links share the same total reach of 2.5 model metres. Changing the link count adds degrees of freedom and unit point masses.</figcaption></figure><h1 id="where-the-coupled-equations-come-from">7  Where the coupled
+equations come from</h1>
+<p>This section is optional on a first reading. It explains why the
+matrix in equation (4) has its particular form.</p>
+<h2 id="write-the-energies">7.1  Write the energies</h2>
+<p>Differentiate equation (2) for a fixed pivot: <span class="math display">\[\dot x_k=\sum_{i\leq
+k}\ell_i\cos\theta_i\,\omega_i,\qquad
+\dot y_k=-\sum_{i\leq k}\ell_i\sin\theta_i\,\omega_i.\]</span> Adding
+each mass’s kinetic energy gives <span class="math display" id="equation-6">\[T=\frac12\sum_k m_k(\dot x_k^2+\dot y_k^2)
+=\frac12\sum_{i,j}\mu_{ij}\ell_i\ell_j\cos(\theta_i-\theta_j)\omega_i\omega_j.
+\tag{6}\]</span> Because downward <span class="math inline">\(y\)</span> increases when gravitational potential
+falls, <span class="math display">\[U=-\sum_k m_kg
+y_k=-g\sum_i\mu_{ii}\ell_i\cos\theta_i+\text{constant}.\]</span></p>
+<h2 id="use-a-compact-mechanics-rule">7.2  Use a compact mechanics rule</h2>
+<p>Define the <em>Lagrangian</em> <span class="math inline">\(\mathcal
+L=T-U\)</span>. This is a useful bookkeeping function, not a new force.
+The Euler–Lagrange equation for angle <span class="math inline">\(i\)</span> is <span class="math display">\[\frac{\mathrm{d}}{\mathrm{d}t}\left(\frac{\partial\mathcal
+L}{\partial\omega_i}\right)
+-\frac{\partial\mathcal L}{\partial\theta_i}=Q_i.\]</span> A partial
+derivative asks how a quantity changes when one input varies while the
+other inputs are temporarily held fixed. <span class="math inline">\(Q_i\)</span> represents any extra generalized
+torque.</p>
+<p>Differentiating the energies, collecting the terms containing <span class="math inline">\(\alpha_j\)</span>, and simplifying the
+angular-velocity terms gives <span class="math display">\[\sum_j
+M_{ij}\alpha_j+
+\sum_j\mu_{ij}\ell_i\ell_j\sin(\theta_i-\theta_j)\omega_j^2
++\mu_{ii}g\ell_i\sin\theta_i=Q_i.\]</span> The wind, anchor acceleration
+and damping torques supply the remaining parts of equation (5). Ideal
+constraint forces do not have to be solved as separate unknowns because
+the angular coordinates already enforce link lengths.</p>
+<div class="idea">
+<p><strong class="box-title">Why this is better than guessing each link’s motion</strong>
+Solving every link as if it were an independent pendulum would omit the
+off-diagonal mass terms and velocity coupling. It could draw a chain,
+but it would not reproduce the game’s whip-like multi-link dynamics.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-5" data-kind="matrix"></div><figcaption>Figure A5 (added): The evolving coupled mass matrix. The displayed entries are recomputed from the chain angles, lengths and downstream masses; off-diagonal coefficients connect the links.</figcaption></figure><h1 id="launch-settings-clones-and-sensitivity">8  Launch settings, clones
+and sensitivity</h1>
+<h2 id="what-the-starting-sliders-actually-set">8.1  What the starting
+sliders actually set</h2>
+<p>For a stage with <span class="math inline">\(N\)</span> links, the
+initial state is the array <span class="math display">\[\boldsymbol{z}=(\theta_1,\ldots,\theta_N,\omega_1,\ldots,\omega_N).\]</span>
+The launch angle is assigned to <em>every</em> link. The initial angular
+velocity is also assigned to every link. Because the angles are
+absolute, equal starting angles create a straight chain. This is
+different from setting the velocity of only the final bob.</p>
+<p>For the standard chain, <span class="math inline">\(\ell_i=2.5/N\)</span>. A two-link chain has two
+links of length <span class="math inline">\(1.25\)</span>; a five-link
+chain has five of length <span class="math inline">\(0.5\)</span>. More
+links do not lengthen its maximum straight reach, but they add
+independent degrees of freedom. Because each point mass stays at 1, the
+total modeled mass also increases from 2 units for two links to 5 units
+for five links; the code does not keep total mass fixed when changing
+link count.</p>
+<h2 id="clones-begin-almost-but-not-exactly-together">8.2  Clones begin
+almost, but not exactly, together</h2>
+<p>Clone <span class="math inline">\(c\)</span>, counting from zero,
+begins at angle <span class="math display">\[\theta_i(0)=\theta_{\rm
+launch}+0.001c.\]</span> The offset is in radians: <span class="math inline">\(0.001\)</span> rad is about <span class="math inline">\(0.0573^\circ\)</span>. It is intentionally tiny.
+The clones otherwise receive the same initial angular velocity and start
+a 3-second inter-clone collision cooldown so their overlapping launch
+does not immediately cause repeated collisions.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-6" data-kind="sensitivity"></div><figcaption>Figure A6 (added): Two isolated chains start 0.001 rad apart at 120 degrees. They share the original equations and differ only in their starting angles; clone contacts are disabled here.</figcaption></figure><h2 id="sensitivity-is-not-randomness">8.3  Sensitivity is not
+randomness</h2>
+<p>A nonlinear multi-link pendulum can amplify small initial
+differences. This is often described as chaotic behavior. A precise
+deterministic equation can be difficult to predict far into the future
+without being random.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-sensitivity-plot" data-kind="sensitivity-plot"></div>
+<figcaption>Figure 6: Two isolated two-link chains released at 120 degrees,
+differing by 0.001 rad in each angle. Left: their tip separation. Right:
+relative energy error for one chain with no damping. Data come from the
+game’s solver at a step of 1/240 s, without stage collisions. Growth of
+separation illustrates sensitivity; this plot alone is not a formal
+proof of chaos or a measured Lyapunov exponent.</figcaption>
+</figure>
+<p>The game also has discontinuous events: a tiny change can make a bob
+hit a bomb rather than miss it. Those events can magnify differences
+much more abruptly than free pendulum motion. Random spark directions
+are visual effects, not the source of the basic pendulum equations.</p>
+<h1 id="how-the-computer-advances-time">9  How the computer advances
+time</h1>
+<h2 id="a-simulation-uses-small-steps">9.1  A simulation uses small
+steps</h2>
+<p>A browser cannot solve the complete future trajectory in one exact
+calculation. It stores the current state and advances by a short
+interval <span class="math inline">\(h\)</span>. The derivative function
+returns <span class="math display">\[f(\boldsymbol{z},t)=(\omega_1,\ldots,\omega_N,\alpha_1,\ldots,\alpha_N).\]</span>
+Even the elementary approximation <span class="math inline">\(\boldsymbol{z}_{n+1}\approx\boldsymbol{z}_n+h
+f(\boldsymbol{z}_n)\)</span> has meaning: take the current rate of
+change and apply it briefly. But that simple Euler step can distort
+pendulum energy noticeably.</p>
+<h2 id="the-fourth-order-rungekutta-method-rk4">9.2  The fourth-order
+Runge–Kutta method (RK4)</h2>
+<p>The game samples four tentative rates before taking one step: <span class="math display">\[\begin{aligned}
+k_1&amp;=f(z_n),&amp; k_2&amp;=f(z_n+hk_1/2),\\
+k_3&amp;=f(z_n+hk_2/2),&amp;k_4&amp;=f(z_n+hk_3),\\
+z_{n+1}&amp;=z_n+\frac h6(k_1+2k_2+2k_3+k_4).
+\end{aligned}\]</span> Each <span class="math inline">\(k\)</span> is a
+vector, so all angles and velocities are updated together. Each
+evaluation constructs and solves the mass matrix. The implementation
+passes the current forcing values into those evaluations; wind and
+anchor acceleration are not independently resampled at each RK4
+midpoint.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-5" data-kind="rk4"></div>
+<figcaption>Figure 7: RK4 takes several tentative looks ahead. These temporary
+states are not extra visible bobs and do not represent simultaneously
+existing objects.</figcaption>
+</figure>
+<h2 id="solving-the-matrix">9.3  Solving the matrix</h2>
+<p><code>solveMatrix</code> uses Gaussian elimination with row swaps
+chosen from the largest available pivot magnitude (partial pivoting). It
+eliminates unknowns from successive rows, then works backward to recover
+the accelerations. Divisions by very small numbers are skipped at a
+threshold of <span class="math inline">\(10^{-12}\)</span>. That is a
+numerical safeguard, not a physical model of a degenerate chain.</p>
+<h2 id="frames-and-substeps-are-different">9.4  Frames and substeps are
+different</h2>
+<p>Normal gameplay clamps a browser-frame interval to at most <span class="math inline">\(0.03\)</span> s. It then divides scaled time into
+four integration substeps. At 60 frames/s and ordinary time scale, <span class="math display">\[\Delta t\approx1/60,\qquad h=\Delta
+t/4\approx1/240\text{ s}.\]</span> At 120 frames/s, those integration
+substeps are smaller. Many gameplay contacts are checked only in the
+<em>last</em> substep of each frame, while inter-bob checks occur after
+each substep. This difference matters for repeatability and fast
+motion.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-7" data-kind="integration"></div><figcaption>Figure A7 (added): RK4 versus forward Euler for the nonlinear one-link equation. Both use the displayed step h. Energy error exposes the difference; Euler is included as an explicitly less accurate comparison.</figcaption></figure><h1 id="gravity-normal-low-heavy-inverted-and-zero">10  Gravity: normal,
+low, heavy, inverted and zero</h1>
+<p>The standard solver gravity is <span class="math inline">\(g=9.8\)</span> in model m/s<span class="math inline">\(^2\)</span>, positive downward. Low and heavy
+gravity stages choose different values. A smaller positive <span class="math inline">\(g\)</span> generally makes the swing slower; a
+larger <span class="math inline">\(g\)</span> makes it faster. For a
+one-link small swing, frequency scales like <span class="math inline">\(\sqrt{g/\ell}\)</span>, not directly like <span class="math inline">\(g\)</span>.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-6" data-kind="gravity"></div>
+<figcaption>Figure 8: Changing the sign or magnitude of gravity changes the
+restoring tendency. Zero gravity does not remove rod constraints or
+damping.</figcaption>
+</figure>
+<p>In inverted gravity, upward becomes the preferred direction. Periodic
+inversion stages multiply the current gravity by <span class="math inline">\(-1\)</span> when a stage-specific countdown
+expires. This flips the acceleration field; it does not instantly
+reverse the current velocities. Motion continues through the
+transition.</p>
+<p>In Zero Gravity, <span class="math inline">\(g=0\)</span>. A
+motionless chain at a fixed pivot with no other forces remains
+motionless. If it already moves, inertial coupling and constraints still
+affect its path, and damping still removes energy. “Zero gravity” is not
+“all forces turned off.”</p>
+<h1 id="moving-pivots-and-rails">11  Moving pivots and rails</h1>
+<h2 id="an-accelerating-support-changes-the-apparent-force">11.1  An
+accelerating support changes the apparent force</h2>
+<p>Imagine standing in a vehicle that accelerates right: relative to the
+vehicle, you seem pushed left. A pendulum on a moving support behaves
+similarly. The solver uses effective acceleration <span class="math display">\[\boldsymbol{g}_{\rm effective}=(a_w-a_x,\
+g-a_y).\]</span> The pivot’s <em>acceleration</em>, not simply its
+position, drives these additional terms. Moving anchors can exchange
+energy with a pendulum because the support is externally prescribed,
+like a motorized apparatus.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-7" data-kind="pivot"></div>
+<figcaption>Figure 9: The reference frame attached to the pivot is
+accelerating.</figcaption>
+</figure>
+<h2 id="the-prescribed-rail-motion">11.2  The prescribed rail motion</h2>
+<p>For horizontal amplitude <span class="math inline">\(A_x\)</span> in
+pixels, <span class="math display">\[x_p=x_0+A_x\sin(\Omega_x
+t+\phi_x),\qquad
+a_x=-\frac{A_x}{s}\Omega_x^2\sin(\Omega_x t+\phi_x).\]</span> The
+vertical equation is analogous, using <span class="math inline">\(A_y,\Omega_y,\phi_y\)</span>. Here <span class="math inline">\(\Omega\)</span> is a prescribed rail frequency in
+rad/s, not a bob’s angular velocity. Doubling frequency multiplies
+acceleration amplitude by four.</p>
+<p>Equal frequencies with a quarter-cycle phase offset can create an
+elliptical orbit; equal amplitudes give a circle. Different frequencies
+can produce more complicated two-axis paths. The two coordinates are
+computed independently. In the release, visible horizontal/vertical rail
+tracks follow the carriage’s current coordinates rather than assuming
+every two-axis path is an ellipse.</p>
+<p>The rail also acts as a gameplay obstacle. Its contact geometry and
+bounce rule are described in Section 14; motorized support motion and
+rail collision are separate mechanisms.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-8" data-kind="orbit"></div><figcaption>Figure A8 (added): A prescribed two-axis anchor path: x = 0.5 sin(1.6t), y = 0.3 cos(1.6t), in model metres. The solver receives the corresponding acceleration; rail contacts are omitted to isolate anchor forcing.</figcaption></figure><h1 id="wind-a-horizontal-acceleration-not-a-fluid-simulation">12  Wind: a
+horizontal acceleration, not a fluid simulation</h1>
+<p>A constant wind is stored as a horizontal acceleration input. A
+gusting wind uses <span class="math display">\[a_w(t)=f+A\sin(\Omega
+t+\phi).\]</span> The baseline <span class="math inline">\(f\)</span>
+biases one direction, amplitude <span class="math inline">\(A\)</span>
+controls the variation, and <span class="math inline">\(\phi\)</span>
+sets the initial phase. The direction reverses only if the complete
+expression crosses zero; a gust need not reverse just because it
+varies.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-wind-plot" data-kind="wind-plot"></div>
+<figcaption>Figure 10: Example authored gust parameters: <span class="math inline">\(f=0\)</span>, <span class="math inline">\(A=2.4\)</span>, <span class="math inline">\(\Omega=1.6\)</span>, <span class="math inline">\(\phi=0\)</span>. Positive acceleration pushes
+right; negative pushes left. This is an illustrative input curve, not a
+universal stage setting.</figcaption>
+</figure>
+<p>For a single link, combining wind, moving support and damping gives
+<span class="math display">\[\ddot\theta=-\frac{g-a_y}{\ell}\sin\theta
++\frac{a_w-a_x}{\ell}\cos\theta-c\dot\theta.\]</span> This compact
+equation is a useful bridge between the basic pendulum and the full
+mass-matrix model.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>Although the HUD labels wind in m/s, the value is used by the
+equations as an <em>acceleration</em>. The game does not solve air
+velocity, pressure, turbulence, or speed-dependent aerodynamic drag.
+This is an interface-unit mismatch in the release, not a reason to
+reinterpret the implemented formula.</p>
+</div>
+<p>Wind artwork is separate from wind dynamics. Its scrolling offset is
+based on an integral of the authored wind curve, scaled by 32 for visual
+motion. Reduced-motion settings may hold this artwork still; the
+acceleration field remains unchanged.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-9" data-kind="wind"></div><figcaption>Figure A9 (added): A one-link response to the authored example a_w = 2.4 sin(1.6t). Arrow direction and magnitude show horizontal acceleration, not air velocity.</figcaption></figure><h1 id="pulses-and-boost-rings-add-angular-velocity">13  Pulses and boost
+rings add angular velocity</h1>
+<h2 id="a-pulse-is-an-instantaneous-state-change">13.1  A pulse is an
+instantaneous state change</h2>
+<p>During play, a pulse affects each living chain’s <em>last</em>
+angular velocity: <span class="math display">\[\omega_N\leftarrow\begin{cases}\omega_N+2.5,&amp;\omega_N\geq0,\\\omega_N-2.5,&amp;\omega_N&lt;0.\end{cases}\]</span>
+It reinforces the current rotation direction; at exactly zero it chooses
+the positive direction. The player does not aim an arbitrary spatial
+force by tapping a point. A pulse consumes one available charge and
+creates sound and visual effects.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-8" data-kind="pulse"></div>
+<figcaption>Figure 11: A pulse adds angular velocity to the tip link, after which
+the coupled solver redistributes motion through the chain.</figcaption>
+</figure>
+<h2 id="boost-rings-use-a-similar-rule">13.2  Boost rings use a similar
+rule</h2>
+<p>A ring triggers when the tip’s collision circle overlaps it. The game
+adds the ring’s <code>boostSpd</code> to <span class="math inline">\(\omega_N\)</span>, with the sign of the current
+rotation (positive if zero). A <span class="math inline">\(0.4\)</span>-s cooldown reduces repeated
+activation.</p>
+<p>The displayed chevron angle is artwork; the implemented impulse is
+not a Cartesian launch along that arrow. It is an angular-velocity
+increment. With several links, the eventual tip direction depends on all
+link angles and velocities.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>Neither a pulse nor a boost is computed from a physical impulse and
+an effective mass. These are arcade controls intended to boost motion,
+applied on top of the mechanically coupled motion.</p>
+</div>
+<p>For one link, a change <span class="math inline">\(\Delta\omega\)</span> changes kinetic energy by
+<span class="math display">\[\Delta
+K=\tfrac12m\ell^2\big[(\omega+\Delta\omega)^2-\omega^2\big].\]</span>
+For a multi-link chain, off-diagonal kinetic-energy terms also matter.
+Increasing the last-link speed does not, by itself, mathematically
+guarantee an increase in total chain kinetic energy; cross terms depend
+on the other links.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-10" data-kind="boost"></div><figcaption>Figure A10 (added): The ring checks tip-circle overlap and adds ±3.2 rad/s to the last link. The 0.4 cooldown is decremented only in the last-substep event block, as in the source.</figcaption></figure><h1 id="sec:contacts">14  Detecting contact</h1>
+<h2 id="two-circular-hit-areas">14.1  Two circular hit areas</h2>
+<p>For tip center <span class="math inline">\(P=(x,y)\)</span>, object
+center <span class="math inline">\(C\)</span>, and radii <span class="math inline">\(r_b,r_o\)</span>, the usual test is <span class="math display">\[d=\sqrt{(x-C_x)^2+(y-C_y)^2}&lt;r_b+r_o.\]</span>
+It tests overlap, not only whether the center enters the target.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-9" data-kind="circles"></div>
+<figcaption>Figure 12: Collision geometry uses the sum of the radii. Glow, sparks
+and trails do not enlarge the physical hit area.</figcaption>
+</figure>
+<p>Standard bob radius starts at 21 pixels. Destroying a directly
+contacted target grows it by 4.5 pixels, up to 54. Certain hazards
+shrink an enlarged bob by 4.5 pixels, never below 21. The temporary
+<code>popScale</code> squash/stretch is visual and is not included in
+the circle-contact radius.</p>
+<p>Many authored circular objects and force-field cores are scaled by
+1.5 for readability and matching contact sizes. Positions, stage link
+lengths, rectangular zones and force influence radii are not all scaled
+together. A static gap for the largest bob needs at least <span class="math inline">\(2\times54=108\)</span> pixels of free clearance,
+plus any desired margin.</p>
+<h2 id="a-circle-near-a-laser-or-gate-segment">14.2  A circle near a laser or
+gate segment</h2>
+<p>For segment endpoints <span class="math inline">\(A,B\)</span>, first
+project <span class="math inline">\(P\)</span> onto the infinite line,
+then clamp to the segment: <span class="math display">\[u=\operatorname{clamp}\!\left(\frac{(P-A)\cdot(B-A)}{\lVert
+B-A\rVert^2},0,1\right),\qquad C=A+u(B-A).\]</span> Test <span class="math inline">\(\lVert P-C\rVert&lt;r_b+r_s\)</span>, where the
+implemented half-thickness <span class="math inline">\(r_s=3\)</span>
+pixels. The denominator is guarded for a zero-length segment.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-10" data-kind="segment"></div>
+<figcaption>Figure 13: Closest-point distance handles contacts near the middle and
+at either endpoint.</figcaption>
+</figure>
+<h2 id="which-part-of-the-chain-can-touch-what">14.3  Which part of the chain
+can touch what?</h2>
+<div class="center">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Object/test</th>
+<th style="text-align: left;">Tested part of a living chain</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Target, bomb, bumper, portal, ring</td>
+<td style="text-align: left;">Tip circle</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Laser, closed gate</td>
+<td style="text-align: left;">Tip circle against line segment</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Slime/resin</td>
+<td style="text-align: left;">Tip center inside rectangle</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rail</td>
+<td style="text-align: left;">Joint positions, including the tip, with
+different radii</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Force-field influence</td>
+<td style="text-align: left;">Each joint position</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Black-hole death</td>
+<td style="text-align: left;">Tip overlapping core</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Another clone</td>
+<td style="text-align: left;">Tip circle against tip circle</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A rod can visually cross a laser without its tip crossing the laser.
+That alone does not satisfy the implemented tip-contact test. Likewise,
+there is no universal solid wall at every canvas edge: the release
+handles authored obstacles and rails, not a general bouncing border.
+Decorative boundaries and rod thickness should not be mistaken for extra
+collision geometry.</p>
+<h2 id="a-frame-can-miss-a-fast-crossing">14.4  A frame can miss a fast
+crossing</h2>
+<p>Most target, portal, bumper and segment tests use the computed
+end-of-frame tip position, not a swept path between its old and new
+positions. A very fast bob can cross a thin obstacle without an end
+sample inside it. Four integration substeps improve motion integration
+but do not turn those contact tests into continuous collision
+detection.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-11" data-kind="sampling"></div><figcaption>Figure A11 (added): A prescribed straight crossing illustrates discrete contact sampling: only the endpoint circles are tested. This is a geometry example, not a pendulum trajectory.</figcaption></figure><h1 id="bumpers-springs-absorbers-rails-and-clones">15  Bumpers, springs,
+absorbers, rails and clones</h1>
+<h2 id="what-a-physically-complete-bounce-would-do">15.1  What a physically
+complete bounce would do</h2>
+<p>For a free ball at a fixed wall, let <span class="math inline">\(\boldsymbol{n}\)</span> be the outward unit normal
+and <span class="math inline">\(e\)</span> a coefficient of restitution.
+A common idealized response is <span class="math display">\[\boldsymbol{v}'=\boldsymbol{v}-(1+e)(\boldsymbol{v}\cdot\boldsymbol{n})\boldsymbol{n}.\]</span>
+It reverses and scales only the normal component, while leaving
+tangential velocity unchanged. Applying an impulse to a constrained
+multi-link chain would require mapping it through the chain’s geometry
+and mass matrix.</p>
+<h2 id="what-the-release-actually-does">15.2  What the release actually
+does</h2>
+<p>The game’s normal bumper response is much simpler: <span class="math display">\[\omega_N\leftarrow q\omega_N.\]</span> Typical
+normal bumpers use <span class="math inline">\(q=-0.8\)</span>, springs
+use values less than <span class="math inline">\(-1\)</span>, and
+absorbers use a small magnitude such as <span class="math inline">\(-0.05\)</span>. The minus sign reverses the last
+link’s rotation. Spring multipliers larger than one in magnitude inject
+motion; absorbers strongly reduce that component.</p>
+<p>The stored property is named <code>restitution</code>, but it is a
+signed angular-velocity multiplier, not the standard normal restitution
+coefficient <span class="math inline">\(e\)</span>. Multiplying only
+<span class="math inline">\(\omega_N\)</span> does not guarantee a
+particular whole-chain energy change. Moving bumpers follow an authored
+sinusoidal horizontal path; their contact response does not explicitly
+add their own surface velocity to a momentum calculation.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-12" data-kind="bumper"></div><figcaption>Figure A12 (added): Contact with a circular pad multiplies only the last angular velocity by q. Choose normal, spring or absorber. The original sampled overlap rule has no bumper cooldown or positional correction.</figcaption></figure><h2 id="rails-and-gates">15.3  Rails and gates</h2>
+<p>Closed gates reverse and scale the final angular velocity by <span class="math inline">\(-0.8\)</span> and trigger shrinking. Rail contacts
+can involve intermediate joints as well as the tip; a rail hit
+multiplies <em>all</em> angular velocities by <span class="math inline">\(-0.8\)</span>, with a 0.08-s cooldown. Rail
+contact half-width is 18 pixels, and intermediate-joint radius is 7.5
+pixels. A vertical-track test also excludes contacts very near the
+pivot.</p>
+<p>The rail geometry consists of axis-aligned tracks through the current
+pivot with extents based on the authored amplitudes and extra 30-pixel
+end margins. These are not collision tests against a thick ellipse, even
+when the pivot’s prescribed path is elliptical.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-13" data-kind="rail-contact"></div><figcaption>Figure A13 (added): A prescribed horizontal carriage with actual joint-to-track contact checks. A rail hit multiplies all angular velocities by −0.8 and starts the source cooldown.</figcaption></figure><h2 id="cloneclone-contacts">15.4  Clone–clone contacts</h2>
+<p>Overlapping living tips with expired cooldowns use <span class="math display">\[\omega'_A=-0.85\omega_A+0.3\omega_B,\qquad
+\omega'_B=-0.85\omega_B+0.3\omega_A.\]</span> Here <span class="math inline">\(\omega_A,\omega_B\)</span> are the old last-link
+angular velocities. A 0.06-s cooldown prevents immediate repeated
+activation.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>The clone routine computes geometric normal and tangent directions,
+but those values are not used in its final velocity update. Despite a
+source comment referring to elastic exchange, this rule is not a full
+conservation-of-momentum impulse solver. There is also no general
+overlap-position correction.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-14" data-kind="clone-contact"></div><figcaption>Figure A14 (added): Two chains share a pivot; after the initial 3-second suppression, overlapping tips apply the source velocity exchange and a 0.06-second cooldown.</figcaption></figure><h1 id="targets-armor-bombs-switches-and-lasers">16  Targets, armor, bombs,
+switches and lasers</h1>
+<h2 id="targets-and-armor">16.1  Targets and armor</h2>
+<p>A normal target disappears on circular overlap. It does not produce a
+physically calculated reaction impulse. Direct destruction grows the
+bob. An armored non-bomb target with more than one hit point loses one
+hit point and applies <span class="math inline">\(\omega_N\leftarrow-0.6\omega_N\)</span>. The last
+hit destroys it normally.</p>
+<p>There is no general target-contact debounce equivalent to the ring
+cooldown. Consecutive sampled overlaps can therefore count as repeated
+armored hits. Descriptions such as “two hits” refer to the coded health
+events, not necessarily two visibly separated full swings.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-15" data-kind="armor"></div><figcaption>Figure A15 (added): An armored target starts at three hit points. Each sampled overlap above one HP applies ω_N ← −0.6ω_N; the final hit clears the target and grows the collision radius.</figcaption></figure><h2 id="bombs">16.2  Bombs</h2>
+<p>Directly contacting a bomb destroys it and triggers an explosion.
+Every living <em>non-bomb</em> target whose center is within 145 pixels
+of the bomb center is cleared, including armored targets, and receives
+its explosion score. This uses target-center distance, not target-radius
+overlap with the blast.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-11" data-kind="bomb"></div>
+<figcaption>Figure 14: The bomb’s clearance radius is a gameplay rule. Its
+shockwave picture is not a simulated pressure field.</figcaption>
+</figure>
+<p>The release’s explosion function does <em>not</em> recursively
+trigger other bombs, and it does not calculate an outward mechanical
+impulse on the pendulum. “Chain explosion” can describe clearing a group
+of targets, but it should not be read as a full bomb-to-bomb detonation
+model.</p>
+<h2 id="switches-and-timed-gates">16.3  Switches and timed gates</h2>
+<p>Touching a switch activates its gate for an authored duration
+(default 4.5 s). The countdown then closes it again. The gate’s open
+state is a discrete rule; no hinge, motor torque, or moving-door
+dynamics is integrated.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-16" data-kind="switch"></div><figcaption>Figure A16 (added): Tip overlap activates the switch for 4.5 seconds. The gate has a discrete open state; when closed, segment contact multiplies the final angular velocity by −0.8.</figcaption></figure><h2 id="lasers-and-shields">16.4  Lasers and shields</h2>
+<p>A laser segment hit consumes a shared shield life, shrinks the bob if
+possible, and multiplies all of that chain’s angular velocities by <span class="math inline">\(-0.85\)</span>. A shared 0.55-s laser cooldown
+limits repeated hits. On the last life, that chain is marked dead;
+failure occurs when all chains are dead while playing.</p>
+<p>A glowing emitter, fuse, spring tail, or force-field aura is not
+automatically part of a lethal hit shape. Contact is determined by the
+specific circle, segment or core test, not the extent of every visible
+effect.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-17" data-kind="laser"></div><figcaption>Figure A17 (added): Tip-to-segment contact consumes one of three shared shield lives, shrinks the bob if possible and scales every angular velocity by −0.85. The last life ends this demonstration.</figcaption></figure><h1 id="black-holes-and-repulsor-fields">17  Black holes and repulsor
+fields</h1>
+<p>These gimmicks alter angular velocities after the RK4 motion step.
+They are not Newtonian astrophysical gravity and do not model spacetime
+or general relativity.</p>
+<p>For a joint at <span class="math inline">\(J\)</span> and field
+center <span class="math inline">\(C\)</span>, define <span class="math inline">\(d=\lVert J-C\rVert\)</span>, outward unit vector
+<span class="math inline">\(\boldsymbol{u}=(J-C)/d\)</span>, and link
+tangent <span class="math display">\[\boldsymbol{t}_k=(\cos\theta_k,-\sin\theta_k).\]</span>
+A field’s influence is tested for each joint, inside its pull radius
+<span class="math inline">\(R\)</span>, with a lower distance guard
+<span class="math inline">\(d&gt;1\)</span> pixel.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-12" data-kind="fields"></div>
+<figcaption>Figure 15: Influence region and core are distinct. The formulas below
+are the implemented arcade field rules.</figcaption>
+</figure>
+<h2 id="attractor-black-hole">17.1  Attractor (black hole)</h2>
+<p>Inside the influence radius, the code applies <span class="math display">\[\Delta\omega_k=0.15\left(-\boldsymbol{u}\cdot\boldsymbol{t}_k\right)
+\left(1-\frac dR\right)S\,h,\]</span> where <span class="math inline">\(S\)</span> is the authored
+<code>pullStrength</code> and <span class="math inline">\(h\)</span> is
+the integration substep duration supplied to this event block. The
+falloff is linear with distance to the edge, not <span class="math inline">\(1/d^2\)</span>. It is a tangential angular kick,
+without a consistent force-to-torque mass/length conversion.</p>
+<p>If the <em>tip</em> overlaps the core (using core radius plus
+effective tip radius) before the stage is won, the chain dies.
+Intermediate joints receive the field kick but do not trigger the same
+black-hole death rule. A guard prevents a completed stage from being
+turned into a black-hole loss.</p>
+<h2 id="repulsor">17.2  Repulsor</h2>
+<p>Let core radius be <span class="math inline">\(r_c\)</span>, and
+define <span class="math display">\[\rho=\max\left(0.08,\frac{d-r_c}{R-r_c}\right),\qquad
+A_r=\frac{1.8|S|}{\rho^2}.\]</span> The angular kick is <span class="math display">\[\Delta\omega_k=0.07(\boldsymbol{u}\cdot\boldsymbol{t}_k)A_r
+h.\]</span> The lower bound on <span class="math inline">\(\rho\)</span>
+limits the otherwise rapidly increasing near-core expression. At core
+overlap, the joint angular velocity is multiplied by <span class="math inline">\(-0.85\)</span>, with a bounce effect instead of
+black-hole death.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>These field blocks are evaluated in the last-substep event section,
+but their increments are weighted by <span class="math inline">\(h=\Delta t/4\)</span>. They are not integrated as
+additional continuous forces inside every RK4 derivative evaluation.
+Treat the constants as tuned gameplay strengths, not universal physical
+constants.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-18" data-kind="field-motion"></div><figcaption>Figure A18 (added): Choose attraction or repulsion to inspect joint-wise angular kicks. Both use the exact source distance falloff and final-substep weighting; this is an isolated illustrative layout, not a full stage.</figcaption></figure><h1 id="portals-rebuilding-a-chain-near-an-exit">18  Portals: rebuilding a
+chain near an exit</h1>
+<p>A portal does more than translate a bob. The chain must still satisfy
+fixed link lengths after the jump. The code therefore rewrites its
+angles and angular velocities.</p>
+<h2 id="entry-and-reach-limits">18.1  Entry and reach limits</h2>
+<p>An entrance is a portal with a destination ID. It activates when the
+tip distance is less than <span class="math display">\[1.55\times0.85\,r_{\rm portal}+r_b.\]</span> A
+0.65-s cooldown limits immediate repeat activation. Let exit
+displacement from the current pivot be <span class="math inline">\((d_x,d_y)\)</span>. The desired direction is <span class="math inline">\(\alpha=\operatorname{atan2}(d_x,d_y)\)</span>,
+consistent with angles measured from downward vertical. Desired distance
+is clamped to at most 98.5% of the straight-chain reach.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-13" data-kind="portal"></div>
+<figcaption>Figure 16: Two-link inverse kinematics: find angles that place a tip at
+a desired reachable point.</figcaption>
+</figure>
+<p>For two links, the implementation uses the cosine rule: <span class="math display">\[\beta=\arccos\frac{\ell_1^2+d^2-\ell_2^2}{2\ell_1d},\qquad
+\gamma=\arccos\frac{\ell_1^2+\ell_2^2-d^2}{2\ell_1\ell_2}.\]</span> Here
+lengths and <span class="math inline">\(d\)</span> must be in the same
+units (the code uses pixels). With a side choice <span class="math inline">\(b=\pm1\)</span>, it sets <span class="math display">\[\theta_1=\alpha+b\beta,\qquad\theta_2=\theta_1-b(\pi-\gamma).\]</span>
+For more than two links, it instead fans the angles by 0.16 rad around
+<span class="math inline">\(\alpha\)</span>; it is not an exact general
+inverse-kinematics solve. Exits beyond maximum reach are approximated
+rather than reached exactly.</p>
+<h2 id="exit-speed-is-a-new-assignment">18.2  Exit speed is a new
+assignment</h2>
+<p>If the old last-link angular-speed magnitude is <span class="math inline">\(|\omega_N|\)</span>, define <span class="math display">\[w_e=\max(0.5,\,0.4|\omega_N|),\qquad
+\omega_k\leftarrow\sigma
+w_e\left(0.65+0.35\frac{k-1}{N-1}\right),\]</span> with <span class="math inline">\(\sigma\)</span> chosen from which side of the base
+pivot the exit lies. The denominator has a one-link safeguard in code.
+The trail is reset to the destination.</p>
+<div class="arcade"><strong class="box-title">Physical model or arcade rule?</strong>
+<p>This does not preserve kinetic energy, linear momentum, or incoming
+direction. The visible “0.6x” warp message in the release differs from
+the implemented 0.4 angular-speed factor (with a 0.5 minimum). The
+equations above follow the code.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-19" data-kind="portal-motion"></div><figcaption>Figure A19 (added): Tip overlap at IN triggers two-link inverse kinematics toward OUT, then assigns exit angular velocities. This reproduces the source state transformation, rather than translating an unconstrained bob.</figcaption></figure><h1 id="slime-resin-and-timing-effects">19  Slime, resin and timing
+effects</h1>
+<h2 id="zones-damp-angular-motion">19.1  Zones damp angular motion</h2>
+<p>A rectangular zone tests whether the tip center lies within its
+bounds. It does not use a circle–rectangle overlap with the tip radius.
+If it is inside, the game’s code both increases the solver damping
+coefficient and explicitly applies <span class="math display">\[\omega_i\leftarrow\omega_i e^{-4Dh}\]</span> for
+all links before an RK4 step. <span class="math inline">\(D\)</span> is
+the zone’s damping property (with code fallbacks). These are two damping
+mechanisms together, not just a material texture.</p>
+<p>Only the first overlapping zone in the zone list is used on a
+substep; multiple overlapping zones are not added. The terms “slime” and
+“resin” select visual styling and authored damping values, not a fluid
+solver or a modeled adhesive constraint.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-20" data-kind="zone"></div><figcaption>Figure A20 (added): The tip-center rectangle test activates both exponential angular-velocity decay and increased coupled-solver damping. Choose slime (D = 0.8) or resin (D = 2).</figcaption></figure><h2 id="hit-stop-slow-motion-and-pause">19.2  Hit-stop, slow motion and
+pause</h2>
+<p>Some hits set a short hit-stop timer. While it is positive,
+<code>update</code> reduces the timer and returns before advancing the
+ordinary physics. Stage-clear motion uses a time scale of 0.2; the
+result overlay appears after the separate clear countdown.</p>
+<p>PAUSE suspends the game animation and associated game timers until
+explicit RESUME. A wall-clock second, a simulated game second, and a
+verification playback second are therefore not always interchangeable.
+The regular frame cap also means a long browser stall does not cause the
+physics to catch up by simulating all lost time in one large step.</p>
+<h2 id="why-timing-changes-outcomes">19.3  Why timing changes outcomes</h2>
+<p>With only smooth ideal dynamics, smaller steps reduce integration
+error. Once a stage has sampled contacts, velocity kicks, cooldowns and
+state transitions, a slight timing shift can move a contact to a
+different side of a threshold. That can change a whole run, especially
+in a multi-link chain. Exact agreement across refresh rates is not
+established merely by using RK4.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-21" data-kind="clocks"></div><figcaption>Figure A21 (added): Wall time and simulated time are different clocks. Compare ordinary flow, hit-stop, stage-clear scale 0.2 and pause. This is a timing schematic, not a mechanical trajectory.</figcaption></figure><h1 id="one-frame-in-the-release-an-implementation-map">20  One frame in the
+release: an implementation map</h1>
+<p>The simplified execution order below explains which mechanisms belong
+to the continuous pendulum model and which are event rules. It
+intentionally omits purely decorative bookkeeping.</p>
+<figure>
+<div class="diagram" data-diagram-id="original-14" data-kind="pipeline"></div>
+<figcaption>Figure 17: High-level update order. The actual source is the final
+reference for detailed branch conditions.</figcaption>
+</figure>
+<p>The last-substep event block initially computes one tip position.
+Some events then change the chain state, but subsequent checks in that
+same block can still use the earlier sampled position until the next
+integration pass. This is another reason not to regard the event system
+as a simultaneous, exact contact solver.</p>
+<p>Cooldowns serve a different purpose from integration substeps: they
+suppress particular repeated events. Not every contact type has a
+cooldown, and some cooldown updates are themselves tied to particular
+event-block frequencies.</p>
+<h1 id="what-is-visual-what-changes-physics-and-what-affects-score">21  What
+is visual, what changes physics, and what affects score</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Feature</strong></th>
+<th style="text-align: left;"><strong>Role in the release</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Rod/link lengths</td>
+<td style="text-align: left;">Constrain positions and enter the mass
+matrix.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Stored angular velocities</td>
+<td style="text-align: left;">Determine future motion; changed by forces
+and event rules.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bob collision radius</td>
+<td style="text-align: left;">Changes contact thresholds; does not
+change modeled mass.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Glow, orbit-style trails, sparks</td>
+<td style="text-align: left;">Artwork/history. They are not additional
+masses, force sources, or future positions.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Squash/stretch scale</td>
+<td style="text-align: left;">Visual animation, distinct from collision
+radius.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind arrows</td>
+<td style="text-align: left;">Visualize the authored field; do not
+themselves push the chain.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Prediction trail</td>
+<td style="text-align: left;">A simplified preview, not a guaranteed
+future trajectory.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Recorded last attempt</td>
+<td style="text-align: left;">Images from a prior run; viewing them does
+not rerun the physics.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Verification viewer</td>
+<td style="text-align: left;">Re-simulates saved inputs at a fixed frame
+interval; different from image replay.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Score and stars</td>
+<td style="text-align: left;">Rewards based on game events/time/pulses,
+not physical energy.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prediction-is-deliberately-incomplete">21.1  Prediction is
+deliberately incomplete</h2>
+<p>The aiming preview advances a copied chain for 50 steps of 0.02 s. It
+uses simplified inputs and does not reproduce all collisions, fields,
+portals, changing wind or gameplay state. Its anchor phase handling is
+also simpler than the live update. Treat it as an aiming aid, not a
+mathematical promise that the tip will follow the exact drawn line.</p>
+<h2 id="rewards-are-not-conservation-laws">21.2  Rewards are not conservation
+laws</h2>
+<p>Ordinary target scoring uses a combo counter: <span class="math inline">\(100+50(\mathrm{combo}-1)\)</span>, with a 1.25-s
+combo window. Explosion-cleared targets receive their own 100-point
+award. Clear score adds a rounded time bonus of 100 times remaining game
+seconds (for finite timed stages).</p>
+<p>A clear earns one star; another comes from leaving at least one pulse
+(automatic when pulses are locked), and another from retaining at least
+35% of the time limit. None of these numbers is kinetic energy or a
+physical efficiency measure.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-22" data-kind="visual-physics"></div><figcaption>Figure A22 (added): One evolving state, two kinds of quantities: angular speed and kinetic energy on the left; a separate illustrative reward counter on the right. A score does not enter the equations.</figcaption></figure><h1 id="reading-the-250-stage-verification-correctly">22  Reading the
+250-stage verification correctly</h1>
+<p>The release includes successful saved solutions for all 250
+substages, independently replayed through the actual STAGE CLEAR result.
+The verification harness uses the same game update path with fixed
+outer-frame interval <span class="math inline">\(1/60\)</span> s, four
+integration substeps, and pulse events on specified frame numbers.
+Player saves are isolated in memory.</p>
+<p>This establishes a reproducible completion under that timing model.
+It does <em>not</em> establish that every human input near the solution
+succeeds, that the solution is comfortable on mobile, that a gimmick
+must be used to win, or that variable frame timing produces a
+pixel-identical run.</p>
+<div class="idea">
+<p><strong class="box-title">Example: the user-guided Stage 44-2 solution</strong> Launch at
+<span class="math inline">\(-105^\circ\)</span> and angular velocity
+<span class="math inline">\(-1.2\)</span> rad/s. Apply automated pulses
+on frames 36 and 100: playback times 0.60 s and about 1.67 s. The
+recorded fixed-frame solution clears in about 3.40 game seconds. The
+pulses were searched around the user’s successful starting settings;
+they are not claimed to reconstruct the user’s recording exactly.</p>
+</div>
+<p>A seed setting is a search starting point, not a bypass of
+constraints. The verification driver checks the stage’s locked settings
+and starting pulse allowance. A failed bounded search means “not yet
+found,” never a proof that a stage is physically impossible.</p>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-23" data-kind="verification"></div><figcaption>Figure A23 (added): A fixed-frame timeline for the documented Stage 44-2 pulse schedule: frames 36 and 100 at 60 Hz. This illustrates recorded inputs; it does not claim to rerun or verify that stage.</figcaption></figure><h1 id="experiments-a-beginner-can-try">23  Experiments a beginner can
+try</h1>
+<p>Use Free Play or the verification tools, and change one thing at a
+time.</p>
+<ol>
+<li><p><strong>Release height:</strong> keep angular velocity zero and
+compare modest versus high launch angles. Look for a different descent
+speed. In a multi-link chain, do not expect the one-link energy formula
+to predict the exact tip speed.</p></li>
+<li><p><strong>Initial spin:</strong> keep the angle fixed and compare
+positive and negative angular velocity. Notice that this initial value
+applies to every link.</p></li>
+<li><p><strong>Links:</strong> compare two and five links in Free Play.
+Total straight reach stays 300 pixels; the number of degrees of freedom
+changes.</p></li>
+<li><p><strong>Pulse timing:</strong> replay a verified solution, then
+test another pulse schedule. A pulse can help reach a target but can
+also make the bob hit a hazard sooner.</p></li>
+<li><p><strong>Field edge versus core:</strong> observe the influence
+region before approaching the dangerous center. A large artwork aura is
+not itself the black-hole death threshold.</p></li>
+<li><p><strong>Radius growth:</strong> compare a route before and after
+collecting targets. A larger bob can hit more easily but may no longer
+fit a gap.</p></li>
+<li><p><strong>Deterministic versus visual:</strong> repeat a
+fixed-frame solution. The important outcome can reproduce while
+particles look different.</p></li>
+</ol>
+<div class="idea">
+<p><strong class="box-title">Questions to ask while watching</strong> Which variables actually
+changed: angles, angular velocities, radius, or only appearance? Was the
+bob constrained by a link? Was an event a continuous force or an
+instantaneous rewrite? Which clock was used? These questions explain
+most apparently surprising motions in this game.</p>
+</div>
+<figure class="added-figure"><div class="diagram" data-diagram-id="added-24" data-kind="experiment"></div><figcaption>Figure A24 (added): A controlled nonlinear pendulum experiment. Change release angle, gravity or drag, then reset. Only these chosen parameters vary; the mass and link length stay fixed.</figcaption></figure><h1 id="symbols-and-useful-release-constants">A  Symbols and useful release
+constants</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Symbol/name</strong></th>
+<th style="text-align: left;"><strong>Meaning</strong></th>
+<th style="text-align: left;"><strong>Typical value/unit</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(N\)</span></td>
+<td style="text-align: left;">Number of links in one chain</td>
+<td style="text-align: left;">2–5 in normal stages</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\ell_i\)</span></td>
+<td style="text-align: left;">Link length; <code>L[i]</code> in
+solver</td>
+<td style="text-align: left;"><span class="math inline">\(2.5/N\)</span>
+model m</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(m_i\)</span></td>
+<td style="text-align: left;">Point mass at joint</td>
+<td style="text-align: left;">1 model mass unit</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(\theta_i\)</span></td>
+<td style="text-align: left;">Absolute angle from down</td>
+<td style="text-align: left;">rad internally</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\omega_i\)</span></td>
+<td style="text-align: left;">Angular velocity</td>
+<td style="text-align: left;">rad/s</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(g\)</span></td>
+<td style="text-align: left;">Downward gravity input</td>
+<td style="text-align: left;">9.8 model m/s<span class="math inline">\(^2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(c\)</span></td>
+<td style="text-align: left;">Generalized damping coefficient</td>
+<td style="text-align: left;">0.04 s<span class="math inline">\(^{-1}\)</span> normally</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(s\)</span></td>
+<td style="text-align: left;">Position drawing conversion</td>
+<td style="text-align: left;">120 px/model m</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(\mu_{ij}\)</span></td>
+<td style="text-align: left;">Mass downstream of both links</td>
+<td style="text-align: left;">sum of point masses</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(M_{ij}\)</span></td>
+<td style="text-align: left;">Mass-matrix coefficient</td>
+<td style="text-align: left;">model mass<span class="math inline">\(\cdot\)</span>m<span class="math inline">\(^2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(B_i\)</span></td>
+<td style="text-align: left;">Generalized driving term</td>
+<td style="text-align: left;">model torque units</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Outer-frame cap</td>
+<td style="text-align: left;">Largest regular frame step</td>
+<td style="text-align: left;">0.03 s</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RK4 substeps</td>
+<td style="text-align: left;">Integration passes per outer frame</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bob radius</td>
+<td style="text-align: left;">Min / max</td>
+<td style="text-align: left;">21 / 54 px</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Growth / shrink</td>
+<td style="text-align: left;">Radius increment</td>
+<td style="text-align: left;">4.5 px</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pulse kick</td>
+<td style="text-align: left;">Last-link angular-velocity increment</td>
+<td style="text-align: left;"><span class="math inline">\(\pm2.5\)</span> rad/s</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Portal cooldown</td>
+<td style="text-align: left;">Re-entry suppression</td>
+<td style="text-align: left;">0.65 s</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Boost cooldown</td>
+<td style="text-align: left;">Repeated boost suppression</td>
+<td style="text-align: left;">0.4 s</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Laser cooldown</td>
+<td style="text-align: left;">Shared hit suppression</td>
+<td style="text-align: left;">0.55 s</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rail cooldown</td>
+<td style="text-align: left;">Repeated rail-hit suppression</td>
+<td style="text-align: left;">0.08 s</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clone cooldown</td>
+<td style="text-align: left;">After a tip–tip hit</td>
+<td style="text-align: left;">0.06 s</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bomb clearance</td>
+<td style="text-align: left;">Center-distance blast rule</td>
+<td style="text-align: left;">145 px</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Segment half-width</td>
+<td style="text-align: left;">Laser/gate contact expansion</td>
+<td style="text-align: left;">3 px</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rail half-width</td>
+<td style="text-align: left;">Rail contact expansion</td>
+<td style="text-align: left;">18 px</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not universal:</strong> field strengths, gravity overrides,
+rail frequencies, ring boosts, armor health, zone damping and gate
+durations come from stage definitions. The tutorial adapts its chain
+lengths and object sizes to the available demonstration area, rather
+than using every stage constant unchanged.</p>
+<h1 id="source-map-and-numerical-figure-provenance">B  Source map and
+numerical-figure provenance</h1>
+<p>This guide is based on tag <code>v0.1.0</code> at commit
+<code>6335b08f56a9b66a5734fd4dfe7955ccbdf334e0</code> in repository
+<code>pendulum-game-dev-chanpiset/pendulum-game-dev</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>File / function</strong></th>
+<th style="text-align: left;"><strong>What it defines</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>src/physics.js</code>:
+<code>getDerivs</code></td>
+<td style="text-align: left;">Downstream masses, coupled mass matrix,
+gravity, anchor forcing, wind and damping.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/physics.js</code>:
+<code>solveMatrix</code>, <code>rk4</code></td>
+<td style="text-align: left;">Gaussian elimination and fourth-order
+integration.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/main.js</code>:
+<code>fire</code>, <code>initVisualsOnly</code></td>
+<td style="text-align: left;">Initial angles, angular velocities,
+clones, link lengths and masses.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/main.js</code>:
+<code>update</code></td>
+<td style="text-align: left;">Frame/substep order, moving anchors,
+contacts, force fields, portals, zones and outcomes.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/main.js</code>:
+<code>triggerPulse</code>, <code>explodeBomb</code>,
+<code>triggerShrink</code></td>
+<td style="text-align: left;">Arcade kicks, bomb clearance and bob-size
+effects.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/engine/collisions.js</code></td>
+<td style="text-align: left;">Tip–tip clone collision rule and
+cooldown.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/game-sizes.js</code></td>
+<td style="text-align: left;">Shared contact dimensions and
+circular-object scaling.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/engine/wind-flow.js</code></td>
+<td style="text-align: left;">Integral used for visual wind
+scrolling.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/engine/renderer.js</code></td>
+<td style="text-align: left;">Artwork, traces and displayed field
+geometry.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/data/stage-builders/</code></td>
+<td style="text-align: left;">Authored stage geometry and
+parameters.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/data/stage-balance.js</code></td>
+<td style="text-align: left;">Targeted stage adjustments before circle
+scaling.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>src/scoring.js</code></td>
+<td style="text-align: left;">Star conditions.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>src/verification.js</code>,
+<code>verification/solutions.json</code></td>
+<td style="text-align: left;">Fixed-frame verification driver and
+successful saved inputs.</td>
+</tr>
+</tbody>
+</table>
+<p>The numerical plots use the release’s <code>rk4</code> function
+directly. Integration step is 1/240 s, gravity is 9.8, all masses are 1,
+and damping is explicitly zero. The one-link plots use length 2.5,
+releases of 10 and 60 degrees, and zero velocity. The two-link
+experiment uses lengths 1.25 each, a 120-degree release, and a second
+copy offset by 0.001 rad in both angles. No stage contacts, kicks, wind
+or moving anchor are present in those experiments.</p>
+<p>The energy diagnostic in the sensitivity plot is <span class="math inline">\((E(t)-E(0))/|E(0)|\)</span>, with <span class="math inline">\(E=T+U\)</span>, <span class="math inline">\(T\)</span> from equation (6) and <span class="math inline">\(U=-g\sum_k m_k y_k\)</span>. A very small
+diagnostic error in that isolated experiment is not a blanket accuracy
+guarantee for the event-driven game.</p>
+<h1 id="glossary">C  Glossary</h1>
+<div class="description">
+<p>Rate at which velocity changes, including turning.</p>
+<p>Rate at which an angle changes; signed, in rad/s.</p>
+<p>A rule restricting allowed positions, such as an unchanging link
+length.</p>
+<p>An independent coordinate needed to describe a configuration.</p>
+<p>A mechanism that removes motion-related energy; here, angular drag
+and zone multipliers.</p>
+<p>The driving term associated with an angular coordinate, including
+forces translated into that coordinate’s turning effect.</p>
+<p>A rapid state change. The game usually assigns an angular-velocity
+change directly rather than solving a physical impulse.</p>
+<p>Finding joint angles that place an endpoint near a desired
+position.</p>
+<p>The coefficients connecting all angular accelerations in a coupled
+system.</p>
+<p>Approximating a changing state by repeatedly advancing short time
+intervals.</p>
+<p>Energy associated with position in a force field, such as height in
+gravity.</p>
+<p>Conventionally, the ratio of normal separation speed to normal
+approach speed at a bounce. The game’s similarly named bumper property
+is a different signed angular multiplier.</p>
+<p>A smaller integration interval inside one browser-frame update.</p>
+<p>The direction locally perpendicular to a link, along which changing
+its angle moves its end.</p>
+</div>
+</article></main>
+<noscript><p class="no-script">JavaScript is needed for typeset equations and interactive figures. The full original <a href="source/pendulum-physics.pdf">PDF</a> is included offline.</p></noscript></body></html>

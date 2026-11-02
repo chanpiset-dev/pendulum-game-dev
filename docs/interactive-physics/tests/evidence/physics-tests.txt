@@ -1,0 +1,10 @@
+PASS One-link derivative matches nonlinear gravity, pivot, wind and drag
+PASS Worked two-link acceleration agrees with textbook
+PASS Isolated RK4 single and double chains conserve energy over 20 s
+PASS Positive damping removes energy in coupled model
+PASS Full reach bounds cover every joint, all 2–5 link extreme-angle combinations
+PASS Moving pivot envelope includes ±60 px x and ±36 px y and maximum bob radius
+PASS Portal preserves both lengths and places tip at reachable destination
+PASS Arcade kicks and sampled geometry obey source formulas
+PASS Attractor and repulsor angular kicks match equations
+9 physics tests passed

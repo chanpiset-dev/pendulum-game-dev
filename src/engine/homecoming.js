@@ -1,4 +1,4 @@
-import { drawExplorer } from './explorer.js';
+import { drawCharacter } from '../graphics/character-renderer.js';
 import { drawLivePendulum } from './artwork.js';
 import { JOURNEY_WORLDS } from '../journey-map-art.js';
 export const HOME_DURATION=1.8;
@@ -38,6 +38,6 @@ export function drawHomecoming(c,{snapshot,age,width,height,systems,pivot,scale,
     const delay=Math.min(i*.04,.16),pose=homePose(start,width,height,age,reduced,delay);
     if(!reduced&&age<1.6){c.save();c.strokeStyle='#e8dba75a';c.lineWidth=2;c.setLineDash([2,8]);c.beginPath();c.moveTo(start.x,start.y);c.quadraticCurveTo(1048/1280*width-width*.09,Math.min(start.y,548/720*height-height*.4),1048/1280*width,548/720*height);c.stroke();c.restore();}
     c.save();c.globalAlpha=pose.alpha;c.translate(pose.x,pose.y);c.scale(pose.scale,pose.scale);const r=start.radius;
-    const fill=c.createRadialGradient(-r/3,-r/3,1,0,0,r);fill.addColorStop(0,'#f3fbff');fill.addColorStop(.35,start.color);fill.addColorStop(1,'#102238');c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.fillStyle=fill;c.fill();c.strokeStyle='#102238';c.lineWidth=2;c.stroke();drawExplorer(c,0,0,r,{mood:'happy'});c.restore();
+    const fill=c.createRadialGradient(-r/3,-r/3,1,0,0,r);fill.addColorStop(0,'#f3fbff');fill.addColorStop(.35,start.color);fill.addColorStop(1,'#102238');c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.fillStyle=fill;c.fill();c.strokeStyle='#102238';c.lineWidth=2;c.stroke();drawCharacter(c,{x:0,y:0,radius:r+1,angle:0,isTip:true,linkIndex:0},{mood:'happy',time:age});c.restore();
   });
 }

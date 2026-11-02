@@ -13,7 +13,7 @@ export function drawParallaxLayers(ctx, layers, { width, height, cameraX = 0, ca
     if (typeof layer.draw !== 'function') continue;
     ctx.save();
     try {
-      ctx.translate(layer.offsetX - (reduced ? 0 : cameraX * layer.depth), layer.offsetY - (reduced ? 0 : cameraY * layer.depth));
+      ctx.translate(layer.offsetX - (reduced ? 0 : cameraX * layer.depth), (layer.offsetY ?? 0) - (reduced ? 0 : cameraY * layer.depth));
       layer.draw(ctx, { width, height, reduced });
     } finally { ctx.restore(); }
   }

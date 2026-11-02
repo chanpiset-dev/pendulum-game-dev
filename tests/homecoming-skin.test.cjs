@@ -6,8 +6,9 @@ for(const file of ['src/engine/homecoming.js','src/graphics/character-renderer.j
 (async()=>{
  const explorer='data:text/javascript,'+encodeURIComponent('export function drawExplorer(ctx,x,y,r,opts){globalThis.__homeCalls.push({skin:"legacy",x,y,r,mood:opts.mood});}');
  const fantasy='data:text/javascript,'+encodeURIComponent('export const FANTASY_EXPLORER_ID="fantasy-explorer";export function drawFantasyExplorer(ctx,a,opts){globalThis.__homeCalls.push({skin:"fantasy",a,expression:opts.animation.expression,time:opts.animation.time});return true;}');
+ const sprite='data:text/javascript,'+encodeURIComponent('export function drawExplorerSprite(){return false}');
  const animation='data:text/javascript,'+encodeURIComponent(read('src/graphics/character-animation.js'));
- const character='data:text/javascript,'+encodeURIComponent(read('src/graphics/character-renderer.js').replace("'./fantasy-explorer.js'",JSON.stringify(fantasy)).replace("'../engine/explorer.js'",JSON.stringify(explorer)).replace("'./character-animation.js'",JSON.stringify(animation)));
+ const character='data:text/javascript,'+encodeURIComponent(read('src/graphics/character-renderer.js').replace("'./explorer-sprite-renderer.js'",JSON.stringify(sprite)).replace("'./fantasy-explorer.js'",JSON.stringify(fantasy)).replace("'../engine/explorer.js'",JSON.stringify(explorer)).replace("'./character-animation.js'",JSON.stringify(animation)));
  const artwork='data:text/javascript,'+encodeURIComponent('export function drawLivePendulum(){}');
  const journey='data:text/javascript,'+encodeURIComponent('export const JOURNEY_WORLDS=Array.from({length:6},()=>({colors:["#123","#456","#789"]}));');
  const moduleUrl='data:text/javascript,'+encodeURIComponent(read('src/engine/homecoming.js').replace("'../graphics/character-renderer.js'",JSON.stringify(character)).replace("'./artwork.js'",JSON.stringify(artwork)).replace("'../journey-map-art.js'",JSON.stringify(journey)));

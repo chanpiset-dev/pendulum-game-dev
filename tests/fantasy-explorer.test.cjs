@@ -18,7 +18,8 @@ for(const p of ['src/graphics/fantasy-explorer.js','src/graphics/character-rende
  // Resolve module imports as data URLs so Node can execute browser ESM files.
  const animationUrl='data:text/javascript,'+encodeURIComponent(src('src/graphics/character-animation.js'));
  const explorerUrl='data:text/javascript,'+encodeURIComponent('export function drawExplorer(ctx,x,y,r,o){globalThis.__legacy?.(x,y,r,o)}');
- const code=src('src/graphics/character-renderer.js').replace("'./fantasy-explorer.js'",JSON.stringify(fantasyUrl)).replace("'./character-animation.js'",JSON.stringify(animationUrl)).replace("'../engine/explorer.js'",JSON.stringify(explorerUrl));
+ const spriteUrl='data:text/javascript,'+encodeURIComponent('export function drawExplorerSprite(){return false}');
+ const code=src('src/graphics/character-renderer.js').replace("'./fantasy-explorer.js'",JSON.stringify(fantasyUrl)).replace("'./explorer-sprite-renderer.js'",JSON.stringify(spriteUrl)).replace("'./character-animation.js'",JSON.stringify(animationUrl)).replace("'../engine/explorer.js'",JSON.stringify(explorerUrl));
  const mod=await import('data:text/javascript,'+encodeURIComponent(code));
  let legacy=0;globalThis.__legacy=()=>legacy++;
  assert.equal(mod.getCharacterSkin(),'legacy');

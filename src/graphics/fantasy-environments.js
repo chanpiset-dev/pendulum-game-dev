@@ -2,6 +2,7 @@
 // All geometry is normalized to 1280x720; no physics or stage state is accessed.
 import { ENVIRONMENT_WORLDS, getEnvironmentRenderer, registerEnvironmentRenderer, unregisterEnvironmentRenderer } from './environment-registry.js';
 import { createParallaxLayers } from './parallax-system.js';
+import { drawForestDistance, drawForestArchitecture, drawForestAtmosphere } from './forest-ruins-art.js';
 
 export const FANTASY_ENVIRONMENT_IDS = Object.freeze(Object.values(ENVIRONMENT_WORLDS));
 const TAU = Math.PI * 2;
@@ -22,7 +23,7 @@ function spire(c,x,y,h,color){path(c,[[x-46,y],[x-35,y-h*.7],[x,y-h],[x+35,y-h*.
 function background(c,t){const g=c.createLinearGradient(0,0,0,720);g.addColorStop(0,t.sky[0]);g.addColorStop(1,t.sky[1]);c.fillStyle=g;c.fillRect(0,0,1280,720);}
 function farLayer(c,id,t){
  if(id==='forest-ruins'){
-  for(let i=0;i<10;i++){const x=i*154-60;spire(c,x,610,310+(i%3)*45,'#173b39');disk(c,x,290+(i%3)*40,95,'#22534b');}
+  drawForestDistance(c);
  }else if(id==='wind-sanctuary'){
   for(let i=0;i<7;i++){const x=i*230-60,y=220+(i%3)*100;path(c,[[x-120,y],[x+85,y-25],[x+160,y],[x+75,y+35],[x-70,y+35]],'#608da780');}
  }else if(id==='clockwork-hall'){
@@ -39,8 +40,7 @@ function farLayer(c,id,t){
 function architecture(c,id,t){
  for(const x of [58,1190]){c.fillStyle=t.stone;c.fillRect(x,110,32,570);disk(c,x+16,110,26,t.accent);}
  if(id==='forest-ruins'){
-  for(let i=0;i<8;i++){const x=100+i*150;line(c,[[x,0],[x+12,120],[x-5,220+i%2*50]],'#4d9069',6);for(let j=0;j<4;j++)disk(c,x+(j%2?10:-6),60+j*42,8,'#71b47b');}
-  for(const x of [190,1040]){ring(c,x,460,95,155,'#7ebc9c66',12);}
+  drawForestArchitecture(c);
  }else if(id==='wind-sanctuary'){
   for(const x of [210,1060]){ring(c,x,360,85,165,'#c9e7fa80',9);for(let i=0;i<4;i++)line(c,[[x-100,220+i*70],[x,195+i*70],[x+100,220+i*70]],'#c3e8f66b',4);}
  }else if(id==='clockwork-hall'){
@@ -53,10 +53,13 @@ function architecture(c,id,t){
   for(const x of [200,1080]){ring(c,x,390,115,200,'#b9b8ff7a',10);disk(c,x,390,50,'#b9b8ff33');}
   ring(c,640,150,350,90,'#f7e7bd77',6);
  }
+ if(id!=='forest-ruins'){
  c.fillStyle=t.stone;c.fillRect(70,670,1140,50);
  c.fillStyle=t.accent;c.fillRect(70,670,1140,7);
+ }
 }
 function atmosphere(c,id,t,scene){
+ if(id==='forest-ruins'){drawForestAtmosphere(c,{reduced:scene.reduced,time:scene.options.time,index:scene.index});return;}
  const seed=Number.isInteger(scene.index)?scene.index:1;
  const time=scene.reduced?0:(Number.isFinite(scene.options.time)?scene.options.time:0);
  const glow=c.createRadialGradient(640,230,40,640,230,560);

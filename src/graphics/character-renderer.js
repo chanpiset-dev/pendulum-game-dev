@@ -1,4 +1,5 @@
 import { FANTASY_EXPLORER_ID, drawFantasyExplorer } from './fantasy-explorer.js';
+import { drawExplorerSprite } from './explorer-sprite-renderer.js';
 import { drawExplorer } from '../engine/explorer.js';
 import { resolveCharacterAnimation } from './character-animation.js';
 
@@ -6,7 +7,7 @@ import { resolveCharacterAnimation } from './character-animation.js';
 // renderer with identical coordinates, radius, pixel mode and expression.
 const skins = new Map();
 let activeSkin = 'legacy';
-skins.set(FANTASY_EXPLORER_ID, drawFantasyExplorer);
+skins.set(FANTASY_EXPLORER_ID, (ctx, attachment, options) => drawExplorerSprite(ctx, attachment, options) || drawFantasyExplorer(ctx, attachment, options));
 export function registerCharacterSkin(id, renderer) {
   if (!id || id === 'legacy' || typeof renderer !== 'function') throw new TypeError('A non-legacy skin ID and render function are required');
   skins.set(id, renderer);

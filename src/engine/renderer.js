@@ -1,3 +1,5 @@
+import { createSceneView } from '../graphics/scene-adapter.js';
+import { renderScene } from '../graphics/render-pipeline.js';
 import { drawHomecoming, drawShelter, HOME_FIREWORK_DELAY } from './homecoming.js';
 import { chapterForStage } from '../data/chapters.js';
 import { drawEnvironment } from './environments.js';
@@ -13,6 +15,11 @@ let windMotionPreference;
 let artworkMotionPreference;
 // Render the new artwork at the real simulation coordinates. Never change state.
 export function drawGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
+  const scene = createSceneView({ systems: chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals, switches, boostRings, zones, lasers, renderOptions });
+  return renderScene(ctx, scene, drawLegacyGenericScene);
+}
+
+function drawLegacyGenericScene(ctx, chainOrSystems, targets, obstacles, blackhole, particles, shockwaves, floaters, pivot, rail, portals = [], switches = [], boostRings = [], zones = [], lasers = [], renderOptions = {}) {
   const { currentLang = 'en', BASE_PIVOT = pivot, PENDULUM_SCALE = 120, BOB_MIN_R = 14, laserCooldown = 0, timeElapsed = 0, mood = 'ready' } = renderOptions;
   const palette = getCanvasPalette(), style = artworkStyleForTheme(palette.theme);
   artworkMotionPreference ||= matchMedia('(prefers-reduced-motion: reduce)');

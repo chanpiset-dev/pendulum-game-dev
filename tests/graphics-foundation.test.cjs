@@ -1,0 +1,43 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { spawnSync } = require('node:child_process');
+const root = path.resolve(__dirname, '..');
+const paths = ['src/engine/renderer.js', 'src/graphics/scene-adapter.js', 'src/graphics/render-pipeline.js', 'src/graphics/asset-manager.js'];
+for (const file of paths) {
+  const result = spawnSync(process.execPath, ['--check', '--input-type=module'], { input: fs.readFileSync(path.join(root, file), 'utf8'), encoding: 'utf8' });
+  assert.equal(result.status, 0, file + ': ' + result.stderr);
+}
+(async () => {
+  const source = file => 'data:text/javascript,' + encodeURIComponent(fs.readFileSync(path.join(root, file), 'utf8'));
+  const { createSceneView } = await import(source('src/graphics/scene-adapter.js'));
+  const { renderScene } = await import(source('src/graphics/render-pipeline.js'));
+  const { createAssetManager } = await import(source('src/graphics/asset-manager.js'));
+  const targets = [{ x: 4, alive: true }], systems = [{ state: [0.1] }], options = { mood: 'ready' };
+  const scene = createSceneView({ systems, targets, renderOptions: options });
+  assert.ok(Object.isFrozen(scene));
+  assert.equal(scene.targets, targets);
+  assert.equal(scene.systems, systems);
+  const ctx = {};
+  const args = [];
+  const returned = renderScene(ctx, scene, (...received) => { args.push(...received); return 'ok'; });
+  assert.equal(returned, 'ok');
+  assert.equal(args[0], ctx);
+  assert.equal(args[1], systems);
+  assert.equal(args[2], targets);
+  assert.equal(args[16], options);
+  assert.equal(targets[0].alive, true);
+  let image;
+  const assets = createAssetManager({ createImage: () => (image = {}) });
+  assert.equal(assets.status('hero'), 'missing');
+  assert.equal(assets.get('hero'), null);
+  const loading = assets.load('hero', '/hero.png');
+  assert.equal(image.src, '/hero.png');
+  assert.equal(assets.status('hero'), 'loading');
+  assert.equal(assets.load('hero', '/hero.png'), loading);
+  image.onload();
+  assert.equal(await loading, image);
+  assert.equal(assets.get('hero'), image);
+  await assert.rejects(assets.load('hero', '/different.png'), /already maps/);
+  console.log('M1 graphics boundary, dispatch, syntax, and asset cache checks passed.');
+})().catch(error => { console.error(error); process.exitCode = 1; });

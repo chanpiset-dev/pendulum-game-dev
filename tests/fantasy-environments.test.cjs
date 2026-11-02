@@ -7,7 +7,8 @@ const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:
  const parUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/parallax-system.js'));
  const reg=await import(regUrl),par=await import(parUrl);
  const forestUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/forest-ruins-art.js'));
- const worldUrl='data:text/javascript,'+encodeURIComponent(source(file).replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)).replace("'./forest-ruins-art.js'",JSON.stringify(forestUrl)));
+ const imageUrl='data:text/javascript,'+encodeURIComponent('export function approvedForestImageReady(){return false} export function drawApprovedForestImage(){return false}');
+ const worldUrl='data:text/javascript,'+encodeURIComponent(source(file).replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)).replace("'./forest-ruins-art.js'",JSON.stringify(forestUrl)).replace("'./forest-image.js'",JSON.stringify(imageUrl)));
  const worlds=await import(worldUrl);
  const rendererUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/environment-renderer.js').replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)));
  const {renderEnvironment}=await import(rendererUrl);

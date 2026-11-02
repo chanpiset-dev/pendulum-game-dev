@@ -1,0 +1,36 @@
+name: Graphics foundation regression tests
+
+on:
+  push:
+    branches:
+      - feature/graphics-engine
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  graphics-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependency
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Configure Chromium executable
+        run: echo "CHROMIUM_PATH=$(node -e "process.stdout.write(require('playwright').chromium.executablePath())")" >> "$GITHUB_ENV"
+      - name: Graphics foundation unit tests
+        run: node tests/graphics-foundation.test.cjs
+      - name: Browser regression - live artwork
+        run: node tests/live-artwork.cjs
+      - name: Browser regression - environments
+        run: node tests/gameplay-environments.cjs
+      - name: Browser regression - explorer
+        run: node tests/explorer-adventure.cjs
+      - name: Browser regression - stage progression
+        run: node tests/chapter-progression.cjs

@@ -32,7 +32,7 @@ for (const file of files) {
   assert.equal(resolveCharacterAnimation({mood:'ready',popScale:1.1}).expression,'impact');
   assert.equal(resolveCharacterAnimation({mood:'focused',popScale:1}).expression,'focused');
   const renderer=fs.readFileSync(path.join(root,'src/graphics/character-renderer.js'),'utf8');
-  assert.match(renderer,/skins\.get\(activeSkin\)/);
+  assert.match(renderer,/skins\.get\(skin\)/);
   assert.match(renderer,/drawExplorer\(ctx, attachment\.x, attachment\.y, radius/);
   assert.match(renderer,/if \(!attachment\?\.isTip\) return/);
   console.log('M2 attachment, clones, multi-link, animation, isolation and legacy fallback checks passed.');

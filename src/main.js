@@ -361,6 +361,23 @@ let briefedStages = savedProgress.briefed;
 let currentStageIndex = 1;
 let gameStatus = 'setup';
 let gameAnimId = null;
+let ambientSetupId = null;
+function stopAmbientSetup() {
+  if (ambientSetupId !== null) cancelAnimationFrame(ambientSetupId);
+  ambientSetupId = null;
+}
+function ambientSetupFrame() {
+  ambientSetupId = null;
+  if (gameStatus !== 'setup' || !$('titleScreen').classList.contains('hidden') || !$('tutorialScreen').classList.contains('hidden')) return;
+  // Visual-only refresh: never advance physics, timers, or replay.
+  draw();
+  ambientSetupId = requestAnimationFrame(ambientSetupFrame);
+}
+function startAmbientSetup() {
+  if (ambientSetupId === null && gameStatus === 'setup' && $('titleScreen').classList.contains('hidden') && $('tutorialScreen').classList.contains('hidden')) {
+    ambientSetupId = requestAnimationFrame(ambientSetupFrame);
+  }
+}
 let pausedStatus = null;
 let launchParameters = null;
 const gameTimers = new Set();
@@ -429,6 +446,7 @@ $('btnTitle').addEventListener('click', () => {
   updateWindSpeed(0, false);
   suspendAudio();
   $('titleScreen').classList.remove('hidden');
+  stopAmbientSetup();
   resizeFullScreenCanvas();
   if (titleAnimId) cancelAnimationFrame(titleAnimId);
   titleAnimId = requestAnimationFrame(loopTitle);
@@ -781,6 +799,7 @@ function initVisualsOnly() {
     });
   }
   draw();
+  startAmbientSetup();
 }
 
 function fire() {
@@ -833,6 +852,7 @@ function fire() {
     });
   }
 
+  stopAmbientSetup();
   timeElapsed = 0; currentStageScore = 0; clearingTimer = 0; currentRunHistory = []; gameStatus = 'playing'; lastTime = performance.now();
   playSnd('launch');
   $('btnFire').style.display = 'none'; 

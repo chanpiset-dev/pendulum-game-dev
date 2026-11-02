@@ -27,10 +27,28 @@ jobs:
       - name: Graphics foundation unit tests
         run: node tests/graphics-foundation.test.cjs
       - name: Browser regression - live artwork
+        id: artwork
+        continue-on-error: true
         run: node tests/live-artwork.cjs
       - name: Browser regression - environments
+        id: environments
+        continue-on-error: true
         run: node tests/gameplay-environments.cjs
       - name: Browser regression - explorer
+        id: explorer
+        continue-on-error: true
         run: node tests/explorer-adventure.cjs
       - name: Browser regression - stage progression
+        id: progression
+        continue-on-error: true
         run: node tests/chapter-progression.cjs
+      - name: Enforce browser regression results
+        if: always()
+        env:
+          ARTWORK: ${{ steps.artwork.outcome }}
+          ENVIRONMENTS: ${{ steps.environments.outcome }}
+          EXPLORER: ${{ steps.explorer.outcome }}
+          PROGRESSION: ${{ steps.progression.outcome }}
+        run: |
+          printf 'Browser test results: artwork=%s environments=%s explorer=%s progression=%s\\n' "$ARTWORK" "$ENVIRONMENTS" "$EXPLORER" "$PROGRESSION"
+          test "$ARTWORK" = success && test "$ENVIRONMENTS" = success && test "$EXPLORER" = success && test "$PROGRESSION" = success

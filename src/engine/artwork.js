@@ -1,3 +1,4 @@
+import { renderGimmick } from '../graphics/gimmick-renderer.js';
 import { drawCharacter } from '../graphics/character-renderer.js';
 import { getPendulumAttachments } from '../graphics/pendulum-attachments.js';
 import { paintShaded } from './shaded-artwork.js';
@@ -104,6 +105,11 @@ function paint(ctx, kind, p, time, pixel, hits = 4) {
   }
 }
 export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette, time = 0, hits = 4 }) {
+  return renderGimmick(ctx, { kind, x, y, radius, style, palette, time, hits }, drawLegacyArtwork);
+}
+
+// Legacy artwork is the unchanged default, preserving every existing canvas operation.
+function drawLegacyArtwork(ctx, { kind, x, y, radius, style, palette, time, hits }) {
   ctx.save();
   if (style === 'shaded') { ctx.translate(x,y); ctx.scale(radius/48,radius/48); paintShaded(ctx,kind,time,hits); ctx.restore(); return; }
   if (kind === 'portal-in' || kind === 'portal-out') kind = 'portal';

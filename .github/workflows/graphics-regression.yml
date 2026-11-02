@@ -28,6 +28,8 @@ jobs:
         run: node tests/graphics-foundation.test.cjs
       - name: M2 character foundation unit tests
         run: node tests/character-renderer.test.cjs
+      - name: M3 gimmick registry and animation tests
+        run: node tests/gimmick-renderer.test.cjs
       - name: Browser regression - live artwork
         id: artwork
         continue-on-error: true

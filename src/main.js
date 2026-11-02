@@ -1,5 +1,5 @@
 import { captureHomecoming, HOME_FIREWORK_DELAY, HOME_TOTAL_DURATION } from './engine/homecoming.js';
-import { setEnvironmentsEnabled } from './engine/environments.js';
+import { setEnvironmentsEnabled, setForestMotion } from './engine/environments.js';
 import { installJourneyMap } from './journey-map.js';
 import { setExplorerEnabled } from './engine/explorer.js';
 import { MECHANIC_FILTERS, getStageMechanics, matchesProgressFilter } from './stage-filters.js';
@@ -379,6 +379,10 @@ function startAmbientSetup() {
   }
 }
 let pausedStatus = null;
+$('forestMotionMode').addEventListener('change', event => {
+  setForestMotion(event.target.value);
+  if(gameStatus==='setup'||gameStatus==='paused'||gameStatus==='end')draw();
+});
 let launchParameters = null;
 const gameTimers = new Set();
 let systems = [];
@@ -1572,6 +1576,8 @@ function finishHomecoming(){
 }
 
 function draw() {
+  const forestControls=$('forestMotionControl');
+  if(forestControls)forestControls.hidden=!(Number.isInteger(currentStageIndex)&&currentStageIndex<=5);
   refreshChamber();
   drawGameFrame({
     ctx,

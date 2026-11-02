@@ -1146,3 +1146,9 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
 
 .chamber-meter{display:block;height:3px;background:var(--line,#4b6867);margin-top:5px;border-radius:3px;overflow:hidden}.chamber-meter i{display:block;height:100%;width:var(--charge,0%);background:var(--accent,#b9d69c)}
 .clear-gateway{display:none}.chamber-clear .clear-gateway{display:block;margin-bottom:12px}.clear-gateway .gateway-icon{width:44px;height:56px;border-width:3px;background:linear-gradient(#9bcece,#e2e8b6);box-shadow:0 0 18px #b9d69c33}.chamber-clear .clear-gateway i:first-child{transform:translateX(-100%)}.chamber-clear .clear-gateway i:last-child{transform:translateX(100%)}
+
+/* Motion-1.2 temporary verification control: Stage 1 only. */
+.forest-motion-control{position:absolute;top:40px;left:12px;z-index:8;display:flex;align-items:center;gap:8px;padding:5px 9px;background:rgba(12,20,28,.9);border:1px solid var(--line);border-radius:8px;color:var(--text);font:12px system-ui,sans-serif}
+.forest-motion-control[hidden]{display:none!important}
+.forest-motion-control select{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:3px 5px}
+@media(max-width:600px){.forest-motion-control{top:34px;left:7px;font-size:10px;padding:3px 5px}}

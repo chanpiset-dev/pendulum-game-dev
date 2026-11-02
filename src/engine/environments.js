@@ -2,6 +2,9 @@ import { drawShelter } from './homecoming.js';
 import { chapterForStage } from '../data/chapters.js';
 import { JOURNEY_WORLDS } from '../journey-map-art.js';
 let enabled=true;
+let forestMotion='normal';
+export function setForestMotion(mode){ forestMotion=['off','normal','strong'].includes(mode)?mode:'normal'; }
+export function getForestMotion(){ return forestMotion; }
 export function setEnvironmentsEnabled(value){enabled=value!==false;}
 // Decorative architecture only: never reads or writes simulation bodies.
 export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,reduced=false}={}){
@@ -21,7 +24,13 @@ export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,redu
   c.strokeStyle=frame;c.lineWidth=50;c.beginPath();c.arc(640,380,540,Math.PI,Math.PI*2);c.stroke();
   c.strokeStyle=world.colors[2]+'30';c.lineWidth=6;c.beginPath();c.arc(640,380,510,Math.PI,Math.PI*2);c.stroke();
   if(ch.id===1){
-    for(let i=0;i<9;i++){const x=80+i*140,y=210+i%2*50;line([[x,0],[x+10,120+i%3*35],[x-5,y]],'#365f43',4);for(let j=0;j<5;j++)ellipse(x+(j%2?9:-5),35+j*35,13,5,'#63865c');}
+    const motion = !reduced && stage===1 && forestMotion!=='off' ? (forestMotion==='strong'?2.6:1) : 0;
+    const time = performance.now()*0.001;
+    for(let i=0;i<9;i++){
+      const x=80+i*140,y=210+i%2*50, sway=motion*Math.sin(time*1.05+i*.72)*15;
+      line([[x,0],[x+10+sway*.45,120+i%3*35],[x-5+sway,y]],'#365f43',4);
+      for(let j=0;j<5;j++)ellipse(x+(j%2?9:-5)+sway*(j/5),35+j*35,13,5,'#63865c');
+    }
     for(const x of [170,780])rect(x,635,250,35,'#4a6551');
   }else if(ch.id===2){
     for(let j=0;j<3;j++){const y=110+j*90;line([[70,y],[170,y-12],[270,y]],'#b7dce333',3);}
@@ -43,7 +52,7 @@ export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,redu
   // Visual-only ambient motion. No simulation objects or gameplay state are touched.
   // performance.now keeps the scenery alive while the player adjusts launch settings.
   // Reduced-motion users retain the original static background.
-  if (!reduced) {
+  if (!reduced && !(ch.id===1 && stage===1)) {
     const t = performance.now() * 0.001;
     c.save();
     // Slow drifting mist, clipped to the distant sky above the playfield.
@@ -83,6 +92,30 @@ export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,redu
       }
       c.restore();
     }
+  }
+  // Stage 1 visual test: existing vines plus visible drifting mist and leaves.
+  // All coordinates remain decorative; no collision or physics state is changed.
+  if(ch.id===1 && stage===1 && !reduced && forestMotion!=='off'){
+    const t=performance.now()*0.001, strength=forestMotion==='strong'?2.6:1;
+    c.save(); c.beginPath(); c.rect(95,105,1090,490); c.clip();
+    for(let i=0;i<4;i++){
+      const x=((i*375+t*(28+5*i)*strength)%1660)-200;
+      const y=205+(i%3)*115+Math.sin(t*.48+i)*13*strength;
+      const haze=c.createRadialGradient(x,y,8,x,y,245);
+      haze.addColorStop(0,'rgba(220,246,233,0.22)');
+      haze.addColorStop(.6,'rgba(220,246,233,0.10)');
+      haze.addColorStop(1,'rgba(220,246,233,0)');
+      c.fillStyle=haze;c.beginPath();c.ellipse(x,y,245,75,0,0,Math.PI*2);c.fill();
+    }
+    for(let i=0;i<18;i++){
+      const x=95+((i*157+t*(13+i%5*3)*strength)%1090);
+      const y=115+((i*97+t*(19+i%3*6)*strength)%485);
+      c.save();c.translate(x+Math.sin(t*.9+i)*15*strength,y);
+      c.rotate(.45+Math.sin(t*1.2+i)*.65);
+      c.fillStyle=i%3===0?'#c2d5a477':'#80b78c99';
+      c.beginPath();c.ellipse(0,0,5+i%3*2,2.5,0,0,Math.PI*2);c.fill();c.restore();
+    }
+    c.restore();
   }
   // A fixed decoration behind the puzzle, not an exit the player must physically hit.
   const pads=targets.filter(t=>!t.isBomb),charge=pads.length?pads.filter(t=>!t.alive).length/pads.length:0;

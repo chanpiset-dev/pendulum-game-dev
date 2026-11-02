@@ -55,6 +55,8 @@ jobs:
         run: node tests/forest-ruins-art.test.cjs
       - name: M9 Phase 1B explorer sprite tests
         run: node tests/explorer-sprite.test.cjs
+      - name: M9 Phase 1C.1 approved forest integration tests
+        run: node tests/approved-forest-image.test.cjs
       - name: M5 cross-branch visual and state comparison
         run: node tests/m5-visual-regression.cjs
       - name: Browser regression - live artwork

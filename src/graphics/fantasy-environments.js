@@ -3,6 +3,7 @@
 import { ENVIRONMENT_WORLDS, getEnvironmentRenderer, registerEnvironmentRenderer, unregisterEnvironmentRenderer } from './environment-registry.js';
 import { createParallaxLayers } from './parallax-system.js';
 import { drawForestDistance, drawForestArchitecture, drawForestAtmosphere } from './forest-ruins-art.js';
+import { drawApprovedForestImage, approvedForestImageReady } from './forest-image.js';
 
 export const FANTASY_ENVIRONMENT_IDS = Object.freeze(Object.values(ENVIRONMENT_WORLDS));
 const TAU = Math.PI * 2;
@@ -77,6 +78,9 @@ export function createFantasyEnvironment(id){
  return scene=>{
   const w=scene.width,h=scene.height;
   if(!Number.isFinite(w)||!Number.isFinite(h)||w<=0||h<=0)return false;
+  if(id==='forest-ruins' && approvedForestImageReady()){
+   return {layers:createParallaxLayers([{depth:0,draw(c){drawApprovedForestImage(c,w,h);}}]),cameraX:0,cameraY:0};
+  }
   const layers=createParallaxLayers([
    {depth:0,draw(c){c.save();try{c.scale(w/1280,h/720);background(c,theme);}finally{c.restore();}}},
    {depth:.12,draw(c){c.save();try{c.scale(w/1280,h/720);farLayer(c,id,theme);}finally{c.restore();}}},

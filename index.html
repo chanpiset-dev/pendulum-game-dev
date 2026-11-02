@@ -246,6 +246,7 @@
       </select>
     </div>
     <canvas id="explorerSkinPreview" width="320" height="144" role="img" aria-label="Live explorer skin preview"></canvas>
+    <label class="setting-toggle"><input type="checkbox" id="fantasyGimmicksGameplay"><span>Try fantasy gimmicks in gameplay (temporary, resets on reload)</span></label>
     <button id="btnArtworkPreview" class="btn-nav">PREVIEW ARTWORK</button>
   </section>
   <h3 id="soundTitle">Sound</h3>
@@ -264,6 +265,9 @@
   <label for="artworkStyle" id="artworkStyleLabel">Style</label>
   <select id="artworkStyle"><option value="auto">Match theme</option><option value="pixel">Pixel Arcade</option><option value="vector">Clean Vector</option><option value="shaded">Shaded Canvas</option></select>
   <strong id="artworkStyleName"></strong>
+  <p>Compare original and fantasy artwork below. Preview does not change gameplay or save progress.</p>
+  <label for="gimmickPreviewMode">Gimmick preview</label>
+  <select id="gimmickPreviewMode"><option value="compare">Original vs Fantasy</option><option value="legacy">Original only</option><option value="fantasy">Fantasy only</option></select>
   <canvas id="artworkStage" width="800" height="420" role="img" aria-label="Demonstration scene with pendulum, targets, bombs and mechanics"></canvas>
   <div id="artworkGallery"></div>
   <div class="artwork-actions"><button id="artworkClose" class="btn-nav">BACK TO SETTINGS</button></div>

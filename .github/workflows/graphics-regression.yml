@@ -43,6 +43,8 @@ jobs:
         run: node tests/explorer-skin-settings.cjs
       - name: M7 fantasy gimmick skin tests
         run: node tests/fantasy-gimmicks.test.cjs
+      - name: M7 local graphics preview browser tests
+        run: node tests/graphics-preview-qa.cjs
       - name: M5 cross-branch visual and state comparison
         run: node tests/m5-visual-regression.cjs
       - name: Browser regression - live artwork

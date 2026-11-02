@@ -1,4 +1,5 @@
-import { drawExplorer } from './explorer.js';
+import { drawCharacter } from '../graphics/character-renderer.js';
+import { getPendulumAttachments } from '../graphics/pendulum-attachments.js';
 import { paintShaded } from './shaded-artwork.js';
 import { OBJECT_SCALE, JOINT_RADIUS, ROD_WIDTH } from '../game-sizes.js';
 // Reusable Canvas 2D concept artwork. These functions never read or mutate physics.
@@ -118,9 +119,10 @@ export function drawArtwork(ctx, kind, x, y, radius, { style = 'vector', palette
 export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, palette, color = '#23c878', mood = 'ready', hideTip = false }) {
   ctx.save(); ctx.lineCap = style === 'pixel' ? 'square' : 'round';
   let x = pivot.x, y = pivot.y;
+  const attachments = getPendulumAttachments(chain, pivot, scale, minRadius);
   ctx.beginPath(); ctx.arc(x, y, 7 * OBJECT_SCALE, 0, Math.PI * 2); ctx.fillStyle = palette.rod; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
   for (let i = 0; i < chain.N; i++) {
-    const nx = x + scale * chain.L[i] * Math.sin(chain.state[i]), ny = y + scale * chain.L[i] * Math.cos(chain.state[i]);
+    const { x: nx, y: ny } = attachments[i];
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(nx, ny); ctx.strokeStyle = '#102238'; ctx.lineWidth = ROD_WIDTH * 2; ctx.stroke();
     if (style === 'shaded') { const length=Math.hypot(nx-x,ny-y)||1, ox=-(ny-y)/length*ROD_WIDTH/2, oy=(nx-x)/length*ROD_WIDTH/2; const g=ctx.createLinearGradient(x-ox,y-oy,x+ox,y+oy); g.addColorStop(0,'#556f85'); g.addColorStop(.35,'#eef8ff'); g.addColorStop(.7,'#a9bfcd'); g.addColorStop(1,'#3a5167'); ctx.strokeStyle=g; } else ctx.strokeStyle = palette.rod; ctx.lineWidth = ROD_WIDTH; ctx.stroke();
     const tip = i === chain.N - 1, radius = tip ? (chain.currentR || minRadius) * (chain.popScale || 1) : JOINT_RADIUS;
@@ -133,7 +135,7 @@ export function drawLivePendulum(ctx, chain, pivot, scale, minRadius, { style, p
     }
     ctx.beginPath(); ctx.arc(nx, ny, Math.max(1, radius - 1), 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = '#102238'; ctx.lineWidth = 2; ctx.stroke();
     if (tip && style === 'pixel') { ctx.fillStyle = '#f3fbff'; ctx.fillRect(nx - radius / 2, ny - radius / 2, Math.max(2, radius / 3), Math.max(2, radius / 3)); }
-    if (tip) drawExplorer(ctx, nx, ny, Math.max(1, radius - 1), {pixel:style === 'pixel', mood:mood === 'happy' ? mood : chain.popScale > 1.05 ? 'impact' : mood});
+    if (tip) drawCharacter(ctx, attachments[i], { pixel: style === 'pixel', mood, popScale: chain.popScale });
     x = nx; y = ny;
   }
   ctx.restore();

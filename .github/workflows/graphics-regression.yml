@@ -26,6 +26,8 @@ jobs:
         run: echo "CHROMIUM_PATH=$(node -e "process.stdout.write(require('playwright').chromium.executablePath())")" >> "$GITHUB_ENV"
       - name: Graphics foundation unit tests
         run: node tests/graphics-foundation.test.cjs
+      - name: M2 character foundation unit tests
+        run: node tests/character-renderer.test.cjs
       - name: Browser regression - live artwork
         id: artwork
         continue-on-error: true

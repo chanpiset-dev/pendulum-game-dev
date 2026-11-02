@@ -1,10 +1,15 @@
+import { renderEnvironment } from '../graphics/environment-renderer.js';
 import { drawShelter } from './homecoming.js';
 import { chapterForStage } from '../data/chapters.js';
 import { JOURNEY_WORLDS } from '../journey-map-art.js';
 let enabled=true;
 export function setEnvironmentsEnabled(value){enabled=value!==false;}
 // Decorative architecture only: never reads or writes simulation bodies.
-export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,reduced=false}={}){
+export function drawEnvironment(c,w,h,options={}){
+  return renderEnvironment(c,w,h,options,drawLegacyEnvironment);
+}
+// The approved six chapter drawings remain unchanged as the default path.
+function drawLegacyEnvironment(c,w,h,{index,targets=[],status,homeAge=null,reduced=false}={}){
   if(!enabled||index==='sandbox'||!Number.isInteger(index))return false;
   const stage=Math.ceil(index/5),sub=(index-1)%5+1,ch=chapterForStage(stage),world=JOURNEY_WORLDS[ch.id-1];
   const palettes=[['#74978c','#203f38'],['#67899a','#1b3446'],['#85846b','#343d37'],['#817799','#302d48'],['#6d9790','#193c3d'],['#696f98','#222b45']];

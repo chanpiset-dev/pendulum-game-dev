@@ -30,6 +30,8 @@ jobs:
         run: node tests/character-renderer.test.cjs
       - name: M3 gimmick registry and animation tests
         run: node tests/gimmick-renderer.test.cjs
+      - name: M4 environment registry and layer tests
+        run: node tests/environment-renderer.test.cjs
       - name: Browser regression - live artwork
         id: artwork
         continue-on-error: true

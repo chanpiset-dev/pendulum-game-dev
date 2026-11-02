@@ -12,6 +12,7 @@ import { drawLivePendulum, artworkStyleForTheme } from './engine/artwork.js';
 import { installGimmickGuide } from './gimmick-guide.js';
 import { installArtworkPreview } from './artwork-preview.js';
 import { installExplorerSkinSettings } from './graphics/explorer-skin-settings.js';
+import { installEnvironmentSkinSettings } from './graphics/environment-skin-settings.js';
 import { installCompactLayout } from './compact-layout.js';
 import { createAppearance } from './appearance.js';
 import { getCanvasPalette, drawThemeBackdrop } from './themes.js';
@@ -1966,6 +1967,7 @@ installGimmickGuide({ $, language: () => currentLang,
 });
 installArtworkPreview({ $, language: () => currentLang, storage: verificationMode ? verificationStorage : undefined });
 installExplorerSkinSettings({ $, storage: verificationMode ? verificationStorage : undefined });
+installEnvironmentSkinSettings({ $, storage: verificationMode ? verificationStorage : undefined });
 installCompactLayout({ $, pauseGame });
 installMobileControls({ $, appearance, preferences: savedProgress.preferences, setAudioPreferences,
   savePreferences: value => progressStore.saveSetting('preferences', value), pauseGame,

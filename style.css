@@ -1158,3 +1158,13 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
 .fantasy-comparison canvas {width:100%;max-width:160px;height:auto;}
 .fantasy-comparison small {font-size:11px;color:var(--text);}
 #artworkDialog #gimmickPreviewMode {max-width:100%;min-height:40px;}
+
+/* M8 Phase 2: responsive real-renderer world comparisons */
+#environmentPreviewDialog{width:min(1100px,94vw);max-height:88vh;overflow:auto;box-sizing:border-box;}
+.environment-preview-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;margin:16px 0;}
+.environment-preview-world{min-width:0;border:1px solid #62788966;border-radius:12px;padding:10px;}
+.environment-preview-world h3{font-size:1rem;margin:4px 0 10px;}
+.environment-preview-pair{display:flex;flex-wrap:wrap;gap:8px;}
+.environment-preview-pair figure{flex:1 1 145px;min-width:0;margin:0;text-align:center;}
+.environment-preview-pair canvas{width:100%;height:auto;display:block;aspect-ratio:16/9;border-radius:6px;}
+.environment-preview-pair figcaption{font-size:.85rem;margin-top:5px;}

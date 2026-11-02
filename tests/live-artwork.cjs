@@ -27,8 +27,8 @@ const { chromium } = require('playwright');
         const target=targets.find(t=>!t.isBomb), rgba=Array.from(ctx.getImageData(Math.round(target.x),Math.round(target.y),1,1).data);
         return {rgba,style:artworkStyleForTheme(getCanvasPalette().theme)};
       })()`), theme);
-      if(result.style === 'pixel') assert.ok(result.rgba.slice(0,3).every(v=>v>190)); else assert.ok(result.rgba[0]>result.rgba[1]*1.3, 'Enamel pad has a red bullseye core');
-      assert.equal(result.style, theme === 'neon-arcade' ? 'pixel' : 'shaded');
+      assert.ok(result.rgba[0]>result.rgba[1]*1.3, 'Current shaded enamel pad has a red bullseye core');
+      assert.equal(result.style, 'shaded', 'The current fixed visual theme ignores legacy appearance requests');
     }
     assert.deepEqual(await page.evaluate(() => window.testRun('(()=>{loadStage(196);return [baseGravity,currentGravity]})()')), [0,0], 'Zero gravity survives stage loading');
     await page.evaluate(async () => {

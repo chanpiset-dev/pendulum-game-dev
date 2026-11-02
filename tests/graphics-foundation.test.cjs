@@ -25,7 +25,7 @@ for (const file of paths) {
   assert.equal(args[0], ctx);
   assert.equal(args[1], systems);
   assert.equal(args[2], targets);
-  assert.equal(args[16], options);
+  assert.equal(args[15], options);
   assert.equal(targets[0].alive, true);
   let image;
   const assets = createAssetManager({ createImage: () => (image = {}) });

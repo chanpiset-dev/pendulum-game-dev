@@ -40,6 +40,50 @@ export function drawEnvironment(c,w,h,{index,targets=[],status,homeAge=null,redu
     ellipse(1030,160,130,130,'#8285b244');ellipse(1065,147,125,125,'#222b4588');
     c.strokeStyle='#c0bce044';c.lineWidth=8;c.beginPath();c.ellipse(640,200,440,120,-.13,0,Math.PI*2);c.stroke();
   }
+  // Visual-only ambient motion. No simulation objects or gameplay state are touched.
+  // performance.now keeps the scenery alive while the player adjusts launch settings.
+  // Reduced-motion users retain the original static background.
+  if (!reduced) {
+    const t = performance.now() * 0.001;
+    c.save();
+    // Slow drifting mist, clipped to the distant sky above the playfield.
+    c.beginPath(); c.rect(65, 85, 1150, 445); c.clip();
+    for (let i = 0; i < 5; i++) {
+      const x = ((i * 310 + t * (7 + i % 3 * 3)) % 1680) - 200;
+      const y = 150 + (i % 3) * 108 + Math.sin(t * 0.24 + i) * 9;
+      const mist = c.createRadialGradient(x, y, 5, x, y, 185);
+      mist.addColorStop(0, '#e6f5ed0e');
+      mist.addColorStop(1, '#e6f5ed00');
+      c.fillStyle = mist; c.beginPath(); c.ellipse(x, y, 190, 47, 0, 0, Math.PI * 2); c.fill();
+    }
+    c.restore();
+    // Sparse atmospheric glints: deterministic placement, no random flicker.
+    c.save();
+    for (let i = 0; i < 16; i++) {
+      const x = 105 + ((i * 197 + 31) % 1060);
+      const y = 115 + ((i * 113 + 47) % 420);
+      const a = 0.07 + 0.13 * (0.5 + 0.5 * Math.sin(t * (0.45 + (i % 4) * 0.09) + i * 2.3));
+      c.globalAlpha = a;
+      c.fillStyle = ch.id === 4 ? '#d4baff' : ch.id === 2 ? '#b7e7f5' : '#c2f5d7';
+      c.beginPath(); c.arc(x + Math.sin(t * 0.3 + i) * 5, y - Math.sin(t * 0.24 + i) * 4, 1.4 + i % 3 * 0.45, 0, Math.PI * 2); c.fill();
+    }
+    c.restore();
+    // Foreground foliage sways around its fixed root; it is decorative only.
+    if (ch.id === 1 || ch.id === 5) {
+      c.save();
+      for (let i = 0; i < 12; i++) {
+        const x = 110 + i * 96, y = 661;
+        c.save(); c.translate(x, y);
+        c.rotate(Math.sin(t * 0.85 + i * 0.63) * 0.075);
+        c.strokeStyle = '#6c96704d'; c.lineWidth = 3; c.lineCap = 'round';
+        c.beginPath(); c.moveTo(0, 0); c.quadraticCurveTo(-7, -18, -3, -33); c.stroke();
+        c.fillStyle = '#87b68a55';
+        c.beginPath(); c.ellipse(-8, -26, 11, 4, -0.55, 0, Math.PI * 2); c.fill();
+        c.restore();
+      }
+      c.restore();
+    }
+  }
   // A fixed decoration behind the puzzle, not an exit the player must physically hit.
   const pads=targets.filter(t=>!t.isBomb),charge=pads.length?pads.filter(t=>!t.alive).length/pads.length:0;
   c.save();c.scale(1280/w,720/h);drawShelter(c,w,h,{chapter:ch.id,charge,age:homeAge,reduced});c.restore();

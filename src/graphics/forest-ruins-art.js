@@ -1,101 +1,111 @@
-// M8 Phase 3B: handcrafted, deterministic forest-only decorative Canvas artwork.
-// 1280x720 coordinates; does not inspect or mutate gameplay objects.
+// M8 3B.2 — deterministic, forest-only layered illustration. 1280 × 720 logical canvas.
+// Decorative rendering only: never reads game state or uses randomness.
 const TAU=Math.PI*2;
-function polygon(c,points,fill){c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fillStyle=fill;c.fill();}
-function stroke(c,points,color,width=3){c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle=color;c.lineWidth=width;c.stroke();}
-function circle(c,x,y,r,fill){c.beginPath();c.arc(x,y,r,0,TAU);c.fillStyle=fill;c.fill();}
-function oval(c,x,y,rx,ry,fill){c.beginPath();c.ellipse(x,y,rx,ry,0,0,TAU);c.fillStyle=fill;c.fill();}
-function branch(c,x,y,len,angle,width,depth,tone){
- if(depth<0)return;
- const nx=x+Math.cos(angle)*len,ny=y+Math.sin(angle)*len;
- stroke(c,[[x,y],[nx,ny]],tone,width);
- if(depth){branch(c,nx,ny,len*.73,angle-.53,width*.66,depth-1,tone);branch(c,nx,ny,len*.7,angle+.48,width*.64,depth-1,tone);}
- else for(let j=0;j<3;j++)oval(c,nx+Math.cos(j*2.1)*14,ny+Math.sin(j*2.1)*12,24,12,tone==='#173c38'?'#26574d':'#35705c');
+const rand=n=>{const v=Math.sin(n*127.1+43.77)*43758.5453;return v-Math.floor(v)};
+function path(c,pts,color){c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.fillStyle=color;c.fill()}
+function line(c,pts,color,w=2){c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.strokeStyle=color;c.lineWidth=w;c.stroke()}
+function ellipse(c,x,y,rx,ry,color,angle=0){c.beginPath();c.ellipse(x,y,rx,ry,angle,0,TAU);c.fillStyle=color;c.fill()}
+function disc(c,x,y,r,color){c.beginPath();c.arc(x,y,r,0,TAU);c.fillStyle=color;c.fill()}
+function gradient(c,x,y,r,inner,outer){const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,inner);g.addColorStop(1,outer);c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)}
+function vine(c,x,y,seed,len=160){
+ const pts=[];for(let i=0;i<=16;i++){const t=i/16;pts.push([x+Math.sin(t*8+seed)*12*t,y+len*t])}
+ line(c,pts,'#376a52',2.5);
+ for(let i=2;i<15;i+=2){const [vx,vy]=pts[i],dir=i%4===0?1:-1;ellipse(c,vx+dir*11,vy,15,5,'#5c9e70',dir*.45);ellipse(c,vx-dir*4,vy+6,9,3,'#3f815c',-dir*.5)}
 }
-function stone(c,x,y,w,h){
- polygon(c,[[x,y],[x+w*.13,y-10],[x+w*.86,y-7],[x+w,y],[x+w-4,y+h],[x+3,y+h]],'#536e69');
- polygon(c,[[x+w*.13,y-10],[x+w*.86,y-7],[x+w-10,y+9],[x+11,y+9]],'#80968b');
- stroke(c,[[x+w*.25,y+18],[x+w*.28,y+h*.45],[x+w*.15,y+h*.6]],'#354e4c',3);
- stroke(c,[[x+w*.7,y+h*.2],[x+w*.61,y+h*.39],[x+w*.72,y+h*.55]],'#354e4c',2);
- for(let i=0;i<5;i++)oval(c,x+i*w/5,y+4,13,5,'#46775b');
+function canopy(c,x,y,size,seed,base,lit){
+ // Interlocking irregular leaf clusters, not regular disks.
+ for(let i=0;i<27;i++){
+  const a=rand(seed+i*3)*TAU,r=Math.sqrt(rand(seed+i*3+1))*size;
+  const xx=x+Math.cos(a)*r,yy=y+Math.sin(a)*r*.56;
+  const rr=size*(.18+rand(seed+i*3+2)*.15);
+  ellipse(c,xx,yy,rr,rr*(.65+rand(seed+i+70)*.25),i%5===0?lit:base,a*.1);
+ }
+ for(let i=0;i<24;i++){
+  const a=rand(seed+i+200)*TAU,r=rand(seed+i+280)*size*.83;
+  const xx=x+Math.cos(a)*r,yy=y+Math.sin(a)*r*.55;
+  ellipse(c,xx,yy,4+rand(i+seed)*8,2+rand(i+seed+30)*3,lit,a);
+ }
 }
-function arch(c,x,y,s){
- c.save();c.translate(x,y);c.scale(s,s);
- stone(c,-105,-10,35,230);stone(c,70,-10,35,230);
- c.beginPath();c.arc(0,0,90,Math.PI,TAU);c.strokeStyle='#627e72';c.lineWidth=35;c.stroke();
- c.beginPath();c.arc(0,0,90,Math.PI,TAU);c.strokeStyle='#9aab92';c.lineWidth=4;c.stroke();
- for(let i=0;i<7;i++){const a=Math.PI+i*Math.PI/6;stroke(c,[[Math.cos(a)*72,Math.sin(a)*72],[Math.cos(a)*108,Math.sin(a)*108]],'#354e4c',2);}
- for(let i=0;i<8;i++){const a=Math.PI+i*Math.PI/7;circle(c,Math.cos(a)*89,Math.sin(a)*89,2.4,'#a6edba');}
+function tree(c,x,baseY,height,seed,far=false){
+ const w=far?19:33,top=baseY-height;
+ path(c,[[x-w,baseY],[x-w*.65,baseY-110],[x-w*.28,top+70],[x+5,top],[x+w*.45,top+65],[x+w*.6,baseY-100],[x+w,baseY]],far?'#244a43':'#284c43');
+ path(c,[[x-w*.3,baseY],[x-w*.1,top+80],[x+5,top],[x+w*.12,top+100],[x+w*.2,baseY]],far?'#32594c':'#496b53');
+ for(let i=0;i<5;i++){const yy=top+70+i*height*.12,side=i%2?1:-1;line(c,[[x,yy+30],[x+side*(75+i*11),yy-35]],far?'#254c43':'#355846',far?9:13)}
+ canopy(c,x,top+70,height*(far?.25:.28),seed,far?'#315a50':'#2e5b4b',far?'#3b6d5b':'#46745b');
+ if(!far){for(let i=0;i<4;i++)vine(c,x-70+i*40,top+65,i+seed,75+i*15)}
+}
+function stone(c,x,y,w,h,seed){
+ path(c,[[x+8,y-10],[x+w*.75,y-15],[x+w,y+4],[x+w-5,y+h],[x+3,y+h]],'#4a625c');
+ path(c,[[x+8,y-10],[x+w*.75,y-15],[x+w-9,y+6],[x+15,y+9]],'#87978a');
+ path(c,[[x+w-9,y+6],[x+w,y+4],[x+w-5,y+h],[x+w-13,y+h]],'#304e4a');
+ for(let i=0;i<9;i++){const xx=x+13+rand(seed+i)*Math.max(4,w-26),yy=y+15+rand(seed+i+40)*(h-30);line(c,[[xx,yy],[xx+rand(seed+i+90)*8,yy+7],[xx+4,yy+14]],'#344f49',.7+rand(i+seed))}
+ for(let i=0;i<7;i++){const xx=x+rand(seed+i+110)*w;ellipse(c,xx,y-10+rand(seed+i+200)*6,5+rand(seed+i+210)*9,3,'#4b805c')}
+}
+function ruinArch(c,x,y,scale,seed){
+ c.save();c.translate(x,y);c.scale(scale,scale);
+ stone(c,-105,-10,40,235,seed);stone(c,65,-10,40,235,seed+20);
+ c.beginPath();c.arc(0,0,85,Math.PI,TAU);c.strokeStyle='#405e57';c.lineWidth=39;c.stroke();
+ c.beginPath();c.arc(0,0,86,Math.PI,TAU);c.strokeStyle='#8fa394';c.lineWidth=4;c.stroke();
+ for(let i=0;i<9;i++){const a=Math.PI+i*Math.PI/8;line(c,[[Math.cos(a)*66,Math.sin(a)*66],[Math.cos(a)*107,Math.sin(a)*107]],'#304c46',2)}
+ for(let i=0;i<13;i++){const a=Math.PI+i*Math.PI/12;ellipse(c,Math.cos(a)*87,Math.sin(a)*87,4+rand(seed+i)*7,2.5,'#638b6c',a)}
+ for(let i=0;i<6;i++){const a=Math.PI+i*Math.PI/5;disc(c,Math.cos(a)*87,Math.sin(a)*87,2,'#a8dcb0')}
+ vine(c,-100,-45,seed,155);vine(c,92,-52,seed+3,130);
  c.restore();
 }
-function foliage(c,x,y,r,tone){
- for(let i=0;i<9;i++){const a=i*2.399;oval(c,x+Math.cos(a)*r*.55,y+Math.sin(a)*r*.36,r*(.46+(i%3)*.08),r*.32,tone);}
+function mushroom(c,x,y,s){
+ line(c,[[x,y],[x,y-13*s]],'#b5d6a5',2*s);
+ ellipse(c,x,y-13*s,9*s,5*s,'#79b9a0');
+ ellipse(c,x,y-15*s,7*s,3*s,'#b7f4c8');
+ gradient(c,x,y-15*s,17*s,'#9fe9bf50','#9fe9bf00');
 }
 export function drawForestDistance(c){
- // Far canopy has a varied silhouette, not repeated identical circles.
- const hills=[[0,470],[100,390],[225,430],[350,340],[500,420],[640,325],[790,410],[940,320],[1080,390],[1200,350],[1280,430]];
- polygon(c,[[0,720],...hills,[1280,720]],'#163e3d');
- for(let i=0;i<12;i++){
-  const x=i*123-55,h=170+(i*47)%160;
-  polygon(c,[[x-35,630],[x-20,460],[x-15,460-h],[x+14,460-h],[x+29,630]],'#1b4540');
-  branch(c,x,470-h,92,-Math.PI/2,13,2,'#173c38');
-  foliage(c,x,455-h,74,i%2?'#24554c':'#2b5f51');
- }
- for(let i=0;i<6;i++){const x=i*260+40;oval(c,x,490,180,38,'#76b9a41b');}
+ // Multiple depth bands, varied winding tree trunks and a quiet central clearing.
+ const g=c.createLinearGradient(0,170,0,720);g.addColorStop(0,'#173f3e');g.addColorStop(1,'#0a2930');c.fillStyle=g;c.fillRect(0,170,1280,550);
+ path(c,[[0,440],[130,360],[230,390],[340,300],[460,350],[620,310],[780,365],[910,295],[1050,365],[1170,330],[1280,420],[1280,720],[0,720]],'#1b4541');
+ for(let i=0;i<9;i++){const x=i*164-40;tree(c,x,670,315+rand(i+7)*175,i+30,true)}
+ for(let i=0;i<4;i++){const x=50+i*400;gradient(c,x,460,210,'#80bfa115','#80bfa100')}
 }
 export function drawForestArchitecture(c){
- // Off-center ruins leave the central playfield clear.
- arch(c,180,425,.9);arch(c,1090,415,.85);
- stone(c,60,275,54,390);stone(c,1170,255,58,410);
- for(const x of [60,1170]){
-  polygon(c,[[x-14,270],[x+68,270],[x+58,286],[x-8,286]],'#9eaa90');
-  for(let i=0;i<6;i++)stroke(c,[[x+12,290+i*55],[x+38,300+i*55]],'#415e56',2);
+ // Main focal architecture sits toward the margins, avoiding gameplay objects.
+ for(const [x,h,s] of [[-60,410,4],[160,440,8],[1120,420,12],[1350,400,15]])tree(c,x,730,h,s,false);
+ ruinArch(c,165,428,.88,21);ruinArch(c,1115,425,.86,47);
+ stone(c,50,260,54,405,60);stone(c,1180,245,55,420,90);
+ for(const [x,y] of [[50,258],[1180,243]]){
+  path(c,[[x-18,y],[x+72,y-5],[x+66,y+13],[x-14,y+14]],'#7d9583');
+  path(c,[[x-10,y+13],[x+62,y+13],[x+54,y+21],[x-4,y+22]],'#344f49');
  }
- for(let i=0;i<5;i++){
-  const x=80+i*270;
-  const top=-20+(i%2)*25;
-  stroke(c,[[x,top],[x+8,90],[x-13,185+(i%3)*30]],'#356f58',5);
-  for(let j=0;j<6;j++){
-   const yy=30+j*29,xx=x+Math.sin(j*2.1)*12;
-   oval(c,xx,yy,18,6,j%2?'#559e75':'#76b38a');
-  }
+ // Cracked stone foundation and climbing moss.
+ path(c,[[65,671],[1215,671],[1215,720],[65,720]],'#3c5853');
+ path(c,[[65,666],[1215,666],[1215,679],[65,679]],'#8aa18b');
+ for(let i=0;i<37;i++){
+  const x=78+i*31,yy=668+rand(i+40)*7;
+  line(c,[[x,yy],[x+6,yy+rand(i+50)*10],[x+3,yy+16]],'#2c4a45',.7);
+  if(i%3===0)ellipse(c,x,666,17,4,'#507a57');
  }
- // Ruined steps, moss, and sparse magical flora.
- polygon(c,[[70,670],[1210,670],[1210,720],[70,720]],'#445f59');
- polygon(c,[[70,665],[1210,665],[1210,678],[70,678]],'#839f88');
- for(const x of [105,280,960,1140]){
-  polygon(c,[[x,663],[x+35,656],[x+49,666]],'#456c54');
-  for(let i=0;i<3;i++){
-   stroke(c,[[x+i*12,663],[x+i*12-4,647]],'#62a879',2);
-   circle(c,x+i*12-4,646,4,'#8ed8ab');
-  }
- }
- for(const x of [130,1140]){
-  for(let i=0;i<5;i++){
-   const yy=565+i*18;circle(c,x+(i%2)*12,yy,3,'#a9f5c9');
-   stroke(c,[[x+(i%2)*12,yy+4],[x+(i%2)*12-5,yy+11]],'#5f9d74',1.5);
-  }
+ for(const x of [92,120,250,300,950,1040,1140,1170]){for(let j=0;j<3;j++)mushroom(c,x+j*8,659-j*4,.65+j*.16)}
+ // Distinctive rune stones and textured fragments.
+ for(const [x,y] of [[140,640],[1120,615],[225,600],[1060,650]]){
+  path(c,[[x-13,y],[x-10,y-30],[x+5,y-38],[x+18,y-4]],'#526c62');
+  line(c,[[x-4,y-23],[x+2,y-16],[x+6,y-25]],'#9cd9b1',1.5);
  }
 }
 export function drawForestAtmosphere(c,{reduced=false,time=0,index=1}={}){
- // Soft shafts and mist are confined to the background; no heavy opaque overlays.
- c.save();
- c.globalAlpha=.12;
- for(let i=0;i<5;i++){
-  const x=180+i*230;
-  polygon(c,[[x,-10],[x+75,-10],[x+230,590],[x+130,590]],'#b5efcb');
- }
- c.restore();
- for(let i=0;i<5;i++){
-  const x=100+i*280,y=530+(i%2)*50;
-  const mist=c.createRadialGradient(x,y,10,x,y,180);
-  mist.addColorStop(0,'#83b5a526');mist.addColorStop(1,'#83b5a500');
-  c.fillStyle=mist;c.fillRect(x-180,y-180,360,360);
- }
  const t=reduced?0:Number.isFinite(time)?time:0;
- for(let i=0;i<35;i++){
-  const x=(i*199+index*13)%1280,y=(i*113+index*7)%620;
-  const drift=reduced?0:Math.sin(t*.5+i)*5;
-  circle(c,x+drift,y,1.2+(i%4)*.5,i%3?'#a1e6b67a':'#e3f7b5ad');
+ c.save();c.globalAlpha=.10;
+ for(let i=0;i<4;i++){const x=115+i*340;path(c,[[x,-20],[x+65,-20],[x+210,600],[x+130,600]],'#b9f4c8')}
+ c.restore();
+ for(let i=0;i<4;i++){
+  const x=130+i*320+(!reduced?Math.sin(t*.15+i)*8:0),y=505+i%2*52;
+  gradient(c,x,y,190,'#a8e2b91a','#a8e2b900');
+ }
+ for(let i=0;i<44;i++){
+  const x=(i*199+index*13)%1280,y=(i*113+index*7)%640;
+  const drift=reduced?0:Math.sin(t*.55+i)*5;
+  const r=1+rand(i+88)*1.6;
+  disc(c,x+drift,y,r,i%4===0?'#e3f3bbad':'#91d8ad87');
+ }
+ // Small lights are decorative, not gameplay cues.
+ for(const [x,y] of [[125,620],[1120,620],[175,355],[1090,350]]){
+  gradient(c,x,y,30,'#a8edac36','#a8edac00');
  }
 }

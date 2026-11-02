@@ -15,6 +15,11 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout approved baseline for M5 comparison
+        uses: actions/checkout@v4
+        with:
+          ref: dev/explorer-homecoming
+          path: .m5-baseline
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -32,6 +37,8 @@ jobs:
         run: node tests/gimmick-renderer.test.cjs
       - name: M4 environment registry and layer tests
         run: node tests/environment-renderer.test.cjs
+      - name: M5 cross-branch visual and state comparison
+        run: node tests/m5-visual-regression.cjs
       - name: Browser regression - live artwork
         id: artwork
         continue-on-error: true

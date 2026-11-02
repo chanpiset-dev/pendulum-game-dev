@@ -231,6 +231,21 @@
     <h3 id="appearanceTitle">Appearance</h3>
     <label><input type="checkbox" id="explorerBob" checked> <span id="explorerLabel">Explorer bob (turn off for classic bob)</span></label>
     <label><input type="checkbox" id="environmentBackgrounds" checked> <span id="environmentLabel">Environment backgrounds</span></label>
+    <label for="explorerSkin">Explorer skin</label>
+    <select id="explorerSkin" aria-label="Explorer skin">
+      <option value="legacy">Original</option>
+      <option value="fantasy-explorer">Fantasy</option>
+    </select>
+    <div class="explorer-preview-controls">
+      <label for="explorerPreviewState">Preview animation</label>
+      <select id="explorerPreviewState">
+        <option value="idle">Idle</option>
+        <option value="swinging">Swinging</option>
+        <option value="impact">Impact</option>
+        <option value="celebration">Celebration</option>
+      </select>
+    </div>
+    <canvas id="explorerSkinPreview" width="320" height="144" role="img" aria-label="Live explorer skin preview"></canvas>
     <button id="btnArtworkPreview" class="btn-nav">PREVIEW ARTWORK</button>
   </section>
   <h3 id="soundTitle">Sound</h3>

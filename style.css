@@ -1146,3 +1146,8 @@ details.star-rules summary { cursor: pointer; color: var(--yellow); }
 
 .chamber-meter{display:block;height:3px;background:var(--line,#4b6867);margin-top:5px;border-radius:3px;overflow:hidden}.chamber-meter i{display:block;height:100%;width:var(--charge,0%);background:var(--accent,#b9d69c)}
 .clear-gateway{display:none}.chamber-clear .clear-gateway{display:block;margin-bottom:12px}.clear-gateway .gateway-icon{width:44px;height:56px;border-width:3px;background:linear-gradient(#9bcece,#e2e8b6);box-shadow:0 0 18px #b9d69c33}.chamber-clear .clear-gateway i:first-child{transform:translateX(-100%)}.chamber-clear .clear-gateway i:last-child{transform:translateX(100%)}
+
+/* Optional explorer preview; never changes game canvas layout. */
+#explorerSkinPreview { display:block; width:100%; max-width:320px; height:auto; margin:10px auto; border:1px solid var(--accent); border-radius:6px; }
+#settingsDialog #explorerSkin, #settingsDialog #explorerPreviewState { max-width:100%; min-height:40px; padding:6px; background:var(--panel); color:var(--text); border:1px solid var(--accent); }
+.explorer-preview-controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; }

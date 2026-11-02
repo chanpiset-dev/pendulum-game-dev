@@ -39,6 +39,8 @@ jobs:
         run: node tests/environment-renderer.test.cjs
       - name: M6 fantasy explorer skin tests
         run: node tests/fantasy-explorer.test.cjs
+      - name: M6 skin settings browser tests
+        run: node tests/explorer-skin-settings.cjs
       - name: M5 cross-branch visual and state comparison
         run: node tests/m5-visual-regression.cjs
       - name: Browser regression - live artwork

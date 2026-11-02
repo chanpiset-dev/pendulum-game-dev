@@ -17,7 +17,8 @@ export function drawCharacter(ctx, attachment, options = {}) {
   if (!attachment?.isTip) return;
   const animation = resolveCharacterAnimation(options);
   const radius = Math.max(1, attachment.radius - 1);
-  const renderer = skins.get(activeSkin);
+  const skin = options.skin === undefined ? activeSkin : options.skin;
+  const renderer = skins.get(skin);
   if (renderer) {
     // Skin callbacks receive a read-only transform and must not mutate physics.
     ctx.save();

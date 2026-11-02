@@ -23,7 +23,7 @@ const browserPath=process.env.CHROMIUM_PATH||'/usr/bin/chromium';
      return route.fulfill({body,contentType:file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':file.endsWith('.svg')?'image/svg+xml':'text/html'});
     });
     await page.goto('http://game.test');await page.waitForFunction(()=>window.m5Run);
-    const measurements=await page.evaluate(async({cases})=>{
+    const measurements=await page.evaluate(({cases})=>window.m5Run(`(()=>{
      const out={stages:[],frames:{},state:{},dimensions:{}};
      const state=()=>JSON.stringify({systems,targets,obstacles,blackhole,currentPortals,currentSwitches,currentBoostRings,currentZones,currentLasers,currentRail,PIVOT,timeElapsed,pulsesLeft,highScores,stageStars});
      const canvasEl=document.getElementById('canvas');
@@ -31,7 +31,7 @@ const browserPath=process.env.CHROMIUM_PATH||'/usr/bin/chromium';
       loadStage(i);const before=state();draw();if(state()!==before)throw new Error('Drawing changed simulation at '+i);
       out.stages.push({i,N:systems.map(s=>s.N),targets:targets.length,obstacles:obstacles.length});
      }
-     for(const index of cases){
+     for(const index of ${JSON.stringify([1,41,81,111,166,211,250])}){
       loadStage(index);$('stageBriefing').classList.add('hidden');$('titleScreen').classList.add('hidden');
       const before=state(),start=performance.now();for(let k=0;k<3;k++)draw();
       const elapsed=performance.now()-start;
@@ -41,7 +41,7 @@ const browserPath=process.env.CHROMIUM_PATH||'/usr/bin/chromium';
       out['elapsed'+index]=elapsed;
      }
      return out;
-    },{cases});
+    })()`),{cases});
     assert.deepEqual(errors,[],variant+' '+label+' page errors');
     snapshots[variant][label]=measurements;
     await page.close();

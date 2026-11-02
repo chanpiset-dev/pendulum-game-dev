@@ -6,7 +6,8 @@ const check=spawnSync(process.execPath,['--check','--input-type=module'],{input:
  const regUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/environment-registry.js'));
  const parUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/parallax-system.js'));
  const reg=await import(regUrl),par=await import(parUrl);
- const worldUrl='data:text/javascript,'+encodeURIComponent(source(file).replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)));
+ const forestUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/forest-ruins-art.js'));
+ const worldUrl='data:text/javascript,'+encodeURIComponent(source(file).replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)).replace("'./forest-ruins-art.js'",JSON.stringify(forestUrl)));
  const worlds=await import(worldUrl);
  const rendererUrl='data:text/javascript,'+encodeURIComponent(source('src/graphics/environment-renderer.js').replace("'./environment-registry.js'",JSON.stringify(regUrl)).replace("'./parallax-system.js'",JSON.stringify(parUrl)));
  const {renderEnvironment}=await import(rendererUrl);
